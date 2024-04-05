@@ -35,15 +35,18 @@
         border-radius: .25rem;
     }
 
-    /* Image styling: Rounded right corners */
-    .rounded-right-corners {
-        border-top-right-radius: 0.6rem; /* Adjust the value as needed */
-        border-bottom-right-radius: 0.6rem; /* Adjust the value as needed */
-    }
-
     /* Card styling */
     .pannel {
         border-radius: 0px;
+    }
+
+    /* Image styling: Full height, full width, cover, rounded corners */
+    .side-image img {
+        height: 100%; /* Ensure the image takes full height of the container */
+        width: 100%; /* Ensure the image takes full width of the container */
+        object-fit: cover; /* Cover the container, zoom and crop if necessary */
+        border-top-right-radius: 0.6rem; /* Rounded corners */
+        border-bottom-right-radius: 0.6rem;
     }
 
 </style>
@@ -62,7 +65,7 @@
                 <!-- Card Body -->
                 <div class="card-body pannel">
                     <!-- Title at top-->
-                    <h3 class="card-title text-center mb-3">Welcome to SerpentSpot!</h3>
+                    <h3 class="card-title text-center mb-3"> Welcome to SerpentSpot!</h3>
                     <!-- Text under title -->
                     <p class="text-center"> We're excited to have you! Get started by signing up for an account below.</p>
                     
@@ -91,7 +94,7 @@
     </div>
         <!-- Image to the right of the forms -->
         <div class="col-md-6 d-none d-md-flex justify-content-center shadow side-image">
-            <img src="https://media.istockphoto.com/id/108200442/photo/baby-west-african-bush-viper-in-rainforest.jpg?s=612x612&w=0&k=20&c=W6w2SFQFNkcqVdgmKhmwuywiyyocVsCEYbcH-39u7t4=" class="img-fluid rounded-right-corners" alt="Workspace">
+            <img src="https://media.istockphoto.com/id/108200442/photo/baby-west-african-bush-viper-in-rainforest.jpg?s=612x612&w=0&k=20&c=W6w2SFQFNkcqVdgmKhmwuywiyyocVsCEYbcH-39u7t4=" class="img-fluid" alt="Workspace">
         </div>
     </div>
 </div>
