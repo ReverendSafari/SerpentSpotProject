@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My App</title>
+</head>
+<body>
+    <form method="POST" action="{% url 'species_by_state' %}">
+        {% csrf_token %}
+        <select name="state">
+            {% for state in states %}
+                <option value="{{ state.id }}">{{ state.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">SEARCH</button>
+    </form>    
+
+    {% for snake in species %}
+    <div class="snake-info">
+        <h2>{{ snake.common_name }} ({{ snake.scientific_name }})</h2>
+        <img src="{% static snake.image_path %}" alt="{{ snake.common_name }}">
+        <p>{{ snake.venomous|yesno:"VENOMOUS,NON-VENOMOUS" }}</p>
+        <p>{{ snake.description }}</p>
+    </div>
+    {% endfor %}
+</body>
+</html>
