@@ -6,9 +6,11 @@ from django.dispatch import receiver
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) # Link the user profile to a user model instance
-    # Add additional fields here
-    bio = models.TextField(null=True, blank=True) 
-    # You can add more user profile fields as needed
+    
+    # User fields 
+    profile_pic = models.ImageField(upload_to='profile_pics', default='profile_pics/default.jpg' ,null=True, blank=True) # User profile picture
+    bio = models.TextField(null=True, blank=True) # User bio
+    observations = models.IntegerField(default=0) # User observation count 
 
     def __str__(self):
         return self.user.username
