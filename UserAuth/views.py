@@ -1,8 +1,12 @@
 from django import forms
 
 from django.shortcuts import redirect, render
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.contrib import messages
+from django.db import transaction
+from django.contrib.auth.decorators import login_required
 
 from .models import UserProfile
 
@@ -16,7 +20,28 @@ def login_view(request):
     Returns:
     - A rendered response with the 'login.html' template.
     """
-    return render(request, 'login.html')
+    user = request.user
+
+    if user.is_authenticated: # If the user is already logged in
+            return redirect('profile') # Redirect to the profile page 
+    
+    if request.method == 'POST': # If the form has been submitted
+        form = AuthenticationForm(request, data=request.POST) # Create a form instance
+        if form.is_valid(): # Check if the form is valid
+            username = form.cleaned_data.get('username') # Get the username from the form
+            password = form.cleaned_data.get('password') # Get the password from the form
+            user = authenticate(username=username, password=password) # Authenticate the user
+            if user is not None: # If the user is authenticated
+                login(request, user)
+                messages.info(request, f"You are now logged in as {username}.")
+                return redirect('profile') # Redirect to the profile page
+            else:
+                messages.error(request,"Invalid username or password.")  # If the user is not authenticated, display an error message
+        else:
+            messages.error(request,"Invalid username or password.") 
+    else: # If the form has not been submitted
+        form = AuthenticationForm() # Create an empty form
+    return render(request, 'login.html', {'form': form}) # Render the login page with the form
 
 def register_view(request):
     """
@@ -28,22 +53,27 @@ def register_view(request):
     Returns:
         HttpResponse: The HTTP response object containing the rendered 'register.html' template.
     """
-    if request.method == 'POST':
-        user_form = UserRegisterForm(request.POST) # Create a form instance and populate it with data from the request
-        profile_form = UserProfileForm(request.POST) # Create a form instance and populate it with data from the request
-        if user_form.is_valid() and profile_form.is_valid(): # Check if the form is valid
-            user = user_form.save() # Save the user form
-            profile = profile_form.save(commit=False) # Save the profile form
-            profile.user = user # Link the profile to the user
-            profile.save() # Save the profile
+    if request.method == 'POST': # If the form has been submitted
+        user_form = UserRegisterForm(request.POST) # Create a user form instance
+        profile_form = UserProfileForm(request.POST) # Create a profile form instance
+        if user_form.is_valid() and profile_form.is_valid(): # Check if both forms are valid
+            with transaction.atomic(): # Use a transaction to ensure data consistency
+                user = user_form.save() # Save the user form data
+                profile, created = UserProfile.objects.get_or_create(user=user) # Get or create a user profile
 
-            # Log the user in and redirect them to their profile page
+                if created: # If the profile was newly created, populate it with form data
+                    profile_form = UserProfileForm(request.POST, instance=profile)
+                    if profile_form.is_valid():
+                        profile_form.save()
+            # Redirect to user's profile page
             return redirect('profile')
-    else:
-        user_form = UserRegisterForm() # Create a blank form
-        profile_form = UserProfileForm() # Create a blank form
-    return render(request, 'register.html', {'user_form': user_form, 'profile_form': profile_form}) # Render the registration form
+        
+    else: # If the form has not been submitted
+        user_form = UserRegisterForm() # Create an empty user form
+        profile_form = UserProfileForm() # Create an empty profile form
+    return render(request, 'register.html', {'user_form': user_form, 'profile_form': profile_form}) # Render the registration page with the forms
 
+@login_required
 def profile_view(request):
     """
     View function for displaying user profile.

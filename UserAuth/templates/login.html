@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock title %}
+
+{% block extra_css %}
+<style>
+    /* container styling */
+    .login-container {
+        margin-top: 5rem;
+    }
+
+    .login-card {
+        padding: 2rem;
+    }
+    /* form styling */
+    .form-control {
+        margin-bottom: 1rem;
+    }
+    /* button styling */
+    .login-btn {
+        width: 100%;
+        padding: .5rem;
+        margin-top: 1rem;
+        border-radius: .25rem;
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container login-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card login-card">
+                <div class="card-body">
+
+                    <h3 class="card-title text-center mb-4">Login</h3>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <!-- Username -->
+                        <div class="form-group">
+                            <input type="text" name="username" class="form-control" placeholder="Username or Email" required>
+                        </div>
+                        <!-- Password field -->
+                        <div class="form-group">
+                            <input type="password" name="password" class="form-control" placeholder="Password" required>
+                        </div>
+
+                        <!-- Display Messages -->
+                        {% if messages %}
+                        <div class="alert-container">
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} mt-3" role="alert">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <!-- Submit button -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary login-btn">Login</button>
+                        </div>
+                        <!-- Additional links -->
+                        <div class="text-center">
+                            <a href="{% url 'register' %}" class="btn btn-link">Register</a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
