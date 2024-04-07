@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import select_state
+from .views import select_state, render_education
 
 urlpatterns = [
-    path('species_by_state/', select_state, name='id_view'),
+    path('id/', select_state, name='id_view'),
+    path('education/', render_education, name='education_view')
 ]
