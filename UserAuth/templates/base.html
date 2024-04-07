@@ -14,19 +14,80 @@
 
     <!-- Universal styles, cross pages -->
     <style>
+
         .btn-primary:hover {
             transform: scale(1.01);
         }
+        .nav-link:hover {
+            background-color: rgb(233, 233, 233);
+        }
     </style>
+
+    {% load static %}
 
     <body>
         <header>
-            <!-- NavBar to go here -->
+            <!-- NavBar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-5" style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">
+                <div class="container-fluid">
+                    <!-- logo -->
+                    <a class="navbar-brand" href="#">
+                        <img src="{% static 'serpentSpotLogo.png' %}" alt="Logo" style="height: 40px; padding: 0px;">
+                    </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <!-- education dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle mx-3 rounded-pill" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Education
+                            </a>
+                            <ul class="dropdown-menu mx-3 mb-3" aria-labelledby="navbarDropdownMenuLink" style="border-radius: 20px; overflow: hidden;">
+                                <li><a class="dropdown-item" href="#">Educator</a></li>
+                                <li><a class="dropdown-item" href="#">ID game</a></li>
+                            </ul>
+                        </li>
+                        <!-- Community dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle mx-3 rounded-pill" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Community
+                            </a>
+                            <ul class="dropdown-menu mx-3 mb-3" aria-labelledby="navbarDropdownMenuLink" style="border-radius: 20px; overflow: hidden;">
+                                <li><a class="dropdown-item" href="#">Forum</a></li>
+                                <li><a class="dropdown-item" href="#">Leaderboard</a></li>
+                                <li><a class="dropdown-item" href="#">SnakesNearU</a></li>
+                            </ul>
+                        </li>
+                        <!-- Im thinking new observation button here -->
+                    </ul>
+                    <!-- check for logged in user otherwise why would there be a profile -->
+                    {% if user.is_authenticated %}
+                    <!-- Right side of navbar -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <!-- Profile section -->
+                            <a class="nav-link dropdown-toggle mx-3 rounded-pill" href="{% url 'profile' %}" id="navbarProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ user.username }}
+                            </a>
+                            <!-- Dropdown menu for profile stuff -->
+                            <ul class="dropdown-menu dropdown-menu-end mx-3 mb-3" aria-labelledby="navbarProfileDropdown" style="border-radius: 20px; overflow: hidden;">
+                                <li><a class="dropdown-item" href="#">Observation Journal</a></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% endif %}
+                </div>
+            </nav>
         </header>
 
-        <main role="main" class="container">
+        <main role="main" class="container"> 
             {% block content %}
+            
             <!-- Actual body content  -->
+            
             {% endblock content %}
         </main>
         

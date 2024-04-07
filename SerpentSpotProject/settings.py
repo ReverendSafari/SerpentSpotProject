@@ -28,11 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Base directory for media files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# URL to access media through the web
-MEDIA_URL = '/media/'
-
 
 # Application definition
 
@@ -76,7 +71,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'SerpentSpotProject.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -124,6 +118,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
+
+# media root
+
+# Base directory for media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# URL to access media through the web
+MEDIA_URL = 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

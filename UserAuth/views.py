@@ -1,7 +1,7 @@
 from django import forms
 
 from django.shortcuts import redirect, render
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -23,7 +23,7 @@ def login_view(request):
     user = request.user
 
     if user.is_authenticated: # If the user is already logged in
-            return redirect('profile') # Redirect to the profile page 
+        return redirect('profile') # Redirect to the profile page 
     
     if request.method == 'POST': # If the form has been submitted
         form = AuthenticationForm(request, data=request.POST) # Create a form instance
@@ -33,7 +33,7 @@ def login_view(request):
             user = authenticate(username=username, password=password) # Authenticate the user
             if user is not None: # If the user is authenticated
                 login(request, user)
-                messages.info(request, f"You are now logged in as {username}.")
+                messages.info(request, f"You were last logged in as {username}.")
                 return redirect('profile') # Redirect to the profile page
             else:
                 messages.error(request,"Invalid username or password.")  # If the user is not authenticated, display an error message
@@ -66,6 +66,7 @@ def register_view(request):
                     if profile_form.is_valid():
                         profile_form.save()
             # Redirect to user's profile page
+            login(request, user)  # Log the user in
             return redirect('profile')
         
     else: # If the form has not been submitted
@@ -120,3 +121,16 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile # Link the form to the UserProfile model
         fields = ['bio'] # Include the 'bio' field in the form
+
+def logout_view(request):
+    """
+    Logs out the current user and redirects to the login page.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        A redirect response to the login page.
+    """
+    logout(request)
+    return redirect('login')
