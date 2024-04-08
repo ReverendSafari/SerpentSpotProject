@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}User Profile{% endblock title %}
+
+{% block extra_css %}
+
+<style>
+    /* Background image: URL I include this to get rid of the white border from the blur */
+    body {
+        background-image: url("https://live.staticflickr.com/5554/14535285422_48531e9131_b.jpg");
+    }
+    .bg-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("https://live.staticflickr.com/5554/14535285422_48531e9131_b.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        filter: blur(3px);
+        z-index: -1; /* Keep the image behind other content */
+    }
+
+    /* Edit profile button behavior */
+    .editprofile:hover {
+        transform:scale(1.01);
+    }
+
+</style>
+
+{% endblock extra_css %}
+
+{% block content %}
+
+{% load static %} <!-- Load static files -->
+
+<div class="bg-image"></div>
+
+<div class="container my-3">
+    <div class="card shadow-sm" style="border-radius: 20px; overflow: hidden;">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <!-- Column for profile picture -->
+                <div class="col-auto">
+                    {% if user.userprofile.profile_pic %}
+                        <img src="{{MEDIA_URL}}{{ user.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm" alt="Profile Picture" style="width: 110px; height: 110px; object-fit: cover;">
+                    {% else %}
+                        <img src="{% static 'default.jpg' %}" class="rounded-circle border border-success shadow-sm" alt="Default Profile Picture" style="width: 110px; height: 110px; object-fit: cover;">
+                    {% endif %}
+                </div>
+                <!-- Column for username and email -->
+                <div class="col">
+                    <h2 class="card-title">{{ user.username | slice:":15" }}</h2>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                </div>
+            </div>
+            <div class="row mt-3 mb-3 mx-1 shadow-sm editprofile" style="border-radius: 20px; overflow: hidden;">
+                <a href="{% url 'edit_profile' %}" class="btn btn-success">Edit Profile</a>
+            </div>
+            <div class="row mt-3">
+                <!-- User details for bio and observations -->
+                <div class="col-md-8">
+                    <div class="card shadow-sm mb-3" style="background-color:whitesmoke; border-top-left-radius: 20px; border-bottom-left-radius: 20px; overflow:hidden">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">About me:</h5>
+                            <div class="mx-1">
+                                <p><strong>Lifetime observations:</strong> {{ user.userprofile.observations }}</p>
+                                <p><strong>Bio:</strong> {{ user.userprofile.bio }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Placeholder column for recent forum posts -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm" style="background-color:whitesmoke; border-top-right-radius: 20px; border-bottom-right-radius: 20px; overflow:hidden">
+                        <div class="card-body">
+                            <h5 class="card-title">Recent posts:</h5>
+                            <!-- Forum posts will go here -->
+                            <p class="mx-1">Nothing to see here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Card for containing observations -->
+    <div class="card shadow-sm mt-3" style="border-radius: 20px; overflow: hidden;">
+        <div class="card-body">
+            <h5 class="card-title">Observation gallery: </h5>
+            <div class="card shadow-sm mt-3" style="background-color:whitesmoke; border-radius: 20px; overflow: hidden;">
+                <!-- Gallery of user observations here maybe -->
+                <p class="mx-3 mt-3">Nothing to see here.</p>
+            </div>
+    </div>
+</div>
+
+{% endblock content %}

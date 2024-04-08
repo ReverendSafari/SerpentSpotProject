@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}User Profile{% endblock title %}
+
+{% block extra_css %}
+
+<style>
+    /* Background image: URL I include this to get rid of the white border from the blur */
+    body {
+        background-image: url("https://live.staticflickr.com/5554/14535285422_48531e9131_b.jpg");
+    }
+    .bg-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("https://live.staticflickr.com/5554/14535285422_48531e9131_b.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        filter: blur(3px);
+        z-index: -1; /* Keep the image behind other content */
+    }
+
+    /* Edit profile button behavior */
+    .editprofile:hover {
+        transform:scale(1.01);
+    }
+
+    .userpic:hover {
+        transform: scale(1.1);
+    }
+
+    .btn-success:hover {
+        transform: scale(1.06);
+    }
+
+    .btn-outline-primary:hover {
+        transform: scale(1.06);
+    }
+
+</style>
+
+{% endblock extra_css %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="bg-image"></div>
+
+<div class="container my-3">
+    <div class="card shadow-sm" style="border-radius: 20px; overflow: hidden;">
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data"> <!-- Update the form to handle file uploads -->
+                {% csrf_token %}
+                <div class="row align-items-center">
+                    <!-- Column for clickable profile picture -->
+                    <div class="col-auto userpic">
+                        <label for="profilePictureUpload">
+                            {% if user.userprofile.profile_pic %}
+                                <img src="{{MEDIA_URL}}{{ user.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow" alt="Profile Picture" style="width: 110px; height: 110px; object-fit: cover; cursor: pointer;">
+                            {% else %}
+                                <img src="{% static 'default.jpg' %}" class="rounded-circle border border-success shadow" alt="Default Profile Picture" style="width: 110px; height: 110px; object-fit: cover; cursor: pointer;">
+                            {% endif %}
+                        </label>
+                        <input type="file" id="profilePictureUpload" name="profile_pic" accept="image/*" class="d-none" onchange="this.form.submit();"> <!-- Hidden file input -->
+                    </div>
+                    <!-- Column for username and email -->
+                    <div class="col">
+                        <h2 class="card-title">{{ user.username | slice:":15" }}</h2>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                    </div>
+                </div>
+                <!-- Editable bio section -->
+                <div class="row mt-3">
+                    <div class="col">
+                        <!-- Editable bio field -->
+                        <div class="form-group mb-3">
+                            <label for="bio" class="form-label"><strong>Bio:</strong></label>
+                            <textarea name="bio" id="bio" class="form-control editable shadow-sm" style="border-radius: 20px;" rows="3" placeholder="Tell us about yourself">{{ user.userprofile.bio }}</textarea>
+                        </div>
+                        <!-- Submit button for profile updates -->
+                        <button type="submit" class="btn btn-success rounded-pill">Save Changes</button>
+                        <a href="{% url 'profile' %}" class="btn btn-outline-primary rounded-pill mx-3">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
