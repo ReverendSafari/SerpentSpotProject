@@ -2,26 +2,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My App</title>
+    <title>Identification</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+
+    <style>
+        .snake-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .snake-info img {
+            width: 500px; /* Adjust size as needed */
+            height: 300px; /* Adjust size as needed */
+            object-fit: cover; /* Maintain aspect ratio */
+            margin-bottom: 10px;
+        }
+        .venomous {
+            color: green;
+        }
+
+        /* Style adjustments for Select2 to match Bootstrap 5 */
+        .select2-container--default .select2-selection--single {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            height: 38px; /* Ensure the select box matches the height of the button */
+            padding: 4px; /* Adjust padding to vertically center the text */
+            font-size: 1rem;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 30px; /* Ensure the arrow height matches the select box */
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            width: 20px;
+        }
+        .select2-container {
+            width: 100%; /* Full width within its column */
+            max-width: 200px; /* Limit the max width */
+        }
+        .select2-dropdown {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 28px; /* Center the text vertically */
+        }
+        .btn-primary {
+            height: 38px; /* Ensure the button height is set */
+        }
+        .form-control-wrap {
+             /* Allows the select box to grow and fill the space */
+            margin-right: 10px; /* Adds space between the select box and the button */
+        }
+    </style>
 </head>
 <body>
-    <form method="POST" action="">
-        {% csrf_token %}
-        <select name="state">
-            {% for state in states %}
-                <option value="{{ state.id }}">{{ state.name }}</option>
+    <h1 class="display-1 text-center">Snake Identification</h1>
+    <div class="container">
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-6">
+                <form method="POST" action="" class="d-flex justify-content-center">
+                    {% csrf_token %}
+                    <div class="form-control-wrap">
+                        <select name="state" class="form-select" id="state-select">
+                            <option value="" selected disabled>Select a state</option>
+                            {% for state in states %}
+                                <option value="{{ state.id }}">{{ state.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">SEARCH</button>
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            {% for snake in species %}
+            <div class="col-md-12 snake-info">
+                <h2>{{ snake.common_name }}</h2>
+                <h3>{{ snake.scientific_name }}</h3>
+                <img src="{% static snake.image_path %}" alt="{{ snake.common_name }}" class="img-fluid">
+                <p class="{% if snake.venomous %}venomous{% endif %}">{{ snake.venomous|yesno:"VENOMOUS,NON-VENOMOUS" }}</p>
+                <p>{{ snake.description }}</p>
+            </div>
             {% endfor %}
-        </select>
-        <button type="submit">SEARCH</button>
-    </form>
-
-    {% for snake in species %}
-    <div class="snake-info">
-        <h2>{{ snake.common_name }} ({{ snake.scientific_name }})</h2>
-        <img src="{% static snake.image_path %}" alt="{{ snake.common_name }}">
-        <p>{{ snake.venomous|yesno:"VENOMOUS,NON-VENOMOUS" }}</p>
-        <p>{{ snake.description }}</p>
+        </div>
     </div>
-    {% endfor %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#state-select').select2({
+                placeholder: "Select a state",
+                allowClear: true
+            });
+        });
+    </script>
 </body>
 </html>

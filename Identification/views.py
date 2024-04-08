@@ -12,3 +12,6 @@ def select_state(request):
         'states': states,
         'species': species,
     })
+
+def render_education(request):
+    return render(request, 'education.html')
