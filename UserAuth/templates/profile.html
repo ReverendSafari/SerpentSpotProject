@@ -21,6 +21,12 @@
         filter: blur(3px);
         z-index: -1; /* Keep the image behind other content */
     }
+
+    /* Edit profile button behavior */
+    .editprofile:hover {
+        transform:scale(1.01);
+    }
+
 </style>
 
 {% endblock extra_css %}
@@ -37,8 +43,8 @@
             <div class="row align-items-center">
                 <!-- Column for profile picture -->
                 <div class="col-auto">
-                    {% if user.userprofile.profile_picture %}
-                        <img src="{{ user.userprofile.profile_picture.url }}" class="rounded-circle border border-success shadow-sm" alt="Profile Picture" style="width: 110px; height: 110px; object-fit: cover;">
+                    {% if user.userprofile.profile_pic %}
+                        <img src="{{MEDIA_URL}}{{ user.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm" alt="Profile Picture" style="width: 110px; height: 110px; object-fit: cover;">
                     {% else %}
                         <img src="{% static 'default.jpg' %}" class="rounded-circle border border-success shadow-sm" alt="Default Profile Picture" style="width: 110px; height: 110px; object-fit: cover;">
                     {% endif %}
@@ -48,6 +54,9 @@
                     <h2 class="card-title">{{ user.username | slice:":15" }}</h2>
                     <p><strong>Email:</strong> {{ user.email }}</p>
                 </div>
+            </div>
+            <div class="row mt-3 mb-3 mx-1 shadow-sm editprofile" style="border-radius: 20px; overflow: hidden;">
+                <a href="{% url 'edit_profile' %}" class="btn btn-success">Edit Profile</a>
             </div>
             <div class="row mt-3">
                 <!-- User details for bio and observations -->

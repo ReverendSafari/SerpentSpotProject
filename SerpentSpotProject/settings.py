@@ -130,7 +130,7 @@ STATICFILES_FINDERS = [
 # Base directory for media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # URL to access media through the web
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

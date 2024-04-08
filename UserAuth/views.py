@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 
 from .models import UserProfile
 
+from.forms import UserProfileForm, UserRegisterForm
+
 def login_view(request):
     """
     This view handles the login functionality.
@@ -87,40 +89,30 @@ def profile_view(request):
     """
     return render(request, 'profile.html')
 
-class UserRegisterForm(UserCreationForm):
+@login_required
+def edit_profile_view(request):
     """
-    A form for registering a new user.
+    View function for editing user profile.
 
-    Inherits from UserCreationForm and adds an email field.
+    Args:
+        request (HttpRequest): The HTTP request object.
 
-    Attributes:
-        email (forms.EmailField): The email field for the user's email address.
-
-    Meta:
-        model (User): The User model to be used for registration.
-        fields (list): The fields to be included in the form.
-
+    Returns:
+        HttpResponse: The HTTP response object containing the rendered 'editprofile.html' template.
     """
-    email = forms.EmailField()
+    if request.method == 'POST':
+        # Assuming you have a form class `UserProfileForm` for handling the profile data
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to the profile page or wherever appropriate
 
-    class Meta:
-        model = User # Link the form to the User model
-        fields = ['username', 'email', 'password1', 'password2'] # Include the specified fields in the form
+    else:
+        # Display the form with the current profile data
+        form = UserProfileForm(instance=request.user.userprofile)
 
-class UserProfileForm(forms.ModelForm):
-    """
-    A form for updating user profile information.
+    return render(request, 'editprofile.html', {'form': form})
 
-    This form is used to update the user's profile information, specifically the 'bio' field.
-
-    Attributes:
-        model (UserProfile): The model associated with the form.
-        fields (list): The fields to include in the form.
-
-    """
-    class Meta:
-        model = UserProfile # Link the form to the UserProfile model
-        fields = ['bio'] # Include the 'bio' field in the form
 
 def logout_view(request):
     """
