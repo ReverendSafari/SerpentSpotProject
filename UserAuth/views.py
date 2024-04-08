@@ -55,6 +55,9 @@ def register_view(request):
     Returns:
         HttpResponse: The HTTP response object containing the rendered 'register.html' template.
     """
+    if request.user.is_authenticated: # If the user is already logged in
+        return redirect('profile') # Redirect to the profile page
+
     if request.method == 'POST': # If the form has been submitted
         user_form = UserRegisterForm(request.POST) # Create a user form instance
         profile_form = UserProfileForm(request.POST) # Create a profile form instance
