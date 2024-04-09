@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'Identification',
     'UserAuth',
     'ObservationJournal',
+    'Forum',
 ]
 
 MIDDLEWARE = [

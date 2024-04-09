@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ thread.title }} - My Forum{% endblock %}
+
+{% block content %}
+<!-- Button trigger modal for reply -->
+<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#replyModal">
+    Reply to Thread
+</button>
+  
+<!-- Reply Modal -->
+<div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="replyModalLabel">Post Reply</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <form method="post" action="{% url 'reply_thread' thread.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-secondary">Post Reply</button>
+        </form>
+    </div>
+    </div>
+</div>
+</div>
+  
+<h3>{{ thread.title }}</h3>
+<a href="{% url 'reply_thread' thread.id %}">Post Reply</a>
+<div class="posts">
+    {% for post in posts %}
+    <div class="post">
+        <p>{{ post.message }}</p>
+        <p>Posted by <a href="{% url 'user_profile' post.created_by.id %}">{{ post.created_by.username }}</a> on {{ post.created_at }}</p>
+        {% for image in post.images.all %}
+        <img src="{{ image.image.url }}" alt="Image for post {{ post.id }}">
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
