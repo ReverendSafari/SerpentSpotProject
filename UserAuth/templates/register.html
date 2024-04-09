@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock title %}
+
+{% block extra_css %}
+<!-- Individual page style -->
+
+<style>
+    /* Background image: URL I include this to get rid of the white border from the blur */
+    body {
+        background-image: url("https://live.staticflickr.com/5554/14535285422_48531e9131_b.jpg");
+    }
+    /* Background image: Blur, size, dimensions, position */ 
+    .bg-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("https://live.staticflickr.com/5554/14535285422_48531e9131_b.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        filter: blur(4px);
+        z-index: -1; /* Keep the image behind other content */
+    }
+
+    /* Form styling */
+    .auth-form {
+        padding: 2rem;
+    }
+    .form-control {
+        margin-bottom: 1rem;
+    }
+
+    /* Button styling */
+    .btn-success {
+        width: 100%;
+        padding: .5rem;
+        margin-top: 1rem;
+        border-radius: .25rem;
+    }
+    .btn-success:hover {
+            transform: scale(1.01);
+        }
+
+    /* Card styling */
+    .pannel {
+        border-radius: 0px;
+    }
+
+    /* Image styling: Full height, full width, cover, rounded corners */
+    .side-image img {
+        height: 100%; /* Ensure the image takes full height of the container */
+        width: 100%; /* Ensure the image takes full width of the container */
+        object-fit: cover; /* Cover the container, zoom and crop if necessary */
+        border-top-right-radius: 0.6rem; /* Rounded corners */
+        border-bottom-right-radius: 0.6rem;
+    }
+
+    /* Responsive styling for smaller screens */
+    @media (max-width: 768px) {
+        .info {
+            border-radius: 20px !important;
+            overflow: hidden !important;
+        }
+    }
+
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<!-- Background image class for styling -->
+<div class="bg-image"></div>
+
+<!-- Container, rows, columns, cards-->
+<div class="container my-5 mx-md-5 pannel">
+    <div class="row g-0">
+        <div class="col-md-7 d-flex align-items-center justify-content-center shadow">
+            <!-- Card for the form -->
+            <div class="card info" style="border-radius: 0px; border-top-left-radius: 20px; border-bottom-left-radius: 20px;">
+                <!-- Card Body -->
+                <div class="card-body pannel">
+                    <!-- Title at top-->
+                    <h1 class="card-title text-center mb-3"> Welcome to SerpentSpot!</h1>
+                    <!-- Text under title -->
+                    <p class="text-center"> We're excited to have you! Get started by signing up for an account below.</p>
+                    
+                    <!-- card for form, visual interest-->
+                    <div class="card shadow-sm mb-1" style="background-color: whitesmoke; border-radius: 20px; overflow: hidden;">
+                        <!-- form itself -->
+                        <div class="auth-form">
+                            <form method="POST">
+                                {% csrf_token %}
+                                {{ user_form.as_p }}
+                                <!-- Button and link for login + register -->
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-success shadow-sm rounded-pill">Register</button>
+                                </div>
+                                <div class="text-center">
+                                    <a href="{% url 'login' %}" class="btn btn-link">Already have an account?</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <div class="d-grid gap-2"></div>
+        </div>
+    </div>
+        <!-- Image to the right of the forms -->
+        <div class="col-md-4 d-none d-md-flex justify-content-left side-image">
+            <img src="https://media.istockphoto.com/id/108200442/photo/baby-west-african-bush-viper-in-rainforest.jpg?s=612x612&w=0&k=20&c=W6w2SFQFNkcqVdgmKhmwuywiyyocVsCEYbcH-39u7t4=" class="img-fluid" alt="Workspace">
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

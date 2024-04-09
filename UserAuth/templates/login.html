@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock title %}
+
+{% block extra_css %}
+
+<style>
+
+    body {
+        background-image: url("https://www.callnorthwest.com/wp-content/uploads/2022/07/natural-snake-repellent.jpg");
+    }
+    /* Background image: Blur, size, dimensions, position */ 
+    .bg-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("https://www.callnorthwest.com/wp-content/uploads/2022/07/natural-snake-repellent.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        filter: blur(4px);
+        z-index: -1; /* Keep the image behind other content */
+    }
+
+    /* container styling */
+    .login-container {
+        margin-top: 5rem;
+    }
+
+    .login-card {
+        padding: 2rem;
+    }
+    /* form styling */
+    .form-control {
+        margin-bottom: 1rem;
+    }
+    /* button styling */
+    .login-btn {
+        width: 100%;
+        padding: .5rem;
+        margin-top: 1rem;
+        border-radius: .25rem;
+    }
+    .login-btn:hover {
+            transform: scale(1.01);
+    }
+</style>
+
+{% endblock extra_css %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="bg-image"></div>
+
+<div class="container login-container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Image above login card-->
+            <img src="{% static 'bannerimage.jpg' %}" class="card-img-top" alt="Card Top Image" style="height: 25%; object-fit: cover; border-top-left-radius: 20px; border-top-right-radius: 20px;">
+            <div class="card login-card" style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; border-top-right-radius: 0px; border-top-left-radius: 0px; overflow: hidden;">
+                <!-- main login card -->
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Login</h3>
+                    <div class="card" style="border-radius: 20px; background-color: whitesmoke;">
+                        <div class="mt-3 mx-3">
+                            <!-- login form -->
+                            <form method="POST">
+                                {% csrf_token %}
+                                <!-- Username -->
+                                <div class="form-group">
+                                    <input type="text" name="username" class="form-control" placeholder="Username or Email" required style="border-radius: 20px;">
+                                </div>
+                                <!-- Password field -->
+                                <div class="form-group">
+                                    <input type="password" name="password" class="form-control" placeholder="Password" required style="border-radius: 20px;">
+                                </div>
+        
+                                <!-- Display Messages -->
+                                {% if messages %}
+                                <div class="alert-container">
+                                    {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} mt-3" role="alert">
+                                        {{ message }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+        
+                                <!-- Submit button -->
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success login-btn rounded-pill">Login</button>
+                                </div>
+                                <!-- Register link -->
+                                <div class="text-center">
+                                    <a href="{% url 'register' %}" class="btn btn-link mt-3 mb-2">Need to sign up?</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
