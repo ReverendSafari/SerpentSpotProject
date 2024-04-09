@@ -1,8 +1,9 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Identification</title>
+
+{% block title %} Identification {% endblock title %}
+
+{% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 
@@ -11,12 +12,8 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        .snake-info img {
-            width: 500px; /* Adjust size as needed */
-            height: 300px; /* Adjust size as needed */
-            object-fit: cover; /* Maintain aspect ratio */
-            margin-bottom: 10px;
-        }
+
+        
         .venomous {
             color: green;
         }
@@ -50,53 +47,98 @@
         .btn-primary {
             height: 38px; /* Ensure the button height is set */
         }
-        .form-control-wrap {
-             /* Allows the select box to grow and fill the space */
-            margin-right: 10px; /* Adds space between the select box and the button */
+        @media (min-width: 768px) {
+            .form-control-wrap {
+                /* Allows the select box to grow and fill the space */
+                margin-right: 10rem;
+                margin-left: 10rem;
+            }
+            #page-title {
+                margin-bottom: 4rem;
+            }
         }
+
+        @media (max-width: 768px) {
+            #page-title {
+                margin-bottom: 2rem;
+            }
+        }
+
+        
     </style>
-</head>
-<body>
-    <h1 class="display-1 text-center">Snake Identification</h1>
-    <div class="container">
-        <div class="row justify-content-center mb-3">
-            <div class="col-md-6">
-                <form method="POST" action="" class="d-flex justify-content-center">
-                    {% csrf_token %}
-                    <div class="form-control-wrap">
-                        <select name="state" class="form-select" id="state-select">
-                            <option value="" selected disabled>Select a state</option>
-                            {% for state in states %}
-                                <option value="{{ state.id }}">{{ state.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+{% endblock extra_css %}
+
+{% block content %}
+
+<h1 id="page-title" class="display-1 text-center">Snakes of {{ selected_state_name }}</h1>
+<div class="container">
+    <div class="row justify-content-center mb-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
+            <form method="GET" action="" class="d-flex justify-content-center mb-3 mb-md-0">
+                <div class="form-control-wrap">
+                    <select name="state" class="form-select" id="state-select">
+                        <option value="" selected disabled>Select a state</option>
+                        {% for state in states %}
+                            <option value="{{ state.id }}">{{ state.name }}</option>
+                        {% endfor %}
+                    </select>
                     <button type="submit" class="btn btn-primary">SEARCH</button>
-                </form>
+                </div>
+            </form>
+            <div class="form-control-wrap">
+                <select class="form-select" id="sort-select">
+                    <option value="" selected disabled>Sort by</option>
+                    <option value="alphabetical_asc">Alphabetical (A-Z)</option>
+                    <option value="alphabetical_desc">Alphabetical (Z-A)</option>
+                </select>
             </div>
-        </div>
-        <div class="row justify-content-center">
-            {% for snake in species %}
-            <div class="col-md-12 snake-info">
-                <h2>{{ snake.common_name }}</h2>
-                <h3>{{ snake.scientific_name }}</h3>
-                <img src="{% static snake.image_path %}" alt="{{ snake.common_name }}" class="img-fluid">
-                <p class="{% if snake.venomous %}venomous{% endif %}">{{ snake.venomous|yesno:"VENOMOUS,NON-VENOMOUS" }}</p>
-                <p>{{ snake.description }}</p>
-            </div>
-            {% endfor %}
         </div>
     </div>
 
+    <div class="row justify-content-center" id="species-container">
+        {% for species in species %}
+            <div class="col-12 snake-info d-flex justify-content-center">
+                <div class="card mb-5 mt-5 w-75">
+                    <img class="card-img-top" src="{% static species.image_path %}" alt="{{ species.common_name }}">
+                    <div class="card-body">
+                        <h5 class="card-title h1">{{ species.common_name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted h4">{{ species.scientific_name }}</h6>
+                        <p class="{{ species.venomous|yesno:'venomous,' }}">{{ species.venomous|yesno:'(VENOMOUS),(NON-VENOMOUS)' }}</p>
+                        <p class="card-text fs-5">{{ species.description }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
     <script>
         $(document).ready(function() {
             $('#state-select').select2({
                 placeholder: "Select a state",
-                allowClear: true
             });
+
+    $('#sort-select').change(function() {
+        var sortOption = $(this).val();
+
+        var species = $('.snake-info').sort(function(a, b) {
+            var nameA = $(a).find('.card-title').text().toUpperCase();
+            var nameB = $(b).find('.card-title').text().toUpperCase();
+
+            if (sortOption === 'alphabetical_asc') {
+                return nameA.localeCompare(nameB);
+            } else if (sortOption === 'alphabetical_desc') {
+                return nameB.localeCompare(nameA);
+            }
         });
+
+        $('#species-container').html(species);
+    });
+});
+
     </script>
-</body>
-</html>
+{% endblock content %}
