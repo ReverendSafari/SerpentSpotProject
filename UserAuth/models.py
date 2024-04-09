@@ -8,7 +8,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) # Link the user profile to a user model instance
     
     # User fields 
-    profile_pic = models.ImageField(upload_to='profile_pics/', default='/media/profile_pics/default.jpg' ,null=True, blank=True) # User profile picture
+    profile_pic = models.ImageField(upload_to='profile_pics/', default='profile_pics/default.jpg' ,null=True, blank=True) # User profile picture
     bio = models.TextField(null=True, blank=True) # User bio
     observations = models.IntegerField(default=0) # User observation count 
 

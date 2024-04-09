@@ -25,6 +25,10 @@
         .expand:hover{
             transform: scale(1.06);
         }
+        /* Logout button */
+        .logout:hover {
+            background-color: rgb(255, 92, 92);
+        }
     </style>
 
     {% load static %}
@@ -49,8 +53,9 @@
                                 Education
                             </a>
                             <ul class="dropdown-menu mx-3 mb-3" aria-labelledby="navbarDropdownMenuLink" style="border-radius: 20px; overflow: hidden;">
-                                <li><a class="dropdown-item" href="#">Educator</a></li>
+                                <li><a class="dropdown-item" href="{% url 'education_view' %}">Educator</a></li>
                                 <li><a class="dropdown-item" href="#">ID game</a></li>
+                                <li><a class="dropdown-item" href="{% url 'id_view' %}">Species</a></li>
                             </ul>
                         </li>
                         <!-- Community dropdown -->
@@ -80,8 +85,9 @@
                             </a>
                             <!-- Dropdown menu for profile stuff -->
                             <ul class="dropdown-menu dropdown-menu-end mx-3 mb-3" aria-labelledby="navbarProfileDropdown" style="border-radius: 20px; overflow: hidden;">
-                                <li><a class="dropdown-item" href="#">Observation Journal</a></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">View profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'journal_view' %}">Observation Journal</a></li>
+                                <li><a class="dropdown-item logout" href="{% url 'logout' %}">Logout</a></li>
                             </ul>
                         </li>
                     </ul>

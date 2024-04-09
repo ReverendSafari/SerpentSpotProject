@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %} Observations {% endblock title %}
+
+{% block extra_css %}
+
+<style>
+    /* Background image: URL I include this to get rid of the white border from the blur */
+    body {
+        background-image: url("https://environmentamerica.org/wp-content/uploads/2023/05/Flat-Country-credit-Cascadia-Wildlands-DSC_4323.jpeg");
+    }
+    .bg-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("https://environmentamerica.org/wp-content/uploads/2023/05/Flat-Country-credit-Cascadia-Wildlands-DSC_4323.jpeg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        filter: blur(3px);
+        z-index: -1; /* Keep the image behind other content */
+    }
+</style>
+
+{% endblock extra_css %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="bg-image"></div>
+
+<div class="container">
+    <div class="card" style="border-radius: 20px; overflow: hidden;">
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert" style="border-top-left-radius: 20px; border-top-right-radius: 20px; overflow:hidden">
+            <strong>Welcome!</strong> We're excited to see what you've found!
+            <hr>
+        </div>
+        <div class="card mt-2 mb-3 mx-3 shadow-sm" style="border-radius: 20px; overflow: hidden; background-color: whitesmoke;">
+            <div class="input-group mb-3 mt-3">
+                <input type="text" id="noteInput" class="form-control shadow-sm mx-3" placeholder="Write a note..." style="border-radius:12px">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-success rounded-pill mx-3 shadow-sm" type="button" id="addNoteBtn">Post Observation</button>
+                </div>
+            </div>
+            <div class="input-group mb-3 mx-2">
+                <input type="file" id="imageInput" class="form-control-file mx-3" accept="image/*">
+            </div>
+        </div>
+        <div id="notesContainer"></div>
+    </div>
+</div>
+
+{% endblock content %}
