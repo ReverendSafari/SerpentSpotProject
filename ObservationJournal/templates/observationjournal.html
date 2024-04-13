@@ -21,6 +21,9 @@
         filter: blur(3px);
         z-index: -1; /* Keep the image behind other content */
     }
+    .btn-success:hover {
+        transform: scale(1.06);
+    }
 </style>
 
 {% endblock extra_css %}
@@ -31,25 +34,57 @@
 
 <div class="bg-image"></div>
 
+<!-- section for posting observations -->
 <div class="container">
     <div class="card" style="border-radius: 20px; overflow: hidden;">
         <div class="alert alert-success alert-dismissible fade show text-center" role="alert" style="border-top-left-radius: 20px; border-top-right-radius: 20px; overflow:hidden">
             <strong>Welcome!</strong> We're excited to see what you've found!
             <hr>
+            - <strong>Select a species</strong> from the dropdown menu to begin.
+            Feel free to add a quick note or a photo of your observation!
         </div>
-        <div class="card mt-2 mb-3 mx-3 shadow-sm" style="border-radius: 20px; overflow: hidden; background-color: whitesmoke;">
-            <div class="input-group mb-3 mt-3">
-                <input type="text" id="noteInput" class="form-control shadow-sm mx-3" placeholder="Write a note..." style="border-radius:12px">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="card mt-2 mb-3 mx-3 shadow-sm" style="border-radius: 20px; overflow: hidden; background-color: whitesmoke;">
+                <div class="mx-3 mt-3 mb-3">
+                    {{ form.as_p }}
+                </div>
                 <div class="input-group-append">
-                    <button class="btn btn-outline-success rounded-pill mx-3 shadow-sm" type="button" id="addNoteBtn">Post Observation</button>
+                    <button class="btn btn-success rounded-pill mx-3 mb-3 shadow-sm" type="submit">Post Observation</button>
                 </div>
             </div>
-            <div class="input-group mb-3 mx-2">
-                <input type="file" id="imageInput" class="form-control-file mx-3" accept="image/*">
+        </form>
+
+        <!-- User observation gallery -->
+        <div id="notesContainer">
+            <div class="row mx-3">
+                <!-- check for and display observations -->
+                {% for observation in observations %}
+                    <div class="col-md-6">
+                        <div class="card mb-3 shadow-sm" style="border-radius: 20px; overflow: hidden;">
+                            <div class="card-body">
+                                <p class="card-title h4">{{ observation.species.common_name }}</p>
+                                <p class="card-text">{{ observation.observation }}</p>
+                                {% if observation.observation_pic %}
+                                    <img src="{{ observation.observation_pic.url }}" alt="Observation Image" style="width: 100%; height: auto;">
+                                {% else %}
+                                    <p>No image uploaded.</p>
+                                {% endif %}
+                                <footer class="blockquote-footer mt-2">{{ observation.date|date:"F d, Y H:i" }}</footer>
+                                <form method="post" action="{% url 'delete_observation' observation.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12">
+                        <p>No observations yet.</p>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-        <div id="notesContainer"></div>
-    </div>
 </div>
 
 {% endblock content %}

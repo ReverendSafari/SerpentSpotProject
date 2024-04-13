@@ -87,11 +87,34 @@
     <!-- Card for containing observations -->
     <div class="card shadow-sm mt-3" style="border-radius: 20px; overflow: hidden;">
         <div class="card-body">
-            <h5 class="card-title">Observation gallery: </h5>
-            <div class="card shadow-sm mt-3" style="background-color:whitesmoke; border-radius: 20px; overflow: hidden;">
-                <!-- Gallery of user observations here maybe -->
-                <p class="mx-3 mt-3">Nothing to see here.</p>
-            </div>
+            <h5 class="card-title">Recent finds:</h5>
+            <!-- check for and display 5 most recent observations -->
+            {% if recentobservations %}
+                {% for observation in recentobservations %}
+                    <div class="card shadow-sm mt-3" style="background-color:whitesmoke; border-radius: 20px; overflow: hidden;">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">{{ observation.date|date:"Y-m-d H:i" }}</h6>
+                            <h5 class="card-title
+                            {% if observation.species %}
+                                text-success
+                            {% else %}
+                                text-danger
+                            {% endif %}">{{ observation.species }}</h5>
+                            <p class="card-text">{{ observation.observation }}</p>
+                            {% if observation.observation_pic %}
+                                <img src="{{ observation.observation_pic.url }}" alt="Observation Image" style="max-width: 100%; height: auto;">
+                            {% else %}
+                                <p class="card-text">No image uploaded.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="card-body">
+                    <p class="card-text">No observations yet.</p>
+                </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 

@@ -10,7 +10,9 @@ from django.contrib.auth.decorators import login_required
 
 from .models import UserProfile
 
-from.forms import UserProfileForm, UserRegisterForm
+from .forms import UserProfileForm, UserRegisterForm
+
+from ObservationJournal.models import UserObservation
 
 def login_view(request):
     """
@@ -90,7 +92,18 @@ def profile_view(request):
     Returns:
         HttpResponse: The HTTP response object containing the rendered 'profile.html' template.
     """
-    return render(request, 'profile.html')
+    user = request.user
+    userprofile = UserProfile.objects.get(user=user)
+    observations = UserObservation.objects.filter(user=request.user.userprofile)
+    recentobservations = observations.order_by('-date')[:5]
+
+    context = {
+        'user': user,
+        'userprofile': userprofile,
+        'observations': observations,
+        'recentobservations': recentobservations
+    }
+    return render(request, 'profile.html', context)
 
 @login_required
 def edit_profile_view(request):
