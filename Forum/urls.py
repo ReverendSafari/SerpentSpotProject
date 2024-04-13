@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home, board_threads, thread_posts, new_thread, reply_thread #user_profile
+from .views import home, board_threads, thread_posts, new_thread, reply_thread, user_profile
 
 urlpatterns = [
     path('', home, name='home'),

@@ -3,37 +3,28 @@
 {% block title %}{{ board.name }} - My Forum{% endblock %}
 
 {% block content %}
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newThreadModal">
+<h2>Threads in {{ board.name }}</h2>
+<button id="newThreadButton" type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#newThreadFormCollapse">
     Create New Thread
 </button>
-  
-<!-- Modal -->
-<div class="modal fade" id="newThreadModal" tabindex="-1" aria-labelledby="newThreadModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-        <h5 class="modal-title" id="newThreadModalLabel">New Thread</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-        <form method="post" action="{% url 'new_thread' board.id %}">
+
+<div class="collapse" id="newThreadFormCollapse">
+    <div class="card card-body">
+        <form method="POST" action="{% url 'new_thread' board.id %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-        </div>
-    </div>
     </div>
 </div>
 
-<h2>Threads in {{ board.name }}</h2>
-<a href="{% url 'new_thread' board.id %}">Create New Thread</a>
-<div class="threads">
+<div class="threads mt-4">
     {% for thread in threads %}
-    <div class="thread">
-        <h4><a href="{% url 'thread_posts' thread.id %}">{{ thread.title }}</a></h4>
-        <p>Started by <a href="{% url 'user_profile' thread.starter.id %}">{{ thread.starter.username }}</a> on {{ thread.created_at }}</p>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4><a href="{% url 'thread_posts' thread.id %}">{{ thread.title }}</a></h4>
+            <p class="card-text">Started by <a href="{% url 'user_profile' thread.starter.id %}">{{ thread.starter.username }}</a> on {{ thread.created_at|date:"M d, Y" }}</p>
+        </div>
     </div>
     {% endfor %}
 </div>

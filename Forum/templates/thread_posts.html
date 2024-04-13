@@ -1,43 +1,92 @@
 {% extends 'base.html' %}
 
+{% load custom_filters %}
+
 {% block title %}{{ thread.title }} - My Forum{% endblock %}
 
 {% block content %}
-<!-- Button trigger modal for reply -->
-<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#replyModal">
-    Reply to Thread
-</button>
-  
-<!-- Reply Modal -->
-<div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title" id="replyModalLabel">Post Reply</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-        <form method="post" action="{% url 'reply_thread' thread.id %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-secondary">Post Reply</button>
-        </form>
-    </div>
-    </div>
-</div>
-</div>
-  
-<h3>{{ thread.title }}</h3>
-<a href="{% url 'reply_thread' thread.id %}">Post Reply</a>
+
+<style>
+   .modal-dialog-dynamic {
+      max-width: 80%;
+      /* Allow a maximum width of 80% of the viewport */
+   }
+
+   .modal-content {
+      inline-size: fit-content;
+      /* This will allow the modal to shrink or expand to fit the content, not available in all browsers */
+      max-width: 100%;
+      /* Ensures the modal doesn't exceed the width of its container */
+   }
+</style>
+
+
+
+
 <div class="posts">
-    {% for post in posts %}
-    <div class="post">
-        <p>{{ post.message }}</p>
-        <p>Posted by <a href="{% url 'user_profile' post.created_by.id %}">{{ post.created_by.username }}</a> on {{ post.created_at }}</p>
-        {% for image in post.images.all %}
-        <img src="{{ image.image.url }}" alt="Image for post {{ post.id }}">
-        {% endfor %}
-    </div>
-    {% endfor %}
+   {% for post in posts %}
+   <div class="card mb-3">
+      {% if forloop.first %}
+      <div class="card-header">
+         <h3>{{ thread.title }}</h3>
+      </div>
+      {% endif %}
+      <div class="card-body">
+         <p class="card-text">{{ post.message }}</p>
+
+         {% for image in post.images.all %}
+         <!-- Hyperlink to trigger modal -->
+         <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal{{ image.id }}">Attachment-{{ forloop.counter }}</a>
+         
+         <!-- Modal -->
+         <div class="modal fade" id="imageModal{{ image.id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ image.id }}"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="imageModalLabel{{ image.id }}">{{ image.image.name|filename }}</h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                     <img src="{{ image.image.url }}" alt="Image for post {{ post.id }}" class="img-fluid">
+                  </div>
+               </div>
+            </div>
+         </div>
+         {% endfor %}
+
+         <p class="card-text"><small class="text-muted">Posted by <a href="{% url 'user_profile' post.created_by.id %}">{{post.created_by.username }}</a> on {{ post.created_at|date:"N j, Y, P" }}</small></p>
+
+      </div>
+   </div>
+   {% endfor %}
 </div>
+
+<!-- Reply Form Directly on Page -->
+<div class="card reply-form mt-4 mb-5">
+   <div class="card-header">
+      <h5>Post a Reply</h5>
+   </div>
+   <div class="card-body">
+      <form method="POST" action="{% url 'reply_thread' thread.id %}" enctype="multipart/form-data"
+         class="form-horizontal">
+         {% csrf_token %}
+         <div class="mb-3">
+            <label for="id_message" class="form-label">{{ form.message.label }}</label>
+            <textarea id="id_message" name="message" class="form-control" rows="5"
+               placeholder="Type your reply here...">{{ form.message.value|default_if_none:"" }}</textarea>
+            <small class="form-text text-muted">{{ form.message.help_text }}</small>
+         </div>
+         <div class="mb-3">
+            <label for="id_image">Upload Image:</label>
+            <input type="file" id="id_image" name="image" class="form-control" accept="image/*">
+            <small class="form-text text-muted">Optional: Attach an image to your post.</small>
+         </div>
+         <div class="mb-3">
+            <button type="submit" class="btn btn-primary float-end">Post Reply</button>
+         </div>
+      </form>
+   </div>
+</div>
+
 {% endblock %}

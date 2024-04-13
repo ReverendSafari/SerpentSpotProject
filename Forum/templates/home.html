@@ -5,11 +5,13 @@
 {% block content %}
 <h2>Boards</h2>
 <div class="boards">
-    {% for board in boards %}
-    <div class="board">
-        <h3><a href="{% url 'board_threads' board.id %}">{{ board.name }}</a></h3>
-        <p>{{ board.description }}</p>
-    </div>
-    {% endfor %}
+   {% for board in boards %}
+   <div class="card mb-3">
+      <div class="card-body">
+         <h3 class="card-title"><a href="{% url 'board_threads' board.id %}">{{ board.name }}</a></h3>
+         <p class="card-text">{{ board.description }}</p>
+      </div>
+   </div>
+   {% endfor %}
 </div>
 {% endblock %}
