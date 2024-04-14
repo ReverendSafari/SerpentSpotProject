@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from Identification.models import SnakeSpecies
+from Identification.models import SnakeSpecies, State
 
 from .models import UserObservation
 from .forms import ObservationForm

@@ -11,7 +11,7 @@ class UserObservation(models.Model):
     """
     
 
-    user = models.ForeignKey('UserAuth.UserProfile', on_delete=models.CASCADE)
+    user = models.ForeignKey('UserAuth.UserProfile', on_delete=models.CASCADE) 
     observation = models.TextField()
     species = models.ForeignKey('Identification.SnakeSpecies', on_delete=models.CASCADE, default=1)
     observation_pic = models.ImageField(upload_to='observation_pics/', null=True, blank=True)

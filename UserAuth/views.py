@@ -95,7 +95,7 @@ def profile_view(request):
     user = request.user
     userprofile = UserProfile.objects.get(user=user)
     observations = UserObservation.objects.filter(user=request.user.userprofile)
-    recentobservations = observations.order_by('-date')[:5]
+    recentobservations = observations.order_by('-date')[:6] # upped from 5 to 6 because i want rows and 5 isn't even 
 
     context = {
         'user': user,
