@@ -55,9 +55,11 @@
                     <p><strong>Email:</strong> {{ user.email }}</p>
                 </div>
             </div>
-            <div class="row mt-3 mb-3 mx-1 shadow-sm editprofile" style="border-radius: 20px; overflow: hidden;">
-                <a href="{% url 'edit_profile' %}" class="btn btn-success">Edit Profile</a>
-            </div>
+            {% if user == request.user %}
+                <div class="row mt-3 mb-3 mx-1 shadow-sm editprofile" style="border-radius: 20px; overflow: hidden;">
+                    <a href="{% url 'edit_profile' %}" class="btn btn-success">Edit Profile</a>
+                </div>
+            {% endif %}
             <div class="row mt-3">
                 <!-- User details for bio and observations -->
                 <div class="col-md-8">
@@ -96,7 +98,6 @@
                         <div class="col-sm-12 col-md-6">
                             <div class="card shadow-sm mt-3" style="background-color:whitesmoke; border-radius: 20px; overflow: hidden;">
                                 <div class="card-body">
-                                    <h6 class="card-subtitle mb-2 text-muted">{{ observation.date|date:"Y-m-d H:i" }}</h6>
                                     <h5 class="card-title
                                     {% if observation.species %}
                                         text-success
@@ -105,10 +106,11 @@
                                     {% endif %}">
                                         <a href="{% url 'id_view' %}">{{ observation.species }}</a>
                                     </h5>
+                                    <h6 class="card-subtitle mb-3 text-muted">{{ observation.date|date:"F d, Y H:i" }}</h6>
                                     <p class="card-text">{{ observation.observation }}</p>
                                     <hr>
                                     {% if observation.observation_pic %}
-                                        <img src="{{ observation.observation_pic.url }}" alt="Observation Image" style="max-width: 100%; height: auto;">
+                                        <img src="{{ observation.observation_pic.url }}" alt="Observation Image" style="max-width: 100%; height: auto; border-radius: 20px;">
                                     {% else %}
                                         <p class="card-text">No image uploaded.</p>
                                     {% endif %}

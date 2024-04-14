@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='userobservation',
             name='species',
-            field=models.ForeignKey(blank=True, default='Unsure', null=True, on_delete=django.db.models.deletion.CASCADE, to='Identification.snakespecies'),
+            field=models.ForeignKey(blank=True, default=1, null=True, on_delete=django.db.models.deletion.CASCADE, to='Identification.snakespecies'),
         ),
     ]
