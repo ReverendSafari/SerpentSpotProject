@@ -1,6 +1,6 @@
 from django import forms
 
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -10,7 +10,9 @@ from django.contrib.auth.decorators import login_required
 
 from .models import UserProfile
 
-from.forms import UserProfileForm, UserRegisterForm
+from .forms import UserProfileForm, UserRegisterForm
+
+from ObservationJournal.models import UserObservation
 
 def login_view(request):
     """
@@ -80,17 +82,34 @@ def register_view(request):
     return render(request, 'register.html', {'user_form': user_form, 'profile_form': profile_form}) # Render the registration page with the forms
 
 @login_required
-def profile_view(request):
+def profile_view(request, username=None):
     """
-    View function for displaying user profile.
+    View function for displaying user profile. If a username is provided, it displays that user's profile,
+    otherwise it displays the profile of the logged-in user.
 
     Args:
         request (HttpRequest): The HTTP request object.
+        username (str, optional): The username of the user whose profile is to be viewed.
 
     Returns:
         HttpResponse: The HTTP response object containing the rendered 'profile.html' template.
     """
-    return render(request, 'profile.html')
+    if username:
+        user = get_object_or_404(User, username=username)
+    else:
+        user = request.user
+
+    userprofile = UserProfile.objects.get(user=user)
+    observations = UserObservation.objects.filter(user=user.userprofile)
+    recentobservations = observations.order_by('-date')[:6]
+
+    context = {
+        'user': user,
+        'userprofile': userprofile,
+        'observations': observations,
+        'recentobservations': recentobservations
+    }
+    return render(request, 'profile.html', context)
 
 @login_required
 def edit_profile_view(request):
