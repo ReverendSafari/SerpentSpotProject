@@ -57,6 +57,17 @@ def reply_thread(request, thread_id):
 
     return render(request, 'reply_thread.html', {'form': form, 'thread': thread})
 
-def user_profile(request, user_id):
-    user = get_object_or_404(User, pk=user_id)
-    return render(request, 'user_profile.html', {'user': user})
+def user_profile(request, username):
+    # Optional: You might still want to check if the user exists to handle errors
+    user = get_object_or_404(User, username=username)
+    # Redirect to the desired URL in the other app
+    return redirect(f'/auth/profile/{username}/')
+
+@login_required
+def delete_thread(request, thread_id):
+    if request.method == 'POST':
+        thread = get_object_or_404(Thread, pk=thread_id, starter=request.user)
+        thread.delete()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False}, status=400)
