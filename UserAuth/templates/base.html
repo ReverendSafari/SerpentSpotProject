@@ -84,7 +84,7 @@
                             <!-- Profile section -->
                             <a class="nav-link dropdown-toggle mx-3 mb-1 rounded-pill text-center border expand" href="{% url 'profile' %}" id="navbarProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {% if user.userprofile.profile_pic %}
-                                <img src="{{MEDIA_URL}}{{ request.user.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm" alt="Profile Picture" style="width: 30px; height: 30px; object-fit: cover;">
+                                    <img src="{{MEDIA_URL}}{{ request.user.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm" alt="Profile Picture" style="width: 30px; height: 30px; object-fit: cover;">
                                 {% endif %}
                                 {{ request.user.username }}
                             </a>
