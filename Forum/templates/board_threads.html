@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ board.name }} - My Forum{% endblock %}
+
+{% block content %}
+
+<style>
+   .back-button {
+      text-decoration: none;
+      /* Removes underline from links */
+      color: #000;
+      /* Default color */
+      background-color: #f8f9fa;
+      /* Light grey background */
+      padding: 10px 15px;
+      /* Padding around the text and icon */
+      border-radius: 5px;
+      /* Rounded corners for the button */
+      display: inline-flex;
+      /* Aligns icon and text inline */
+      align-items: center;
+      /* Centers icon and text vertically */
+      border: 1px solid #dee2e6;
+      /* Light grey border */
+      transition: all 0.3s ease;
+      /* Smooth transition for hover effects */
+      margin-bottom: 80px !important;
+      /* Adds space below the button */
+      margin-top: 0px !important;
+   }
+
+   .back-button svg {
+      margin-right: 8px;
+      /* Adds spacing between the SVG icon and the text */
+   }
+
+   .back-button:hover,
+   .back-button:focus {
+      color: #fff;
+      /* White text on hover/focus */
+      background-color: #007bff;
+      /* Bootstrap primary blue on hover/focus */
+      border-color: #0056b3;
+      /* Slightly darker blue border on hover/focus */
+   }
+
+   .title-with-button {
+      display: flex;      /* Enables Flexbox */
+      justify-content: space-between; /* Spreads the child elements to each end */
+      align-items: center; /* Vertically aligns elements in the middle */
+      margin-bottom: 20px; /* Adds some space below the container */
+   }
+
+   @media (max-width: 768px) {
+    .title-with-button {
+        flex-direction: column;
+        align-items: flex-start; /* Aligns items to the left when stacked */
+    }
+   }
+
+    .collapse {
+        transition: height 0.5s ease; /* Smooth transition for expanding and collapsing */
+    }
+
+    .collapse:not(.show) {
+        display: none; /* Ensures it doesn't take up space when fully collapsed */
+    }
+
+    .collapsing {
+        position: relative; /* Ensures stability during transition */
+        overflow: hidden; /* Prevents content from spilling out during transition */
+        height: 0; /* Start height, adjust as necessary */
+        transition: height 0.5s ease, opacity 0.5s ease; /* Smooth transitions for height and opacity */
+        opacity: 0; /* Start with hidden content */
+    }
+
+    .collapse.show {
+        opacity: 1; /* Fully visible when expanded */
+        height: auto; /* Adjust height automatically to fit content */
+        transition: height 0.5s ease, opacity 0.5s ease; /* Smooth transitions for height and opacity */
+
+    }
+</style>
+
+<!-- Back to Home Button -->
+<a href="{% url 'home' %}" class="back-button mb-5">
+   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-square"
+      viewBox="0 0 16 16">
+      <path fill-rule="evenodd"
+         d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm11.5 5.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z" />
+   </svg>
+   Back to Home
+</a>
+
+
+<div class="title-with-button">
+   <h2>Threads in {{ board.name }}</h2>
+   <button id="newThreadButton" type="button" class="btn btn-primary" data-bs-toggle="collapse"
+      data-bs-target="#newThreadFormCollapse">
+      Create New Thread
+   </button>
+</div>
+
+<div class="collapse" id="newThreadFormCollapse">
+   <div class="card reply-form mt-4">
+      <div class="card-header">
+         <h5>Create New Thread</h5>
+      </div>
+      <div class="card-body">
+         <form method="POST" action="{% url 'new_thread' board.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+               <label for="id_title" class="form-label">Thread Title</label>
+               <input type="text" id="id_title" name="title" class="form-control" placeholder="Enter thread title"
+                  value="{{ form.title.value|default_if_none:'' }}" required>
+               <small class="form-text text-muted">Provide a short and descriptive title for the new thread.</small>
+            </div>
+            <div class="mb-3">
+               <label for="id_message" class="form-label">Message</label>
+               <textarea id="id_message" name="message" class="form-control" rows="5" placeholder="What are you thinking?"
+                  required>{{ form.message.value|default_if_none:'' }}</textarea>
+               <small class="form-text text-muted">{{ form.message.help_text }}</small>
+            </div>
+            <div class="mb-3">
+               <label for="id_image1" class="form-label">Upload Image 1 (Optional):</label>
+               <input type="file" id="id_image1" name="image1" class="form-control" accept="image/*">
+            </div>
+            <div class="mb-3">
+               <label for="id_image2" class="form-label">Upload Image 2 (Optional):</label>
+               <input type="file" id="id_image2" name="image2" class="form-control" accept="image/*">
+            </div>
+            <div class="mb-3">
+               <label for="id_image3" class="form-label">Upload Image 3 (Optional):</label>
+               <input type="file" id="id_image3" name="image3" class="form-control" accept="image/*">
+            </div>
+            <div class="mb-3">
+               <button type="submit" class="btn btn-primary float-end">Submit</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="threads mt-4">
+    {% for thread in threads %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4><a href="{% url 'thread_posts' thread.id %}" class="link-success">{{ thread.title }}</a></h4>
+            <p class="card-text">Started by <a href="{% url 'user_profile' username=thread.starter.username %}">{{thread.starter.username }}</a> on {{ thread.created_at|date:"M d, Y" }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+      var messageInput = document.getElementById('id_message');  // Ensure the ID matches your form field's ID
+      messageInput.addEventListener('input', function () {
+         if (this.value.length > 4000) {
+            alert("The maximum allowed character count is 4000.");
+            this.value = this.value.slice(0, 4000);  // Optional: Automatically trim the excess
+         }
+      });
+   });
+</script>
+
+{% endblock %}
