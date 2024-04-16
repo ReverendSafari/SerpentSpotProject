@@ -38,7 +38,7 @@
 <div class="bg-image"></div>
 
 <!-- section for posting observations -->
-<div class="container">
+<div class="container my-3" style="overflow: hidden;">
     <div class="card" style="border-radius: 20px;">
         <div class="alert alert-success alert-dismissible fade show text-center" role="alert" style="border-top-left-radius: 20px; border-top-right-radius: 20px; overflow:hidden">
             <strong>Welcome!</strong> We're excited to see what you've found!
@@ -46,10 +46,12 @@
             - <strong>Select a species</strong> from the dropdown menu to begin.
             Feel free to add a quick note or a photo of your observation!
         </div>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data"">
             {% csrf_token %}
             <div class="card mt-2 mb-3 mx-3 shadow-sm" style="border-radius: 20px; background-color: whitesmoke;">
                 <div class="mx-3 mt-3 mb-3">
+                    <input type="hidden" name="latitude" id="latitude">
+                    <input type="hidden" name="longitude" id="longitude">
                     {{ form.as_p }}
                 <div class="input-group-append">
                     <button class="btn btn-success rounded-pill mx-3 mb-3 shadow-sm" type="submit">Post Observation</button>
@@ -57,8 +59,9 @@
             </div>
         </form>
     </div>
-
-    <h1 class="display-4 text-center mb-3"><strong>Your Observation Journal</strong></h1>
+    {% if observations %}
+        <h1 class="display-4 text-center mb-3"><strong>Your Observation Journal</strong></h1>
+    {% endif %}
     <!-- User observation gallery -->
     <div id="notesContainer">
         <div class="row mx-3">
@@ -88,7 +91,7 @@
                     </div>
                 </div>
             {% empty %}
-                <div class="col-12">
+                <div class="col-12 text-center">
                     <p>No observations yet.</p>
                 </div>
             {% endfor %}

@@ -25,6 +25,10 @@ class ObservationForm(forms.ModelForm):
     class Meta:
         model = UserObservation
         fields = ['observation', 'observation_pic', 'species']
+        widgets = {
+            'latitude': forms.HiddenInput(),
+            'longitude': forms.HiddenInput(),
+        }
 
     def __init__(self, *args, **kwargs):
         """

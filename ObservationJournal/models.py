@@ -17,5 +17,8 @@ class UserObservation(models.Model):
     observation_pic = models.ImageField(upload_to='observation_pics/', null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
 
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+
     def __str__(self):
         return self.user.user.username + ' - ' + self.date.strftime('%Y-%m-%d %H:%M:%S')

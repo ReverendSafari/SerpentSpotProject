@@ -15,6 +15,8 @@ def journal_view(request):
         if form.is_valid(): # Check if the form data is valid
             observation = form.save(commit=False) # Create, but don't save the new observation object
             observation.species = form.cleaned_data['species'] # Set the species of the observation
+            observation.latitude = form.cleaned_data.get('latitude')  # Capture latitude
+            observation.longitude = form.cleaned_data.get('longitude')  # Capture longitude
             observation.user = request.user.userprofile  # Link the observation to the current user
             observation.save() # Save the observation object
             observation.user.observations += 1  # Increment observation count 
