@@ -6,7 +6,7 @@
 <h2>Boards</h2>
 <div class="boards">
    {% for board in boards %}
-   <div class="card mb-3">
+   <div class="card mb-3 shadow-sm"  style="border-radius: 20px; overflow: hidden;">
       <div class="card-body">
          <h3 class="card-title"><a href="{% url 'board_threads' board.id %}" class="link-success">{{ board.name }}</a></h3>
          <p class="card-text">{{ board.description }}</p>

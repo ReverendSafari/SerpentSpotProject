@@ -50,7 +50,7 @@
 
 
 <!-- Back Button -->
-<a href="{% url 'board_threads' thread.board_id %}" class="btn back-button btn-light btn-sm" style="margin-bottom: 20px;">
+<a href="{% url 'board_threads' thread.board_id %}" class="btn back-button btn-light btn-sm rounded-pill shadow-sm" style="margin-bottom: 20px;">
    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-square"
       viewBox="0 0 16 16">
       <path fill-rule="evenodd"
@@ -88,7 +88,7 @@
 
 <div class="posts">
    {% for post in posts %}
-   <div class="card mb-3">
+   <div class="card mb-3" style="border-radius: 20px; overflow: hidden;">
       {% if forloop.first %}
       <div class="card-header">
          <h3>{{ thread.title }}</h3>
@@ -126,7 +126,7 @@
 </div>
 
 <!-- Reply Form Directly on Page -->
-<div class="card reply-form mt-4 mb-5">
+<div class="card reply-form mt-4 mb-5 shadow-sm" style="border-radius: 20px; overflow: hidden;">
    <div class="card-header">
       <h5>Post a Reply</h5>
    </div>
@@ -146,7 +146,7 @@
             <small class="form-text text-muted">Optional: Attach an image to your post.</small>
          </div>
          <div class="mb-3">
-            <button type="submit" class="btn btn-primary float-end">Post Reply</button>
+            <button type="submit" class="btn btn-primary rounded-pill shadow-sm float-end">Post Reply</button>
          </div>
       </form>
    </div>
