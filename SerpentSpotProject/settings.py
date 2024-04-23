@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import environ
+
+env = environ.Env()
+# Reading .env file
+environ.Env.read_env()
+
+GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,6 +56,7 @@ INSTALLED_APPS = [
     'UserAuth',
     'ObservationJournal',
     'Forum',
+    'snakemap',
 ]
 
 MIDDLEWARE = [

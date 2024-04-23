@@ -25,4 +25,5 @@ urlpatterns = [
     path('auth/', include('UserAuth.urls')),
     path('journal/', include('ObservationJournal.urls')),
     path('forum/', include('Forum.urls')),
+    path('snakemap/', include('snakemap.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
