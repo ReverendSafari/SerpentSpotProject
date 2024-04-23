@@ -28,6 +28,10 @@
     .btn-danger:hover {
         transform: scale(1.06);
     }
+
+    .obsitem:hover {
+        transform: scale(1.02);
+    }
 </style>
 
 {% endblock extra_css %}
@@ -48,7 +52,7 @@
                 <strong>Welcome!</strong> We're excited to see what you've found!
                 <hr>
                 - <strong>Select a species</strong> from the dropdown menu to begin.
-                Feel free to add a quick note or a photo of your observation!
+                <strong>Add a quick note</strong> and feel free to add a photo of your observation!
             </div>
             <!-- actual form for rendering -->
             <form method="post" enctype="multipart/form-data"">
@@ -85,7 +89,7 @@
             <!-- check for and display observations -->
             {% for observation in observations %}
                 <div class="col-md-6">
-                    <div class="card mb-3 shadow-sm" style="border-radius: 20px; overflow: hidden; background-color: whitesmoke;">
+                    <div class="card mb-3 shadow-sm obsitem" style="border-radius: 20px; overflow: hidden; background-color: whitesmoke;">
                         <div class="card-body">
                             <p class="card-title h4 mx-3"><a href="{% url 'id_view' %}">{{ observation.species.common_name }}</a></p>
                             <h6 class="card-subtitle mb-2 text-muted mx-3">{{ observation.date|date:"F d, Y H:i" }}</h6>

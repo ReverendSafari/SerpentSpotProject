@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}Leaderboard{% endblock title %}
+
+{% block extra_css %}
+<style>
+    .gold-gradient { /* first place */
+        background: linear-gradient(180deg, #ffd700 0%, #ffecb7 100%); /* Gold gradient */
+    }
+    .silver-gradient { /* second place */
+        background: linear-gradient(180deg, #c0c0c0 0%, #dadada 100%); /* Silver gradient */
+    }
+    .bronze-gradient { /* third place */
+        background: linear-gradient(180deg, #ac6d2e 0%, #e0a47e 100%); /* Bronze gradient */
+    }
+    .green-gradient { /* fourth place and below */
+        background: linear-gradient(180deg, #7be77b 0%, hsl(120, 100%, 92%) 100%); /* Green gradient */
+    }
+    .user-gradient { /* user's position */
+        background: linear-gradient(180deg, #008cff 0%, #b9e5ff 100%); /* Orange gradient */
+    }
+    .rank-number {
+        font-size: 24px; /* Large font size for visibility */
+        width: 30px; /* Fixed width */
+        display: inline-block; /* Align with the card */
+        vertical-align: top; /* Align at the top of the card */
+        margin-right: 10px; /* Space between the rank number and the card */
+    }
+    .card { /* Card styling */
+        width: 100%; /* Full width */
+    }
+
+    .lbcard:hover { /* Hover effect for user leaderboard cards */
+        transform: scale(1.02); /* Scale up on hover */
+    }
+</style>
+{% endblock extra_css %}
+
+{% load static %}
+
+{% block content %}
+<h1 style="text-align: center;">🐍 Top Identifiers 🐍</h1>
+<!-- Text for leaderboard placement, either tells you that you're ranked or how many you need to place -->
+{% if is_user_ranked %}
+    <p style="text-align: center;">You are currently ranked on the leaderboard!</p>
+{% else %}
+    {% if observations_to_join > 0 %}
+        <p style="text-align: center;">You need {{ observations_to_join }} more observations to enter the leaderboard.</p>
+    {% else %}
+        <p style="text-align: center;">Start observing to appear on the leaderboard!</p>
+    {% endif %}
+{% endif %}
+
+<!-- loop through leaderboard positions and render cards -->
+{% for profile in top_ten_profiles %}
+    <hr>
+    <div class="d-flex align-items-center mb-3">
+        {% if forloop.counter < 4 %}
+        <div class="rank-number"><strong>{{ forloop.counter }}.</strong></div>
+        {% else %}
+        <div class="rank-number">{{ forloop.counter }}.</div>
+        {% endif %}
+        <!-- Conditionals for top 3 borders -->
+        {% if forloop.counter == 1 %}
+        <div class="card mt-3 mb-3 shadow gold-gradient lbcard" style="border-radius: 20px; overflow: hidden;">
+        {% elif forloop.counter == 2 %}
+        <div class="card mt-3 mb-3 shadow silver-gradient lbcard" style="border-radius: 20px; overflow: hidden;">
+        {% elif forloop.counter == 3 %}
+        <div class="card mt-3 mb-3 shadow bronze-gradient lbcard" style="border-radius: 20px; overflow: hidden;">
+        {% elif profile == request.user.userprofile %}
+        <div class="card mt-3 mb-3 shadow user-gradient lbcard" style="border-radius: 20px; overflow: hidden;">
+        {% else %}
+        <div class="card mt-3 mb-3 shadow-sm green-gradient lbcard" style="border-radius: 20px; overflow: hidden;">
+        {% endif %}
+            <div class="mx-2 mt-2 mb-2 d-flex align-items-center">
+                <a href="{% url 'user_profile' profile.user.username %}" class="text-decoration-none">
+                <!-- Conditionals for border colors around profile pic -->
+                {% if forloop.counter == 1 %}
+                <img src="{{ profile.profile_pic.url }}" class="rounded-circle border border-warning shadow-sm" alt="Profile Picture" style="width: 70px; height: 70px; object-fit: cover;">
+                {% elif forloop.counter == 2 %}
+                <img src="{{ profile.profile_pic.url }}" class="rounded-circle border border-secondary shadow-sm" alt="Profile Picture" style="width: 70px; height: 70px; object-fit: cover;">
+                {% elif forloop.counter == 3 %}
+                <img src="{{ profile.profile_pic.url }}" class="rounded-circle border border-danger shadow-sm" alt="Profile Picture" style="width: 70px; height: 70px; object-fit: cover;">
+                {% elif profile == request.user.userprofile %}
+                <img src="{{ profile.profile_pic.url }}" class="rounded-circle border border-primary shadow-sm" alt="Profile Picture" style="width: 70px; height: 70px; object-fit: cover;">
+                {% else %}
+                <img src="{{ profile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm" alt="Profile Picture" style="width: 70px; height: 70px; object-fit: cover;">
+                {% endif %}
+                <div class="card ml-2 mx-2 shadow-sm" style="border-radius: 10px; overflow: hidden; background-color: ghostwhite;">
+                    <!-- card for user info -->
+                    <div class="mx-2">
+                        {% if profile == request.user.userprofile %}
+                        <a href="{% url 'user_profile' profile.user.username %}"><strong>{{ profile.user.username }} (You)</strong></a>
+                        {% else %}
+                        <a href="{% url 'user_profile' profile.user.username %}"><strong>{{ profile.user.username }}</strong></a>
+                        {% endif %}
+                        <div class="mt-1"><p>Observations this month: <strong>{{ profile.observations_count }}</strong></p></div>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <hr>
+{% endblock content %}
+

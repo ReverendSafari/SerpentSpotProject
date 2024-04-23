@@ -117,9 +117,14 @@
             </div>
          </div>
          {% endfor %}
-
-<p class="card-text"><small class="text-muted">Posted by <a href="{% url 'user_profile' username=post.created_by.username %}">{{ post.created_by.username }}</a> on {{post.created_at|date:"N j, Y, P" }}</small></p>
-
+         <div class="d-flex align-items-center mt-3">
+            <img src="{{ MEDIA_URL }}{{ post.created_by.userprofile.profile_pic.url }}" class="rounded-circle border shadow-sm me-2" alt="Profile Picture" style="width: 30px; height: 30px; object-fit: cover;">
+            <p class="card-text mb-0">
+               <small class="text-muted">
+                  Posted by <a href="{% url 'user_profile' username=post.created_by.username %}">{{ post.created_by.username }}</a> on {{ post.created_at|date:"N j, Y, P" }}
+               </small>
+            </p>
+         </div>
       </div>
    </div>
    {% endfor %}
