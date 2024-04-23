@@ -16,7 +16,6 @@
 
     <!-- Universal styles, cross pages -->
     <style>
-
         .btn-primary:hover {
             transform: scale(1.01);
         }
@@ -66,12 +65,11 @@
                                 Community
                             </a>
                             <ul class="dropdown-menu mx-3 mb-3" aria-labelledby="navbarDropdownMenuLink" style="border-radius: 20px; overflow: hidden;">
-                                <li><a class="dropdown-item" href="#">Forum</a></li>
-                                <li><a class="dropdown-item" href="#">Leaderboard</a></li>
+                                <li><a class="dropdown-item" href="{% url 'home' %}">Forum</a></li>
+                                <li><a class="dropdown-item" href="{% url 'leaderboard_view' %}">Leaderboard</a></li>
                                 <li><a class="dropdown-item" href="#">SnakesNearU</a></li>
                             </ul>
                         </li>
-                        <!-- Im thinking new observation button here -->
                     </ul>
                     <!-- check for logged in user otherwise why would there be a profile -->
                     {% if user.is_authenticated %}

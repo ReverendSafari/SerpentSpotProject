@@ -39,6 +39,10 @@
         transform: scale(1.06);
     }
 
+    .bio:hover {
+        transform: scale(1.01);
+    }
+
 </style>
 
 {% endblock extra_css %}
@@ -78,7 +82,7 @@
                         <!-- Editable bio field -->
                         <div class="form-group mb-3">
                             <label for="bio" class="form-label"><strong>Bio:</strong></label>
-                            <textarea name="bio" id="bio" class="form-control editable shadow-sm" style="border-radius: 20px;" rows="3" placeholder="Tell us about yourself">{{ user.userprofile.bio }}</textarea>
+                            <textarea name="bio" id="bio" class="form-control editable shadow-sm bio" style="border-radius: 20px;" rows="3" placeholder="Tell us about yourself">{{ user.userprofile.bio }}</textarea>
                         </div>
                         <!-- Submit button for profile updates -->
                         <button type="submit" class="btn btn-success rounded-pill">Save Changes</button>

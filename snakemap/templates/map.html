@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Snake Map{% endblock %}
+
+{% block content %}
+
+   
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <style>
+      @media (min-width: 768px) {
+         #map {
+         height: 700px;
+         /* Increased height */
+         width: 100%;
+         }
+         .card-custom {
+        margin-bottom: 20px;
+         }
+      }
+
+      @media (max-width: 767px) {
+         #map {
+         height: 400px;
+         /* Decreased height */
+         width: 100%;
+         }
+         .card-custom {
+         margin-bottom: 20px;
+         }
+         .mapCard {
+            margin-bottom: 150px;
+         }
+         .radiusInput {
+            margin-right: 10px;
+         }
+      }
+
+      .form-inline {
+         margin-top: 10px;
+         margin-bottom: 10px;
+      }
+
+
+   </style>
+
+
+<div class="container">
+   <div class="card card-custom mb-4">
+      <div class="card-body">
+         <h5 class="card-title text-center">Search for snakes</h5>
+         
+         <!-- Place this inside the card where you want the help button to appear -->
+         
+         <!-- Help Button Trigger for Modal -->
+         <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#helpModal"
+            style="position: absolute; right: 1rem; top: 1rem;">
+            <i class="fas fa-question-circle"></i>
+         </button>
+         
+         <!-- Help Modal -->
+         <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="helpModalLabel">Need Help?</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <p>(1) Double-click on the map to set the search location. <br>
+                        (2) Enter the search radius in kilometers. <br>
+                        (3) Select the date range for the observations.</p>
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         
+         <form onsubmit="fetchData(); return false;" class="form-inline justify-content-center">
+            <div class="form-group">
+               <input type="number" id="latitude" class="form-control mb-2 mr-sm-2" placeholder="Latitude" required min="-90" max="90" step="any">
+            </div>
+            <div class="form-group">
+               <input type="number" id="longitude" class="form-control mb-2 mr-sm-2" placeholder="Longitude" required min="-180" max="180" step="any">
+            </div>
+            <div class="form-group radiusInput">
+               <input type="number" id="radius" class="form-control mb-2 mr-sm-2" placeholder="Radius (km)" required min="1" max="20">
+            </div>
+            <div class="form-group">
+               <select id="dateRange" class="form-control mb-2 mr-sm-2">
+                  <option value="6m">Past 6 Months</option>
+                  <option value="1y">Past Year</option>
+                  <option value="5y">Past 5 Years</option>
+                  <option value="all">All Time</option>
+               </select>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Find Observations</button>
+         </form>
+      </div>
+   </div>
+
+   <div class="card mapCard">
+      <div class="card-body">
+         <p id="observationCount" class="text-center h3"></p>
+         <hr id="dynamicHr" style="display: none;"> <!-- Initially hidden -->
+         <div id="map"></div>
+      </div>
+   </div>
+</div>
+
+
+<script src="{% static 'js/map.js' %}" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"
+   defer></script>
+
+
+{% endblock %}

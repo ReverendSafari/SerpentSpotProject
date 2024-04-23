@@ -83,7 +83,7 @@
 </style>
 
 <!-- Back to Home Button -->
-<a href="{% url 'home' %}" class="back-button mb-5">
+<a href="{% url 'home' %}" class="back-button mb-5 shadow-sm rounded-pill">
    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-square"
       viewBox="0 0 16 16">
       <path fill-rule="evenodd"
@@ -95,14 +95,14 @@
 
 <div class="title-with-button">
    <h2>Threads in {{ board.name }}</h2>
-   <button id="newThreadButton" type="button" class="btn btn-primary" data-bs-toggle="collapse"
+   <button id="newThreadButton" type="button" class="btn btn-primary rounded-pill" data-bs-toggle="collapse"
       data-bs-target="#newThreadFormCollapse">
       Create New Thread
    </button>
 </div>
 
 <div class="collapse" id="newThreadFormCollapse">
-   <div class="card reply-form mt-4">
+   <div class="card reply-form mt-4 shadow"  style="border-radius: 20px; overflow: hidden;">
       <div class="card-header">
          <h5>Create New Thread</h5>
       </div>
@@ -143,10 +143,13 @@
 
 <div class="threads mt-4">
     {% for thread in threads %}
-    <div class="card mb-3">
+    <div class="card shadow-sm mb-3"  style="border-radius: 20px; overflow: hidden;">
         <div class="card-body">
             <h4><a href="{% url 'thread_posts' thread.id %}" class="link-success">{{ thread.title }}</a></h4>
-            <p class="card-text">Started by <a href="{% url 'user_profile' username=thread.starter.username %}">{{thread.starter.username }}</a> on {{ thread.created_at|date:"M d, Y" }}</p>
+            <div class="d-flex align-items-center mt-3">
+               <img src="{{ MEDIA_URL }}{{ thread.starter.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm me-2" alt="Profile Picture" style="width: 30px; height: 30px; object-fit: cover;">
+               <p class="card-text mb-0">Started by <a href="{% url 'user_profile' username=thread.starter.username %}">{{ thread.starter.username }}</a> on {{ thread.created_at|date:"M d, Y" }}</p>
+           </div>
         </div>
     </div>
     {% endfor %}

@@ -20,9 +20,11 @@ from django.conf.urls.static import static
 from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('identification/', include('Identification.urls')),
-    path('auth/', include('UserAuth.urls')),
-    path('journal/', include('ObservationJournal.urls')),
-    path('forum/', include('Forum.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('admin/', admin.site.urls), # Admin
+    path('identification/', include('Identification.urls')), # Identification
+    path('auth/', include('UserAuth.urls')), # User Authentication
+    path('journal/', include('ObservationJournal.urls')), # Observation Journal
+    path('forum/', include('Forum.urls')), # Forum
+    path('Leaderboard/', include('Leaderboard.urls')), # Leaderboard
+    path('snakemap/', include('snakemap.urls')), # Snakemap
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Media URL
