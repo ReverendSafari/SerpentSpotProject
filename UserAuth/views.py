@@ -14,6 +14,8 @@ from .forms import UserProfileForm, UserRegisterForm
 
 from ObservationJournal.models import UserObservation
 
+from Forum.models import Post;
+
 def login_view(request):
     """
     This view handles the login functionality.
@@ -37,7 +39,7 @@ def login_view(request):
             user = authenticate(username=username, password=password) # Authenticate the user
             if user is not None: # If the user is authenticated
                 login(request, user)
-                messages.info(request, f"You were last logged in as {username}.")
+                #messages.info(request, f"You were last logged in as {username}.")
                 return redirect('profile') # Redirect to the profile page
             else:
                 messages.error(request,"Invalid username or password.")  # If the user is not authenticated, display an error message
@@ -101,12 +103,14 @@ def profile_view(request, username=None):
 
     userprofile = UserProfile.objects.get(user=user)
     observations = UserObservation.objects.filter(user=user.userprofile)
-    recentobservations = observations.order_by('-date')[:6]
+    recentPosts = Post.objects.filter(created_by=user).order_by('-created_at')[:5] # Get the 5 most recent posts by the user
+    recentobservations = observations.order_by('-date')[:6] # Get the 6 most recent observations by the user
 
     context = {
         'user': user,
         'userprofile': userprofile,
         'observations': observations,
+        'recentPosts': recentPosts,
         'recentobservations': recentobservations
     }
     return render(request, 'profile.html', context)

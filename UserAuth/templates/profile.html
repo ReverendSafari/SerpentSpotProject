@@ -27,6 +27,15 @@
         transform:scale(1.01);
     }
 
+    /* MOAR hover effects, for the sizzle  */
+    .obsitem:hover {
+        transform:scale(1.02);
+    }
+
+    .recentpost:hover {
+        transform:scale(1.02);
+    }
+
 </style>
 
 {% endblock extra_css %}
@@ -73,13 +82,30 @@
                         </div>
                     </div>
                 </div>
-                <!-- Placeholder column for recent forum posts -->
+                <!-- Column for recent forum posts -->
                 <div class="col-md-4">
                     <div class="card shadow-sm" style="background-color:whitesmoke; border-top-right-radius: 20px; border-bottom-right-radius: 20px; overflow:hidden">
                         <div class="card-body">
                             <h5 class="card-title">Recent posts:</h5>
-                            <!-- Forum posts will go here -->
-                            <p class="mx-1">Nothing to see here.</p>
+                            <!-- Forum posts go here -->
+                            {% if recentPosts %}
+                                {% for post in recentPosts %}
+                                    <div class="card shadow-sm mt-3 recentpost" style="border-top-right-radius: 20px; border-bottom-right-radius: 20px; overflow: hidden;">
+                                        <div class="mx-4 mt-2 mb-2">
+                                            <!-- Link to the thread containing the post -->
+                                            <a href="{% url 'thread_posts' thread_id=post.thread.id %}">{{ post.thread.title }}</a>
+                                            <br>
+                                            <!-- portion of message contents if its too long -->
+                                            Message: {{ post.message|truncatechars:50 }}
+                                            <br>
+                                            <!-- date of posting -->
+                                            Posted on {{ post.created_at|date:"F d, Y H:i" }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="mx-1">No recent posts to display.</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -93,31 +119,38 @@
             <!-- check for and display 5 most recent observations -->
             {% if recentobservations %}
             <div class="container mt-3">
-                <div class="row">
-                    {% for observation in recentobservations %}
-                        <div class="col-sm-12 col-md-6">
-                            <div class="card shadow-sm mt-3" style="background-color:whitesmoke; border-radius: 20px; overflow: hidden;">
-                                <div class="card-body">
-                                    <h5 class="card-title
-                                    {% if observation.species %}
-                                        text-success
-                                    {% else %}
-                                        text-danger
-                                    {% endif %}">
-                                        <a href="{% url 'id_view' %}">{{ observation.species }}</a>
-                                    </h5>
-                                    <h6 class="card-subtitle mb-3 text-muted">{{ observation.date|date:"F d, Y H:i" }}</h6>
-                                    <p class="card-text">{{ observation.observation }}</p>
-                                    <hr>
-                                    {% if observation.observation_pic %}
-                                        <img src="{{ observation.observation_pic.url }}" alt="Observation Image" style="max-width: 100%; height: auto; border-radius: 20px;">
-                                    {% else %}
-                                        <p class="card-text">No image uploaded.</p>
-                                    {% endif %}
+                <div class="card shadow-sm" style="border-radius: 20px; overflow: hidden;">
+                    <div class="row mx-3">
+                        {% for observation in recentobservations %}
+                            <div class="col-sm-12 col-md-6">
+                                <div class="card shadow-sm mt-3 mb-3 obsitem" style="background-color:whitesmoke; border-radius: 20px; overflow: hidden;">
+                                    <div class="card-body">
+                                        <h5 class="card-title
+                                        {% if observation.species %}
+                                            text-success
+                                        {% else %}
+                                            text-danger
+                                        {% endif %}">
+                                            <a href="{% url 'id_view' %}">{{ observation.species }}</a>
+                                        </h5>
+                                        <h6 class="card-subtitle mb-3 text-muted">{{ observation.date|date:"F d, Y H:i" }}</h6>
+                                        <p class="card-text">{{ observation.observation }}</p>
+                                        <hr>
+                                        {% if observation.observation_pic %}
+                                            <img src="{{ observation.observation_pic.url }}" alt="Observation Image" style="max-width: 100%; height: auto; border-radius: 20px;">
+                                        {% else %}
+                                            <p class="card-text">No image uploaded.</p>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+
+                        <!-- conditionally render the view more button. if theres no more why show it -->
+                        {% if user.userprofile.observations > 6 %}
+                            <a href="{% url 'user_journal_view' user.username %}" class="btn btn-success rounded-pill mt-3 mb-3">View More</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             {% else %}

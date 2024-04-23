@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'ObservationJournal',
     'Forum',
     'snakemap',
+    'Leaderboard',
 ]
 
 MIDDLEWARE = [
