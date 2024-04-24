@@ -101,6 +101,7 @@
    </button>
 </div>
 
+{% if user.is_authenticated %}
 <div class="collapse" id="newThreadFormCollapse">
    <div class="card reply-form mt-4 shadow"  style="border-radius: 20px; overflow: hidden;">
       <div class="card-header">
@@ -140,6 +141,18 @@
       </div>
    </div>
 </div>
+{% else %}
+<div class="collapse" id="newThreadFormCollapse">
+   <div class="card reply-form mt-4 shadow"  style="border-radius: 20px; overflow: hidden;">
+      <div class="card-header">
+         <h5>Create New Thread</h5>
+      </div>
+      <div class="card-body">
+         <p class="card-text">You must be logged in to create a new thread.</p>
+      </div>
+   </div>
+</div>
+{% endif %}
 
 <div class="threads mt-4">
     {% for thread in threads %}

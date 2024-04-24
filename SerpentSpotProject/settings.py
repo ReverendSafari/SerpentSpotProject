@@ -36,6 +36,9 @@ CSRF_TRUSTED_ORIGINS = [
 #Static url
 STATIC_URL = '/static/'
 
+#login url
+LOGIN_URL = '/auth/login/'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -50,6 +53,7 @@ INSTALLED_APPS = [
     'ObservationJournal',
     'Forum',
     'Leaderboard',
+    'Home',
 ]
 
 MIDDLEWARE = [
