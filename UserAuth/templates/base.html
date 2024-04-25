@@ -32,6 +32,17 @@
         .logout:hover {
             background-color: rgb(255, 92, 92);
         }
+
+        /* No underline on links for clickable cards */
+        a.text-decoration-none {
+            color: inherit; /* Inherits the color from the parent element */
+            text-decoration: none; /* No underline */
+        }
+
+        a.text-decoration-none:hover {
+            text-decoration: none; /* Keeps the link without underline on hover */
+            background-color: #f8f9fa; /* Light background color on hover, adjust as needed */
+        }
     </style>
 
     {% load static %}
@@ -57,7 +68,6 @@
                             </a>
                             <ul class="dropdown-menu mx-3 mb-3" aria-labelledby="navbarDropdownMenuLink" style="border-radius: 20px; overflow: hidden;">
                                 <li><a class="dropdown-item" href="{% url 'education_view' %}">Educator</a></li>
-                                <li><a class="dropdown-item" href="#">ID game</a></li>
                                 <li><a class="dropdown-item" href="{% url 'id_view' %}">Species</a></li>
                             </ul>
                         </li>
@@ -112,5 +122,6 @@
         <!-- Bootstrap and popperJS to be passed through extension -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/bootstrap-icons.css" rel="stylesheet">
     </body>
 </html>

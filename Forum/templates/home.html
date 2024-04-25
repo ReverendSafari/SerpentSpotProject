@@ -1,17 +1,63 @@
 {% extends 'base.html' %}
 
-{% block title %}Home - My Forum{% endblock %}
+{% block title %}Forum{% endblock %}
 
 {% block content %}
-<h2>Boards</h2>
-<div class="boards">
-   {% for board in boards %}
-   <div class="card mb-3 shadow-sm"  style="border-radius: 20px; overflow: hidden;">
-      <div class="card-body">
-         <h3 class="card-title"><a href="{% url 'board_threads' board.id %}" class="link-success">{{ board.name }}</a></h3>
-         <p class="card-text">{{ board.description }}</p>
+
+<style>
+   body {
+      background: rgb(2,0,36);
+      background: -webkit-linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(25,135,84,1) 35%, rgba(86,135,25,1) 100%);
+   }
+   a.text-decoration-none {
+      color: inherit; /* This ensures the link inherits the text color from its parent, avoiding the default blue. */
+      text-decoration: none; /* Removes underline from the link */
+   }
+
+   a.text-decoration-none:hover {
+      text-decoration: none; /* Keeps underline off on hover */
+      opacity: 0.9; /* Optional: Adds a slight interaction effect on hover */
+   }
+   .board:hover{
+      transform: scale(1.02); /* Scale up on hover */
+      transition: 0.3s; /* Smooth transition */
+   }
+</style>
+
+{% if user.is_authenticated %}
+   <h1 style="text-align: center; color: white;">Welcome back, {{request.user.username}}</h1>
+{% else %}
+   <h1 style="text-align: center; color: white;">Welcome, guest user!</h1>
+{% endif %}
+<hr style="color: white;">
+
+<div class="card shadow mb-5" style="border-radius: 20px; overflow: hidden;">
+   <div class="card-body shadow-sm" style="background-color: whitesmoke;">
+      <h2 class="card-title" style="text-align: center;">Forum Boards</h2>
+      <hr>
+      {% if request.user.is_authenticated %}
+         <p class="card-text" style="text-align: center;">Below are the boards available on the forum. Click on a board to view its threads.</p>
+      {% else %}
+         <p class="card-text" style="text-align: center;">Below are the boards available on the forum. You must be <a href="{% url 'login' %}">logged in </a> to post threads or replies.</p>
+      {% endif %}
+   </div>
+   <div class="boards mt-4 mb-3">
+      <div class="row mx-3">
+         {% for board in boards %}
+            <div class="col-md-4">
+               <!-- Make the whole card a link -->
+               <a href="{% url 'board_threads' board.id %}" class="text-decoration-none">
+                  <div class="card mb-3 shadow-sm board" style="border-radius: 20px; overflow: hidden;">
+                     <div class="card-body" style="background-color: whitesmoke;">
+                        <h3 class="card-title" style="text-align: center; color: black;">{{ board.name }}</h3>
+                        <hr>
+                        <p class="card-text" style="text-align: center; color: black;">{{ board.description }}</p>
+                     </div>
+                  </div>
+               </a>
+            </div>
+         {% endfor %}
       </div>
    </div>
-   {% endfor %}
 </div>
 {% endblock %}
