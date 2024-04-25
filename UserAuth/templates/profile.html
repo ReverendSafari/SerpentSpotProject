@@ -25,15 +25,18 @@
     /* Edit profile button behavior */
     .editprofile:hover {
         transform:scale(1.01);
+        transition: 0.3s;
     }
 
     /* MOAR hover effects, for the sizzle  */
     .obsitem:hover {
         transform:scale(1.02);
+        transition: 0.3s;
     }
 
     .recentpost:hover {
         transform:scale(1.02);
+        transition: 0.3s;
     }
 
 </style>
@@ -145,7 +148,6 @@
                                 </div>
                             </div>
                         {% endfor %}
-
                         <!-- conditionally render the view more button. if theres no more why show it -->
                         {% if user.userprofile.observations > 6 %}
                             <a href="{% url 'user_journal_view' user.username %}" class="btn btn-success rounded-pill mt-3 mb-3">View More</a>
