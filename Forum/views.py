@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Board, Thread, Post, User
 from .forms import NewThreadForm, PostForm
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import HttpResponseNotAllowed, JsonResponse
 from django.contrib import messages
 
 
@@ -32,8 +32,8 @@ def new_thread(request, board_id):
         else:
             messages.error(request, 'Error creating thread. Please check the form data.')
     else:
-        form = NewThreadForm(instance=Thread(starter=request.user, board=board))
-    return render(request, 'new_thread.html', {'form': form})
+      return HttpResponseNotAllowed(['POST'], "Invalid request method. Please use POST.")
+
 
 
 @login_required
@@ -53,9 +53,9 @@ def reply_thread(request, thread_id):
         else:
             messages.error(request, 'There was an error with your post. Please check your input.')
     else:
-        form = PostForm()
+      return HttpResponseNotAllowed(['POST'], "Invalid request method. Please use POST.")
 
-    return render(request, 'reply_thread.html', {'form': form, 'thread': thread})
+
 
 def user_profile(request, username):
     # Optional: You might still want to check if the user exists to handle errors
