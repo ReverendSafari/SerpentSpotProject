@@ -10,7 +10,7 @@ async function initMap() {
       map = new Map(document.getElementById("map"), {
       zoom: 8,
       center: center,
-      mapId: "92b4876303f4f956",  // Use your actual Map ID here
+      mapId: "92b4876303f4f956",  
       disableDoubleClickZoom: true
    });
 
