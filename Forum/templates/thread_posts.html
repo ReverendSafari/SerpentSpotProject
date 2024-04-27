@@ -7,12 +7,14 @@
 {% block content %}
 
 <style>
-   .modal-dialog-dynamic {
-      max-width: 80%;
-      /* Allow a maximum width of 80% of the viewport */
+@media (max-width: 768px){
+   .replybtn{
+      width: 100%;
    }
+}
 
-   .modal-content {
+
+   .imagemodalcontent {
       inline-size: fit-content;
       /* This will allow the modal to shrink or expand to fit the content, not available in all browsers */
       max-width: 100%;
@@ -158,7 +160,7 @@
          <div class="modal fade" id="imageModal{{ image.id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ image.id }}"
             aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-center">
-               <div class="modal-content">
+               <div class="modal-content imagemodalcontent">
                   <div class="modal-header">
                      <h5 class="modal-title" id="imageModalLabel{{ image.id }}">{{ image.image.name|filename }}</h5>
                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -180,15 +182,18 @@
                </small>
             </p>
 
-                     {% if not forloop.first and user.is_authenticated and post.created_by == user %}
+         {% if not forloop.first and user.is_authenticated and post.created_by == user %}
          <div class="ms-auto">
+
+         <!-- New Edit Button -->
+         <button type="button" class="replybtn btn btn-primary btn-sm mb-1 mb-sm-0" data-bs-toggle="modal"
+            data-bs-target="#editPostModal{{ post.id }}">Edit</button>
+
+
          <!-- Delete Button for Each Post/Reply -->
-         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+         <button type="button" class="replybtn btn btn-danger btn-sm" data-bs-toggle="modal"
             data-bs-target="#deletePostModal{{ post.id }}">Delete</button>
          
-         <!-- New Edit Button -->
-         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-            data-bs-target="#editPostModal{{ post.id }}">Edit</button>
          </div>
 
          <!-- Edit Modal with Image Deletion Options -->
