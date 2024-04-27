@@ -44,22 +44,24 @@ submitButton.innerHTML = 'Loading... <span class="spinner-border spinner-border-
 submitButton.disabled = true;
 
 fetch(url)
-            .then(response => response.json())
-            .then(data => {
+   .then(response => response.json())
+   .then(data => {
    console.log('Data received:', data);
-drawSearchArea(new google.maps.LatLng(lat, lng), radius);
+   drawSearchArea(new google.maps.LatLng(lat, lng), radius);
 
-var observationsCount = data.observations.length;
-var observationCountElement = document.getElementById('observationCount');
-var hrElement = document.getElementById('dynamicHr');
+   var observationsCount = data.observations.length;
+   var observationCountElement = document.getElementById('observationCount');
+   var hrElement = document.getElementById('dynamicHr');
 
-               if (observationsCount > 0) {
-   observationCountElement.textContent = `Snakemap found ${observationsCount} observations in the area.`;
-hrElement.style.display = 'block'; // Show the HR if there are observations
-               } else {
-   observationCountElement.textContent = 'No observations found.';
-hrElement.style.display = 'none'; // Hide the HR if there are no observations
-               }
+   if (observationsCount > 0) {
+      observationCountElement.textContent = `Snakemap found ${observationsCount} observations in the area.`;
+      hrElement.style.display = 'block'; // Show the HR if there are observations
+      console.log('Throwing confetti!', confetti)
+      throwConfetti(); // Fire off the confetti effect
+   } else {
+      observationCountElement.textContent = 'No observations found.';
+      hrElement.style.display = 'none'; // Hide the HR if there are no observations
+   }
 
 // Clear existing markers if any
 if (window.markers) {
@@ -67,19 +69,20 @@ if (window.markers) {
                }
 window.markers = [];
 
-               // Create a marker for each observation received
-               data.observations.forEach(obs => {
-                  const obsPos = {lat: obs.coordinates[1], lng: obs.coordinates[0] }; // Note the order of coordinates [lng, lat]
-const marker = new google.maps.Marker({
-   position: obsPos,
-map: map,
-title: `${obs.common_name} (${obs.scientific_name})`
-                  });
-window.markers.push(marker);
-
-const infoWindow = new google.maps.InfoWindow({
-   content: `<div><strong>${obs.common_name}</strong><br>Scientific Name: ${obs.scientific_name}<br>Coordinates: ${obs.coordinates[1]}, ${obs.coordinates[0]}</div>`
-                  });
+   // Create a marker for each observation received
+   data.observations.forEach(obs => {
+      const obsPos = {lat: obs.coordinates[1], lng: obs.coordinates[0] }; // Note the order of coordinates [lng, lat]
+      const marker = new google.maps.Marker({
+         position: obsPos,
+      map: map,
+      title: `${obs.common_name} (${obs.scientific_name})`
+                        });
+      window.markers.push(marker);
+   
+   // Create an info window for each marker
+   const infoWindow = new google.maps.InfoWindow({
+      content: `<div><strong>${obs.common_name}</strong><br>Scientific Name: ${obs.scientific_name}<br>Coordinates: ${obs.coordinates[1]}, ${obs.coordinates[0]}</div>`
+                     });
 
 
       // Add a click listener to the marker
@@ -115,4 +118,43 @@ function drawSearchArea(center, radiusInKm) {
       center: center,
       radius: radiusInKm * 1000  // Radius in meters
    });
+}
+
+
+//CONFETTI EFFECT
+var snakeEmoji = confetti.shapeFromText({ text: '🐍', scalar: 2 });
+
+var defaults = {
+   spread: 360,
+   ticks: 60,
+   gravity: 0,
+   decay: 0.96,
+   startVelocity: 20,
+   shapes: [snakeEmoji],
+   scalar: 2
+};
+
+function throwConfetti() {
+   confetti({
+      ...defaults,
+      particleCount: 30
+   });
+
+   confetti({
+      ...defaults,
+      particleCount: 5,
+      flat: true
+   });
+
+   confetti({
+      ...defaults,
+      particleCount: 15,
+      scalar: 1,
+      shapes: ['circle'] // Mixing snake emojis with circles
+   });
+
+   // Fire off confetti at intervals
+   setTimeout(() => confetti({ ...defaults, particleCount: 20 }), 100);
+   setTimeout(() => confetti({ ...defaults, particleCount: 20 }), 200);
+   setTimeout(() => confetti({ ...defaults, particleCount: 20 }), 300);
 }
