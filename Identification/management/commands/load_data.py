@@ -22,6 +22,7 @@ class Command(BaseCommand):
 
     def add_states(self):
         for name, abbreviation in states:
+            abbreviation = abbreviation.upper()
             State.objects.get_or_create(name=name, abbreviation=abbreviation)
         self.stdout.write(self.style.SUCCESS("All states have been added."))
 
@@ -45,9 +46,10 @@ class Command(BaseCommand):
                 }
             )
             for state_abbr in snake['states']:
-                state_obj, created = State.objects.get_or_create(
-                    abbreviation=state_abbr,
-                    defaults={'name': state_abbr}  
-                )
+               state_abbr = state_abbr.upper()  # Ensure abbreviation is uppercase
+            try:
+                state_obj = State.objects.get(abbreviation=state_abbr)
                 snake_obj.states.add(state_obj)
+            except State.DoesNotExist:
+                print(f"State with abbreviation {state_abbr} does not exist.")
             snake_obj.save()
