@@ -20,6 +20,8 @@ def select_state(request):
             species = SnakeSpecies.objects.all()
 
     states = State.objects.all()
+    species_count = species.count()
+
 
     species_data = []
     for s in species:
@@ -30,11 +32,14 @@ def select_state(request):
             'venomous': s.venomous,
             'image_path': s.image_path,
         })
+    
+    
 
     context = {
         'states': states,
         'species': species_data,
         'selected_state_name': selected_state_name,
+        'species_count': species_count,
     }
 
     return render(request, 'id.html', context)

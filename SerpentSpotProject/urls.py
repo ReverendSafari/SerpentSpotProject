@@ -29,4 +29,5 @@ urlpatterns = [
     path('Leaderboard/', include('Leaderboard.urls')), # Leaderboard
     path('snakemap/', include('snakemap.urls')), # Snakemap
     path('Home/', include('Home.urls')), # Home
+    path('faq/', include('faq.urls')), # FAQ
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # Media URL
