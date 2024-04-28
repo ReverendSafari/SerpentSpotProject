@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 import environ
+from dj_database_url import parse as dburl
+
 
 env = environ.Env()
 # Reading .env file
@@ -24,6 +26,18 @@ GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Default configuration for SQLite
+default_dburl = f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+
+# Get DATABASE_URL environment variable, or use SQLite if it's not set
+DATABASE_URL = os.getenv('DATABASE_URL', default_dburl)
+
+# Use dj_database_url to parse the DATABASE_URL into Django's required database config format
+DATABASES = {
+    'default': dburl(DATABASE_URL)
+}
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -96,16 +110,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'SerpentSpotProject.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
