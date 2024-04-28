@@ -10,14 +10,12 @@ class Command(BaseCommand):
         parser.add_argument('--clear', action='store_true', help='Clears all existing data before loading new data')
 
     def handle(self, *args, **options):
-        # Hardcoded file path
-        file_path = 'Identification/snaketext.txt'
+        file_path = 'Identification/snaketext.txt'  # Ensure correct path formatting
         if options['clear']:
             self.clear_states()
             self.clear_species()
 
-        self.stdout.write(self.style.SUCCESS('Starting data import...'))
-        snakes_data = parse_snake_data(file_path)  # Parse snake data from the hardcoded file
+        snakes_data = parse_snake_data(file_path)  # Call within command to avoid top-level execution issues
         self.add_states()
         self.load_snakes_to_db(snakes_data)
         self.stdout.write(self.style.SUCCESS('All data has been successfully imported.'))

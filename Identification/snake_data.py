@@ -31,7 +31,3 @@ def parse_snake_data(file_path):
 
     return snakes_list
 
-# Usage
-file_path = 'Identification\snaketext.txt'
-snakes_data = parse_snake_data(file_path)
-print(snakes_data)
