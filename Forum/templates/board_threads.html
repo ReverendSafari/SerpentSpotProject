@@ -56,6 +56,11 @@
         flex-direction: column;
         align-items: flex-start; /* Aligns items to the left when stacked */
     }
+
+    .threads {
+      margin-bottom: 60px;
+    }
+
    }
 
     .collapse {
@@ -109,7 +114,7 @@
          <h5>Create New Thread</h5>
       </div>
       <div class="card-body">
-         <form method="POST" action="{% url 'new_thread' board.id %}" enctype="multipart/form-data">
+         <form method="POST" action="{% url 'new_thread' board.id %}" enctype="multipart/form-data" onsubmit="return validateForm()">
             {% csrf_token %}
             <div class="mb-3">
                <label for="id_title" class="form-label">Thread Title</label>
@@ -169,6 +174,8 @@
     {% endfor %}
 </div>
 
+<div class="spacerdiv"></div>
+
 <script>
    document.addEventListener("DOMContentLoaded", function () {
       var messageInput = document.getElementById('id_message');  // Ensure the ID matches your form field's ID
@@ -179,6 +186,20 @@
          }
       });
    });
+</script>
+
+<script>
+   function validateForm() {
+      var title = document.getElementById('id_title').value.trim();
+      var message = document.getElementById('id_message').value.trim();
+      console.log("Validating title and message: ", title, message); // Logs the trimmed values for debugging
+
+      if (title === "" || message === "") {
+         alert("Both title and message cannot be empty or just whitespace.");
+         return false; // Prevent form submission
+      }
+      return true; // Allow form submission if validation passes
+   }
 </script>
 
 {% endblock %}

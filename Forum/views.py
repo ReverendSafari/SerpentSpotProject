@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Board, Thread, Post, User
+from .models import Board, PostImage, Thread, Post, User
 from .forms import NewThreadForm, PostForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseNotAllowed, JsonResponse
@@ -71,3 +71,49 @@ def delete_thread(request, thread_id):
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False}, status=400)
+    
+@login_required
+def delete_post(request, thread_id, post_id):
+    post = get_object_or_404(Post, pk=post_id, created_by=request.user, thread_id=thread_id)  # Validates post belongs to thread
+    if request.method == 'POST':
+        post.delete()
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False}, status=400)
+    
+@login_required
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id, created_by=request.user)  # Ensure only the creator can edit
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            images_to_delete = request.POST.getlist('images_to_delete[]')  # Fetch the list of image ids marked for deletion
+            for image_id in images_to_delete:
+                image = PostImage.objects.get(id=image_id)
+                image.delete()  # Delete the selected images
+
+            form.save()
+            messages.success(request, 'Post updated successfully!')
+            return redirect('thread_posts', thread_id=post.thread.id)
+        else:
+            messages.error(request, 'Error updating the post.')
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'edit_post.html', {'form': form, 'post': post})
+
+@login_required
+def edit_thread(request, thread_id):
+    thread = get_object_or_404(Thread, pk=thread_id, starter=request.user)
+    initial_post = thread.posts.first()  # Assuming the first post is the main thread post
+    if request.method == 'POST':
+        thread.title = request.POST.get('title')
+        initial_post.message = request.POST.get('message')
+        images_to_delete = request.POST.getlist('images_to_delete[]')
+        for image_id in images_to_delete:
+            image = PostImage.objects.get(id=image_id, post=initial_post)
+            image.delete()
+        thread.save()
+        initial_post.save()
+        messages.success(request, 'Thread updated successfully!')
+        return redirect('thread_posts', thread_id=thread.id)
+    return render(request, 'edit_thread.html', {'thread': thread})
