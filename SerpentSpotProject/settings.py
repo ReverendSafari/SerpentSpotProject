@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 import environ
-from dj_database_url import parse as dburl
+from dj-database-url import parse as dburl
 
 
 env = environ.Env()
