@@ -1,3 +1,4 @@
 
 SerpentSpotProject/.env
 *.pyc 
+__pycache__/
