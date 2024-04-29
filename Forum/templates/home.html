@@ -25,9 +25,9 @@
 </style>
 
 {% if user.is_authenticated %}
-   <h1 style="text-align: center; color: white;">Welcome back, {{request.user.username}}</h1>
+   <h1 style="text-align: center; color: white;"><strong>Welcome back, {{request.user.username}}</strong></h1>
 {% else %}
-   <h1 style="text-align: center; color: white;">Welcome, guest user!</h1>
+   <h1 style="text-align: center; color: white;"><strong>Welcome, guest user!</strong></h1>
 {% endif %}
 <hr style="color: white;">
 
@@ -41,7 +41,7 @@
          <p class="card-text" style="text-align: center;">Below are the boards available on the forum. You must be <a href="{% url 'login' %}">logged in </a> to post threads or replies.</p>
       {% endif %}
    </div>
-   <div class="boards mt-4 mb-3">
+   <div class="boards mt-5 mb-3">
       <div class="row mx-3">
          {% for board in boards %}
             <div class="col-md-4">
@@ -59,5 +59,31 @@
          {% endfor %}
       </div>
    </div>
+
+   <h3 class="card-title mt-5 mb-3 mx-5" style="text-align: left;">Recent forum posts: </h3>
+   <hr>
+   <!-- display 5 most recent threads -->
+   {% if threads %}
+      {% for thread in threads %}
+         <div class="card board shadow-sm mb-4 mx-5 mt-3" style="border-radius: 20px; overflow: hidden;">
+            <a href="{% url 'thread_posts' thread.id %}" class="link-success text-decoration-none">
+               <div class="card-body" style="background-color: whitesmoke;">
+                  <h4>{{ thread.title }}</h4>
+                  <div class="d-flex align-items-center mt-3">
+                     <!-- Display profile picture if available -->
+                     {% if thread.starter.userprofile.profile_pic %}
+                        <img src="{{ MEDIA_URL }}{{ thread.starter.userprofile.profile_pic.url }}" alt="Profile Image" style="width: 20px; height: 20px; border-radius: 15px; margin-right: 10px;">
+                     {% endif %}
+                     <p class="card-text" style="color: black;">
+                        Posted by {{ thread.starter.username }} on {{ thread.created_at|date:"N j, Y, P" }}
+                     </p>
+                  </div>
+               </div>
+            </a>
+         </div>
+         <HR>
+      {% endfor %}
+   {% endif %}
 </div>
+
 {% endblock %}

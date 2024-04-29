@@ -4,6 +4,10 @@
 
 {% block extra_css %}
 
+<!-- select2 stylesheet -->
+<link href="https://cdn.jsdelivr.net/npm/select2/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- css styles for this page-->
 <style>
     /* Background image: URL I include this to get rid of the white border from the blur */
     body {
@@ -35,6 +39,27 @@
         transform: scale(1.02);
         transition: 0.3s;
     }
+
+
+/* media tags grabbed from id page to style dropdown on mobile */
+
+    @media (min-width: 768px) {
+        .form-control-wrap {
+            /* Allows the select box to grow and fill the space */
+            margin-right: 10rem;
+            margin-left: 10rem;
+        }
+        #page-title {
+            margin-bottom: 4rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        #page-title {
+            margin-bottom: 2rem;
+        }
+    }
+
 </style>
 
 {% endblock extra_css %}
@@ -48,30 +73,50 @@
 <!-- section for posting observations -->
 <div class="container my-3" style="overflow: hidden;">
     <!-- if its your profile render the form to make a post, otherwise were just looking -->
-        <div class="card" style="border-radius: 20px;">
-            {% if user == request.user %}
-            <div class="alert alert-success alert-dismissible fade show text-center" role="alert" style="border-top-left-radius: 20px; border-top-right-radius: 20px; overflow:hidden">
-                <!-- welcome text up at the top -->
-                <strong>Welcome!</strong> We're excited to see what you've found!
-                <hr>
-                - <strong>Select a species</strong> from the dropdown menu to begin.
-                <strong>Add a quick note</strong> and feel free to add a photo of your observation!
-            </div>
-            <!-- actual form for rendering -->
-            <form method="post" enctype="multipart/form-data"">
-                {% csrf_token %}
-                <div class="card mt-2 mb-3 mx-3 shadow-sm" style="border-radius: 20px; background-color: whitesmoke;">
-                    <div class="mx-3 mt-3 mb-3">
-                        <input type="hidden" name="latitude" id="latitude">
-                        <input type="hidden" name="longitude" id="longitude">
-                        {{ form.as_p }}
+    <div class="card" style="border-radius: 20px;">
+        {% if user == request.user %}
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert" style="border-top-left-radius: 20px; border-top-right-radius: 20px; overflow:hidden">
+            <!-- welcome text up at the top -->
+            <strong>Welcome!</strong> We're excited to see what you've found!
+            <hr>
+            - <strong>Select a species</strong> from the dropdown menu to begin.
+            <strong>Add a quick note</strong> and feel free to add a photo of your observation!
+        </div>
+        <!-- actual form for rendering -->
+        <form method="post" enctype="multipart/form-data"">
+            {% csrf_token %}
+            <div class="card mt-2 mb-3 mx-3 shadow-sm" style="border-radius: 20px; background-color: whitesmoke;">
+
+                <!-- species dropdown -->
+                <div class="mx-3 mt-3 mb-3">
+                    <select name="species" id="species-select" class="form-select mx-3">
+                        <option value="" selected disabled>Select a species</option>
+                        {% for species in species %}
+                            <option value="{{ species.id }}">{{ species.common_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>                
+                
+
+                <!-- not sure? text with link to id page -->
+                <p class="text-muted mx-4">Not sure? <a href="{% url 'id_view' %}">Go to ID page</a> to identify a species.</p>
+
+                <div class="mx-3 mt-3 mb-3">
+                    <!-- observation text field -->
+                    <div class="input-group mb-3">
+                        <textarea name="observation" class="form-control" placeholder="Add a quick note..." style="border-radius: 20px;"></textarea>
+                    </div>
+                    <!-- image upload -->
+                    <div class="input-group mb-3">
+                        <input type="file" name="observation_pic" class="form-control" style="border-radius: 20px;">
+                    </div>
                     <!-- post button -->
-                    <div class="input-group-append">
-                        <button class="btn btn-success rounded-pill mx-3 mb-3 shadow-sm" type="submit">Post Observation</button>
+                    <div class="input-group-append mb-2">
+                        <button class="btn btn-success rounded-pill shadow-sm" type="submit">Post Observation</button>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     {% endif %}
     
     {% if user != request.user  %}
@@ -94,6 +139,7 @@
                 <div class="col-md-6">
                     <div class="card mb-3 shadow-sm obsitem" style="border-radius: 20px; overflow: hidden; background-color: whitesmoke;">
                         <div class="card-body">
+                            <!-- title information -->
                             <p class="card-title h4 mx-3"><a href="{% url 'id_view' %}">{{ observation.species.common_name }}</a></p>
                             <h6 class="card-subtitle mb-2 text-muted mx-3">{{ observation.date|date:"F d, Y H:i" }}</h6>
                             <div class="card" style="border-radius: 20px; overflow: hidden;">
@@ -128,5 +174,23 @@
         </div>
     </div>
 </div>
+
+{% block extra_js %}
+<!-- select2 dependencies -->>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2/dist/js/select2.min.js"></script>
+
+<!-- Select 2 for searchbar in species dropdown-->
+<script>
+    $(document).ready(function() {
+        /* grab dropdown and hook to it  */
+        $('#species-select').select2({
+            placeholder: "Select a snake",
+            allowClear: true
+        });
+    });
+</script>
+
+{% endblock extra_js %}
 
 {% endblock content %}

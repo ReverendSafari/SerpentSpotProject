@@ -47,6 +47,13 @@
         .btn-primary {
             height: 38px; /* Ensure the button height is set */
         }
+
+        #search-bar {
+            max-width: 73.4%; /* this is perfectly inline with the rest, trust. */
+            margin: auto; /* center it */
+            border-top-right-radius: 20px;
+        }
+
         @media (min-width: 768px) {
             .form-control-wrap {
                 /* Allows the select box to grow and fill the space */
@@ -73,18 +80,23 @@
 <h1 id="page-title" class="display-1 text-center">Snakes of {{ selected_state_name }}</h1>
 <div class="container">
     <div class="row justify-content-center mb-3">
+        <!-- search bar -->
+        <input type="text" id="search-bar" class="form-control mb-4 rounded-pill shadow-sm" placeholder="Search for snakes..." value="{{ search_term }}">
+        <!-- state dropdown and sorting -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
             <form method="GET" action="" class="d-flex justify-content-center mb-3 mb-md-0">
                 <div class="form-control-wrap">
                     <select name="state" class="form-select" id="state-select">
+                        <!-- state selection -->
                         <option value="" selected disabled>Select a state</option>
                         {% for state in states %}
                             <option value="{{ state.id }}">{{ state.name }}</option>
                         {% endfor %}
                     </select>
-                    <button type="submit" class="btn btn-primary">SEARCH</button>
+                    <button type="submit" class="btn btn-primary" style="border-top-right-radius: 20px; border-bottom-right-radius: 20px;">SEARCH</button>
                 </div>
             </form>
+            <!-- sorting options -->
             <div class="form-control-wrap">
                 <select class="form-select" id="sort-select">
                     <option value="" selected disabled>Sort by</option>
@@ -95,16 +107,26 @@
         </div>
     </div>
 
+    <!-- render snake cards -->
     <div class="row justify-content-center" id="species-container">
         {% for species in species %}
-            <div class="col-12 snake-info d-flex justify-content-center">
-                <div class="card mb-5 mt-5 w-75">
+            <div class="col-12 d-flex justify-content-center">
+                <div class="card snake-info mt-5 w-75">
                     <img class="card-img-top" src="{% static species.image_path %}" alt="{{ species.common_name }}">
                     <div class="card-body">
                         <h5 class="card-title h1">{{ species.common_name }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted h4">{{ species.scientific_name }}</h6>
                         <p class="{{ species.venomous|yesno:'venomous,' }}">{{ species.venomous|yesno:'(VENOMOUS),(NON-VENOMOUS)' }}</p>
                         <p class="card-text fs-5">{{ species.description }}</p>
+                        <hr>
+                        <p class="card-text fs-5">
+                            <Strong>States:</Strong> 
+                            {% for state in species.states.all %}
+                                {{ state.name }}{% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                No states found.
+                            {% endfor %}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -113,32 +135,58 @@
 </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('#state-select').select2({
-                placeholder: "Select a state",
+<script>
+    $(document).ready(function() {
+        // Trigger the search on page load if there's a pre-filled value
+        var initialSearchTerm = $('#search-bar').val();
+        if (initialSearchTerm) {
+            $('#search-bar').keyup();
+        }
+
+        // Initialize Select2 for state dropdown
+        $('#state-select').select2({
+            // Placeholder text
+            placeholder: "Select a state",
+            allowClear: true});
+
+        // Live search feature
+        $('#search-bar').on('keyup', function() {
+            // Get the search term
+            var searchTerm = $(this).val().toLowerCase();
+
+            // Loop through each snake card and show/hide based on search term
+            $('#species-container .snake-info').each(function() {
+                var snakeName = $(this).find('.card-title').text().toLowerCase();
+                if (snakeName.indexOf(searchTerm) > -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
             });
+        });
 
-    $('#sort-select').change(function() {
-        var sortOption = $(this).val();
-
-        var species = $('.snake-info').sort(function(a, b) {
+        // Sort feature
+        $('#sort-select').change(function() {
+            // Get the selected sorting option
+            var sortOption = $(this).val();
+            var species = $('.snake-info').sort(function(a, b) {
             var nameA = $(a).find('.card-title').text().toUpperCase();
             var nameB = $(b).find('.card-title').text().toUpperCase();
-
+            
+            // Sort alphabetically
             if (sortOption === 'alphabetical_asc') {
                 return nameA.localeCompare(nameB);
             } else if (sortOption === 'alphabetical_desc') {
                 return nameB.localeCompare(nameA);
             }
         });
-
         $('#species-container').html(species);
+        });
     });
-});
 
-    </script>
+</script>
+
 {% endblock content %}
