@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+   .faq-link {
+      color: green;
+      text-decoration: none;
+      font-size: 1.25rem;
+   }
+
+   .faq-link:hover {
+      text-decoration: underline;
+   }
+
+   .faqhead {
+      color: #198754;
+   }
+
+   /* Center the FAQ items container */
+   .faq-items {
+      display: flex;
+      flex-wrap: wrap;
+
+      /* This centers the FAQ items in their container */
+   }
+
+   .faq-item {
+      margin-bottom: 0.5rem;
+      /* Add some space between the questions */
+   }
+</style>
+
+<div class="container mt-4">
+   <h1 class="text-center mb-4 faqhead">FAQ / HELP</h1>
+   <div class="faq-items mt-5">
+      {% for faq in faqs %}
+      <div class="col-12 col-md-4 mb-3 faq-item">
+         <a href="{% url 'faq_detail' slug=faq.slug %}" class="faq-link d-block">> {{ faq.question }}</a>
+      </div>
+      {% endfor %}
+   </div>
+</div>
+{% endblock %}
