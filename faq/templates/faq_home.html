@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+   .faq-link {
+      color: green;
+      text-decoration: none;
+      font-size: 1.25rem;
+   }
+
+   .faq-link:hover {
+      text-decoration: underline;
+   }
+   .faqhead {
+      color: #198754;
+   }
+   
+</style>
+
+<div class="container mt-4">
+   <h1 class="text-center mb-4 faqhead">FAQ / HELP</h1>
+   <div class="row">
+      {% for faq in faqs %}
+      <!-- Each FAQ item takes full width on xs screens, and one-third on md screens and up -->
+      <div class="col-12 col-md-4 mb-3">
+         <a href="{% url 'faq_detail' slug=faq.slug %}" class="faq-link d-block">> {{ faq.question }}</a>
+      </div>
+      {% endfor %}
+   </div>
+</div>
+{% endblock %}
