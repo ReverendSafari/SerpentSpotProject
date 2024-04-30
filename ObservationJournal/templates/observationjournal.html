@@ -126,7 +126,7 @@
     <!-- if there are observations render the header -->
     {% if observations %}
         {% if user == request.user %}
-        <h1 class="display-4 text-center mb-3"><strong>Your Observation Journal</strong></h1>
+        <h1 class="display-4 text-center mb-5"><strong>Your Observation Journal ({{ observations|length }})</strong></h1>
         {% else %}
         <h1 class="display-4 text-center mb-5"><strong>{{ user.username }}'s Observation Journal</strong></h1>
         {% endif %}
@@ -140,7 +140,7 @@
                     <div class="card mb-3 shadow-sm obsitem" style="border-radius: 20px; overflow: hidden; background-color: whitesmoke;">
                         <div class="card-body">
                             <!-- title information -->
-                            <p class="card-title h4 mx-3"><a href="{% url 'id_view' %}">{{ observation.species.common_name }}</a></p>
+                            <p class="card-title h4 mx-3"><a href="{% url 'id_view' %}?search={{ observation.species.common_name|urlencode }}">{{ observation.species.common_name }}</a></p>
                             <h6 class="card-subtitle mb-2 text-muted mx-3">{{ observation.date|date:"F d, Y H:i" }}</h6>
                             <div class="card" style="border-radius: 20px; overflow: hidden;">
                                 <div class="mx-3 mt-3 mb-3">

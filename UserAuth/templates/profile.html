@@ -97,6 +97,24 @@
                                 <p><strong>Bio:</strong> {{ user.userprofile.bio }}</p>
                             </div>
                         </div>
+                        <!-- Displaying favorite species -->
+                        {% if user.userprofile.favorite_species %}
+                        <div class="card mx-3 mb-3" style="border-radius: 20px; overflow: hidden;">
+                            <div class="mx-3 mt-3 mb-3">
+                                <p><strong>Favorite Snake:</strong> {{ userprofile.favorite_species.common_name }}</p> <!-- Display each favorite species -->
+                                <hr>
+                                <p><Strong>Scientific Name: </Strong> {{ userprofile.favorite_species.scientific_name }}</p>
+                                <p><strong>Venomous: </strong> {{ userprofile.favorite_species.venomous }}</p>
+                                <img src="{% static userprofile.favorite_species.image_path %}" class="container-fluid">
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="card mx-3 mt-3 mb-3" style="border-radius: 20px; overflow: hidden;">
+                            <div class="mx-3 mt-3 mb-3">
+                                <p><strong>Favorite Snake:</strong> No favorite species selected.</p>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <!-- Column for recent forum posts -->

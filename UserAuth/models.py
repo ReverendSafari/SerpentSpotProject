@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from Identification.models import SnakeSpecies
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) # Link the user profile to a user model instance
     
@@ -11,7 +13,7 @@ class UserProfile(models.Model):
     profile_pic = models.ImageField(upload_to='profile_pics/', default='profile_pics/default.jpg' ,null=True, blank=True) # User profile picture
     bio = models.TextField(null=True, blank=True) # User bio
     observations = models.IntegerField(default=0) # User observation count 
-
+    favorite_species = models.ForeignKey(SnakeSpecies, on_delete=models.SET_NULL, null=True, blank=True) # User's favorite snake species
     def __str__(self):
         return self.user.username
     
