@@ -4,6 +4,9 @@
 
 {% block extra_css %}
 
+<!-- select2 stylesheet -->
+<link href="https://cdn.jsdelivr.net/npm/select2/dist/css/select2.min.css" rel="stylesheet" />
+
 <style>
     /* Background image: URL I include this to get rid of the white border from the blur */
     body {
@@ -89,6 +92,18 @@
                             <label for="bio" class="form-label"><strong>Bio:</strong></label>
                             <textarea name="bio" id="bio" class="form-control editable shadow-sm bio" style="border-radius: 20px;" rows="3" placeholder="Tell us about yourself">{{ user.userprofile.bio }}</textarea>
                         </div>
+                        <!-- Favorite species dropdown -->
+                        <div class="form-group mb-3">
+                            <label for="species-select">Favorite Snake Species:</label>
+                            <select name="favorite_species" id="species-select" class="form-select">
+                                <option value="" selected disabled>Select a species</option>
+                                {% for species in species %}
+                                    <option value="{{ species.id }}" {% if species == user.userprofile.favorite_species %}selected{% endif %}>
+                                        {{ species.common_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
                         <!-- Submit button for profile updates -->
                         <button type="submit" class="btn btn-success rounded-pill">Save Changes</button>
                         <a href="{% url 'profile' %}" class="btn btn-outline-primary rounded-pill mx-3">Cancel</a>
@@ -98,5 +113,23 @@
         </div>
     </div>
 </div>
+
+{% block extra_js %}
+
+<!-- select 2 dependencies -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2/dist/js/select2.min.js"></script>
+
+<!-- search for species in dropdown with select 2 -->
+<script>
+    $(document).ready(function() {
+        $('#species-select').select2({
+            placeholder: "Select a species",
+            allowClear: true
+        });
+    });
+</script>
+
+{% endblock %}
 
 {% endblock content %}

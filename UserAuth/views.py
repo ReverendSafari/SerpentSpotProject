@@ -13,6 +13,7 @@ from .models import UserProfile
 from .forms import UserProfileForm, UserRegisterForm
 
 from ObservationJournal.models import UserObservation
+from Identification.models import SnakeSpecies
 
 from Forum.models import Post;
 
@@ -126,18 +127,19 @@ def edit_profile_view(request):
     Returns:
         HttpResponse: The HTTP response object containing the rendered 'editprofile.html' template.
     """
-    if request.method == 'POST':
-        # Assuming you have a form class `UserProfileForm` for handling the profile data
-        form = UserProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')  # Redirect to the profile page or wherever appropriate
+    user_profile = request.user.userprofile # Get the user profile
+    species = SnakeSpecies.objects.all()  # snake species for favorites 
+    form = UserProfileForm(request.POST or None, request.FILES or None, instance=user_profile)
 
-    else:
-        # Display the form with the current profile data
-        form = UserProfileForm(instance=request.user.userprofile)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('profile')  # Redirect to the profile page
 
-    return render(request, 'editprofile.html', {'form': form})
+    context = { # Create the context dictionary
+        'form': form, # Add the form to the context
+        'species': species, # Add the species to the context
+    }
+    return render(request, 'editprofile.html', context)
 
 
 def logout_view(request):

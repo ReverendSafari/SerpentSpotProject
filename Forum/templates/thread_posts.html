@@ -46,6 +46,8 @@
    
    .delbtn {
       padding: 8px 12px; /* Padding around the text and icon */
+      border-radius: 20px;
+      overflow: hidden;
 
    }
 </style>
@@ -63,7 +65,7 @@
 <!-- Conditional Delete Button and Modal -->
 {% if user.is_authenticated and thread.starter == user %}
 <!-- Button to trigger modal -->
-<button type="button" class="btn btn-danger float-end btn-sm delbtn" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+<button type="button" class="btn btn-outline-danger float-end btn-sm delbtn" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
    Delete Thread
 </button>
 
@@ -109,8 +111,8 @@
                </div>
             </div>
             <div class="modal-footer">
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-               <button type="submit" class="btn btn-success">Save Changes</button>
+               <button type="button" class="btn btn-secondary" style="border-radius: 20px; overflow: hidden;" data-bs-dismiss="modal">Cancel</button>
+               <button type="submit" class="btn btn-primary" style="border-radius: 20px; overflow: hidden;">Save Changes</button>
             </div>
          </form>
       </div>
@@ -131,8 +133,8 @@
             Are you sure you want to delete this thread?
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-danger" id="deleteThread">Delete Thread</button>
+            <button type="button" class="btn btn-primary rounded-pill shadow-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-outline-danger rounded-pill shadow-sm" id="deleteThread">Delete Thread</button>
          </div>
       </div>
    </div>
@@ -186,12 +188,12 @@
          <div class="ms-auto">
 
          <!-- New Edit Button -->
-         <button type="button" class="replybtn btn btn-primary btn-sm mb-1 mb-sm-0" data-bs-toggle="modal"
+         <button type="button" class="replybtn btn btn-primary rounded-pill btn-sm mb-1 mb-sm-0" data-bs-toggle="modal"
             data-bs-target="#editPostModal{{ post.id }}">Edit</button>
 
 
          <!-- Delete Button for Each Post/Reply -->
-         <button type="button" class="replybtn btn btn-danger btn-sm" data-bs-toggle="modal"
+         <button type="button" class="replybtn btn btn-outline-danger rounded-pill btn-sm" data-bs-toggle="modal"
             data-bs-target="#deletePostModal{{ post.id }}">Delete</button>
          
          </div>

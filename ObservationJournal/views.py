@@ -8,8 +8,8 @@ from Identification.models import SnakeSpecies, State
 from .models import UserObservation
 from .forms import ObservationForm
 
-# Create your views here.
 def journal_view(request, username=None):
+    # Get the user object based on the username in the URL
     if username:
         user = get_object_or_404(User, username=username)
     else:
@@ -28,6 +28,7 @@ def journal_view(request, username=None):
             observation.user.observations += 1  # Increment observation count 
             observation.user.save()
             return redirect('journal_view')  # Redirect to avoid re-posting
+        
     else: # If the form has not been submitted
         form = ObservationForm() # Create an empty form
 
