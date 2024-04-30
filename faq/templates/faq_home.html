@@ -34,7 +34,7 @@
    <h1 class="text-center mb-4 faqhead">FAQ / HELP</h1>
    <div class="faq-items mt-5">
       {% for faq in faqs %}
-      <div class="col-12 col-md-4 mb-3 faq-item">
+      <div class="col-12 col-md-4 mb-3 ml-3 faq-item">
          <a href="{% url 'faq_detail' slug=faq.slug %}" class="faq-link d-block">> {{ faq.question }}</a>
       </div>
       {% endfor %}

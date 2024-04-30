@@ -32,12 +32,13 @@ map.panTo(latLng);
    }
 
 function fetchData() {
-         var submitButton = document.querySelector('button[type="submit"]');
-var lat = document.getElementById('latitude').value;
-var lng = document.getElementById('longitude').value;
-var radius = document.getElementById('radius').value;
-var dateRange = document.getElementById('dateRange').value;  // Get the selected date range
-var url = `/snakemap/map_view?latitude=${lat}&longitude=${lng}&radius=${radius}&date_range=${dateRange}`;
+      var submitButton = document.querySelector('button[type="submit"]');
+      var lat = document.getElementById('latitude').value;
+      var lng = document.getElementById('longitude').value;
+      var radiusInMiles = document.getElementById('radius').value; // Get the radius in miles
+      var radiusInKm = radiusInMiles * 1.60934; // Convert radius to kilometers
+      var dateRange = document.getElementById('dateRange').value;  // Get the selected date range
+      var url = `/snakemap/map_view?latitude=${lat}&longitude=${lng}&radius=${radiusInKm}&date_range=${dateRange}`;
 
 // Disable the button and change the text to show loading spinner
 submitButton.innerHTML = 'Loading... <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
@@ -47,7 +48,7 @@ fetch(url)
    .then(response => response.json())
    .then(data => {
    console.log('Data received:', data);
-   drawSearchArea(new google.maps.LatLng(lat, lng), radius);
+   drawSearchArea(new google.maps.LatLng(lat, lng), radiusInKm);
 
    var observationsCount = data.observations.length;
    var observationCountElement = document.getElementById('observationCount');
