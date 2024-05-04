@@ -1,20 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render 
 from django.db.models import Count
 from django.utils.timezone import now
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 
 from UserAuth.models import UserProfile
 from ObservationJournal.models import UserObservation
 
 @login_required
 def leaderboard_view(request):
+    """
+    Renders the leaderboard view with information about the top 10 users and the current user's ranking.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: The rendered leaderboard view.
+
+    """
     today = now() # Get the current date and time
     start_of_month = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0) # Get the first day of the current month
 
     # Retrieve the current month's observations, grouped by user and counted
-    month_observations = UserObservation.objects.filter(
-        date__gte=start_of_month,
+    month_observations = UserObservation.objects.filter( 
+        date__gte=start_of_month, 
         date__lt=today
     ).values('user').annotate(observation_count=Count('id')).order_by('-observation_count')
 

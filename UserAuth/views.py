@@ -1,19 +1,19 @@
-from django import forms
-
-from django.shortcuts import get_object_or_404, redirect, render
+# Import the necessary functions from Django
+from django.shortcuts import get_object_or_404, redirect, render 
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm 
 from django.contrib.auth.models import User
-from django.contrib import messages
-from django.db import transaction
-from django.contrib.auth.decorators import login_required
 
-from .models import UserProfile
+from django.contrib import messages # Import the messages module
+from django.db import transaction # Import the transaction module
+from django.contrib.auth.decorators import login_required # Import the login_required decorator
 
-from .forms import UserProfileForm, UserRegisterForm
+from .models import UserProfile # Import the UserProfile model
 
-from ObservationJournal.models import UserObservation
-from Identification.models import SnakeSpecies
+from .forms import UserProfileForm, UserRegisterForm # Import the UserProfileForm and UserRegisterForm forms
+
+from ObservationJournal.models import UserObservation # Import the UserObservation model
+from Identification.models import SnakeSpecies # Import the SnakeSpecies model
 
 from Forum.models import Post;
 
