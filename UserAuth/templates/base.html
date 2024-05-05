@@ -20,9 +20,10 @@
             transform: scale(1.01);
             transition: 0.3s;
         }
-
         .nav-link:hover {
             background-color: rgb(233, 233, 233);
+            transform: scale(1.06);
+            transition: 0.3s;
         }
         .expand:hover{
             transform: scale(1.06);
@@ -44,6 +45,13 @@
             background-color: #f8f9fa; /* Light background color on hover, adjust as needed */
         }
 
+        .nav-link.active {
+            color: #ffffff !important; /* White text */
+            background-color: rgb(23, 155, 23); /* Bootstrap primary color */
+            border-color: darkgrey; /* Matching border */
+            text-align: center;
+        }
+
     </style>
 
     {% load static %}
@@ -62,26 +70,28 @@
                 </button>
                 <div class="collapse navbar-collapse ml-4"  id="navbarNavDropdown">
                     <ul class="navbar-nav">
+                        <hr>
                         <!-- Education items -->
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="{% url 'education_view' %}">Educator 📚</a>
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'education_view' %}active{% endif %}" href="{% url 'education_view' %}">Educator 📚</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="{% url 'id_view' %}">Species ID 🔍</a>
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'id_view' %}active{% endif %}" href="{% url 'id_view' %}">Species ID 🔍</a>
                         </li>
                         <hr>
                         <!-- Community items -->
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="{% url 'home' %}">Forum 💬</a>
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Forum 💬</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="{% url 'map_view' %}">SnakesNearU 📍</a>
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'map_view' %}active{% endif %}" href="{% url 'map_view' %}">SnakesNearU 📍</a>
                         </li>
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="{% url 'leaderboard_view' %}">Leaderboard 🥇</a>
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'leaderboard_view' %}active{% endif %}" href="{% url 'leaderboard_view' %}">Leaderboard 🥇</a>
                         </li>
                         <hr>
                     </ul>
+                    
                     <!-- check for logged in user otherwise why would there be a profile -->
                     {% if user.is_authenticated %}
                     <!-- Right side of navbar -->

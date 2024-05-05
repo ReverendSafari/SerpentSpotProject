@@ -69,6 +69,9 @@
                 <div class="col">
                     <h2 class="card-title">
                         {{ user.username | slice:":15" }}
+                        {% if user.is_superuser %}
+                            <span class="badge bg-danger">SERPENT DEV</span>
+                        {% endif %}
                         <!-- If they have observations render a link to leaderboard -->
                         {% if recentobservations %}
                         <a href="{% url 'leaderboard_view' %}" class="ms-2">
@@ -77,6 +80,7 @@
                         {% endif %}
                     </h2>
                     <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Bio:</strong> {{ user.userprofile.bio }}</p>
                 </div>
             </div>
             <!-- if its your profile then you can edit it -->
@@ -94,7 +98,6 @@
                             <hr>
                             <div class="mx-1">
                                 <p><strong>Lifetime observations:</strong> {{ user.userprofile.observations }}</p>
-                                <p><strong>Bio:</strong> {{ user.userprofile.bio }}</p>
                             </div>
                         </div>
                         <!-- Displaying favorite species -->

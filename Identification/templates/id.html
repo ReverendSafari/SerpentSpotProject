@@ -111,7 +111,7 @@
     <div class="row justify-content-center" id="species-container">
         {% for species in species %}
             <div class="col-12 d-flex justify-content-center">
-                <div class="card snake-info mt-5 w-75">
+                <div class="card snake-info mt-5 w-75 shadow" style="border-radius: 20px; overflow: hidden;">
                     <img class="card-img-top" src="{% static species.image_path %}" alt="{{ species.common_name }}">
                     <div class="card-body">
                         <h5 class="card-title h1">{{ species.common_name }}</h5>
