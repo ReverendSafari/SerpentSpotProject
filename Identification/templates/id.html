@@ -77,8 +77,17 @@
 
 {% block content %}
 
+<!-- this is a condition that changes between state name and snake name based on parameter conditions in the view -->
+{% if selected_state_name and species_count > 1 %}
 <h1 id="page-title" class="display-1 text-center">Snakes of {{ selected_state_name }}</h1>
-<div class="container">
+{% else %}
+    <!-- this loop will run exactly once because our first case says this one only happens great than 1-->
+    {% for snake in species %}
+        <!-- this is the snake name, we run one loop and grab its name since its alone in the species list if searched -->
+        <h1 id="page-title" class="display-1 text-center">{{snake.common_name}} </h1>
+    {% endfor %}
+{% endif %}
+<div class="container mb-5">
     <div class="row justify-content-center mb-3">
         <!-- search bar -->
         <input type="text" id="search-bar" class="form-control mb-4 rounded-pill shadow-sm" placeholder="Search for snakes..." value="{{ search_term }}">
@@ -107,16 +116,19 @@
         </div>
     </div>
 
-   <div class="text-center mt-3">
-      <p id="species-count" class="h4 text-muted">Number of species found in {{ selected_state_name }}: {{ species_count }}</p>
-   </div>
+    {% if species_count > 1 %}
+    <!-- species counter -->
+    <div class="text-center mt-3">
+        <p id="species-count" class="h4 text-muted">Number of species found in {{ selected_state_name }}: {{ species_count }}</p>
+    </div>
+    {% endif %}
 
 
     <!-- render snake cards -->
     <div class="row justify-content-center" id="species-container">
         {% for species in species %}
             <div class="col-12 d-flex justify-content-center">
-                <div class="card snake-info mt-5 w-75">
+                <div class="card snake-info mt-5 w-75 shadow" style="border-radius: 20px; overflow: hidden;">
                     <img class="card-img-top" src="{% static species.image_path %}" alt="{{ species.common_name }}">
                     <div class="card-body">
                         <h5 class="card-title h1">{{ species.common_name }}</h5>
@@ -126,11 +138,12 @@
                         <hr>
                         <p class="card-text fs-5">
                             <Strong>States:</Strong> 
-                            {% for state in species.states.all %}
-                                {{ state.name }}{% if not forloop.last %}, {% endif %}
+                            {% for state in species.states %}
+                                {{ state }}{% if not forloop.last %}, {% endif %}
                             {% empty %}
                                 No states found.
                             {% endfor %}
+
                         </p>
                     </div>
                 </div>

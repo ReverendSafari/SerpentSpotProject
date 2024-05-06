@@ -16,6 +16,7 @@ class LeaderboardViewTests(TestCase):
         - Retrieves or creates a UserProfile object for the test user.
 
         """
+
         self.factory = RequestFactory()
         self.user = User.objects.create_user(username='testuser', password='12345')
         self.profile = UserProfile.objects.get_or_create(user=self.user)[0]
@@ -24,6 +25,7 @@ class LeaderboardViewTests(TestCase):
         """
         Test that anonymous users are denied access to the leaderboard view.
         """
+
         request = self.factory.get('/leaderboard')
         request.user = AnonymousUser()
         response = leaderboard_view(request)
@@ -37,6 +39,7 @@ class LeaderboardViewTests(TestCase):
         when accessed by an authenticated user.
 
         """
+        
         request = self.factory.get('/leaderboard')
         request.user = self.user
         response = leaderboard_view(request)

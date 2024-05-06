@@ -16,16 +16,16 @@ class ObservationForm(forms.ModelForm):
 
     """
 
-    species = forms.ModelChoiceField(
-        queryset=SnakeSpecies.objects.all(), 
-        required=True,
-        widget=forms.Select(attrs={'class': 'form-control'})
+    species = forms.ModelChoiceField( # A field for selecting the species of snake observed
+        queryset=SnakeSpecies.objects.all(), # The queryset for the field is all snake species
+        required=True, # The field is required
+        widget=forms.Select(attrs={'class': 'form-control'}) # Add the 'form-control' class to the field
     )
 
     class Meta:
-        model = UserObservation
-        fields = ['observation', 'observation_pic', 'species']
-        widgets = {
+        model = UserObservation # The UserObservation model that the form is associated with
+        fields = ['observation', 'observation_pic', 'species'] # The fields that will be displayed in the form
+        widgets = { # Add hidden input fields for latitude and longitude
             'latitude': forms.HiddenInput(),
             'longitude': forms.HiddenInput(),
         }
@@ -41,6 +41,7 @@ class ObservationForm(forms.ModelForm):
             **kwargs: Arbitrary keyword arguments.
 
         """
-        super(ObservationForm, self).__init__(*args, **kwargs)
-        self.fields['observation'].widget.attrs.update({'class': 'form-control'})
-        self.fields['observation_pic'].widget.attrs.update({'class': 'form-control-file'})
+
+        super(ObservationForm, self).__init__(*args, **kwargs) # Call the parent class constructor
+        self.fields['observation'].widget.attrs.update({'class': 'form-control'}) # Add the 'form-control' class to the observation field
+        self.fields['observation_pic'].widget.attrs.update({'class': 'form-control-file'}) # Add the 'form-control-file' class to the observation_pic field

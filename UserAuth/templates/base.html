@@ -20,9 +20,10 @@
             transform: scale(1.01);
             transition: 0.3s;
         }
-
         .nav-link:hover {
             background-color: rgb(233, 233, 233);
+            transform: scale(1.06);
+            transition: 0.3s;
         }
         .expand:hover{
             transform: scale(1.06);
@@ -43,6 +44,34 @@
             text-decoration: none; /* Keeps the link without underline on hover */
             background-color: #f8f9fa; /* Light background color on hover, adjust as needed */
         }
+
+        .nav-link.active {
+            color: #ffffff !important; /* White text */
+            background-color: rgb(23, 155, 23); /* Bootstrap primary color */
+            border-color: darkgrey; /* Matching border */
+            text-align: center;
+        }
+
+        .gt {
+            color: green;
+        }
+
+        html, body {
+            height: 100% !important; /* Full height for the HTML and BODY to ensure the footer can stick to the bottom */
+            margin: 0 !important; /* Remove default margin */
+        }
+        body {
+            display: flex !important;
+            flex-direction: column !important; /* Stacks the children (header, main, footer) vertically */
+        }
+        main {
+            flex: 1 0 auto !important; /* The main content area will expand to fill the space */
+        }
+        footer {
+            flex-shrink: 0 !important; /* Ensures the footer does not shrink */
+        }
+
+
     </style>
 
     {% load static %}
@@ -59,65 +88,123 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <div class="collapse navbar-collapse ml-4"  id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                        <!-- education dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle mx-3 mb-1 rounded-pill text-center border expand" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Education
-                            </a>
-                            <ul class="dropdown-menu mx-3 mb-3" aria-labelledby="navbarDropdownMenuLink" style="border-radius: 20px; overflow: hidden;">
-                                <li><a class="dropdown-item" href="{% url 'education_view' %}">Educator</a></li>
-                                <li><a class="dropdown-item" href="{% url 'id_view' %}">Species</a></li>
-                            </ul>
+                        <hr>
+                        <!-- Education items -->
+                        <li class="nav-item mx-2">
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'education_view' %}active{% endif %}" href="{% url 'education_view' %}">Educator 📚</a>
                         </li>
-                        <!-- Community dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle mx-3 mb-1 rounded-pill text-center border expand" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Community
-                            </a>
-                            <ul class="dropdown-menu mx-3 mb-3" aria-labelledby="navbarDropdownMenuLink" style="border-radius: 20px; overflow: hidden;">
-                                <li><a class="dropdown-item" href="{% url 'home' %}">Forum</a></li>
-                                <li><a class="dropdown-item" href="{% url 'leaderboard_view' %}">Leaderboard</a></li>
-                                <li><a class="dropdown-item" href="{% url 'map_view' %}">SnakesNearU</a></li>
-                            </ul>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'id_view' %}active{% endif %}" href="{% url 'id_view' %}">Species ID 🔍</a>
                         </li>
+                        <hr>
+                        <!-- Community items -->
+                        <li class="nav-item mx-2">
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Forum 💬</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'map_view' %}active{% endif %}" href="{% url 'map_view' %}">SnakesNearU 📍</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item mx-2">
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'leaderboard_view' %}active{% endif %}" href="{% url 'leaderboard_view' %}">Leaderboard 🥇</a>
+                        </li>
+                        {% endif %}
+                        <hr>
                     </ul>
+                    
                     <!-- check for logged in user otherwise why would there be a profile -->
                     {% if user.is_authenticated %}
                     <!-- Right side of navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item dropdown">
-                            <li class="nav-item">
-                                <a href="{% url 'journal_view' %}" class="nav-link mx-2 mt-1 mb-1 rounded-pill shadow-sm text-center border expand bg-success text-white">+ Observation</a>
-                            </li>
-                            <!-- Profile section -->
-                            <a class="nav-link dropdown-toggle mx-3 mb-1 rounded-pill text-center border expand" href="{% url 'profile' %}" id="navbarProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- Observation Button -->
+                        <li class="nav-item">
+                            <a href="{% url 'journal_view' %}" class="nav-link mx-2 mt-1 mb-1 rounded-pill shadow-sm text-center border bg-success text-white" style="background-color: green !important;">+ Observation</a>
+                        </li>
+                        <!-- Profile Section -->
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 mb-1 rounded-pill text-center border expand" href="{% url 'profile' %}">
                                 {% if user.userprofile.profile_pic %}
-                                    <img src="{{MEDIA_URL}}{{ request.user.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm" alt="Profile Picture" style="width: 30px; height: 30px; object-fit: cover;">
+                                    <img src="{{ MEDIA_URL }}{{ request.user.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm" alt="Profile Picture" style="width: 30px; height: 30px; object-fit: cover;">
                                 {% endif %}
                                 {{ request.user.username }}
                             </a>
-                            <!-- Dropdown menu for profile stuff -->
-                            <ul class="dropdown-menu dropdown-menu-end mx-3 mb-3" aria-labelledby="navbarProfileDropdown" style="border-radius: 20px; overflow: hidden;">
-                                <li><a class="dropdown-item" href="{% url 'profile' %}">View profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'journal_view' %}">Observation Journal</a></li>
-                                <li><a class="dropdown-item logout" href="{% url 'logout' %}">Logout</a></li>
-                            </ul>
                         </li>
-                    </ul>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 mb-1 mt-1 text-center expand logout rounded-pill" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>                    
                     {% endif %}
                 </div>
             </nav>
         </header>
 
-        <main role="main" class="container"> 
+        <main role="main" class="container flex-fill"> 
             {% block content %}
             
             <!-- Actual body content  -->
             
             {% endblock content %}
         </main>
+        
+        <!-- Footer -->
+        <footer class="bg-light text-lg-start">
+            <div class="container p-4">
+                <div class="row">
+                    <!-- title -->
+                    <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                        <h5 class="text-uppercase">SerpentSpot</h5>
+                        <p>
+                            Join our community to learn more about snakes, share observations, and connect with users from all over.
+                        </p>
+                    </div>
+
+                    <!-- quick links -->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-uppercase">Links</h5>
+        
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="{% url 'home_view' %}" class="gt">Home</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'education_view' %}" class="gt">Education</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'map_view' %}" class="gt">Map</a>
+                            </li>
+                            {% if user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'leaderboard_view' %}" class="gt">Leaderboard</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <!-- contact and faq -->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-uppercase mb-0">Contact</h5>
+        
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="mailto:seamus.jackson24@ncf.edu" class="gt">seamus.jackson24@ncf.edu</a>
+                            </li>
+                            <li>
+                                <a href="mailto:s.swanson24@ncf.edu" class="gt">s.swanson24@ncf.edu</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'faq_home' %}" class="gt">FAQ</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+                © 2024 SerpentSpot: A project by Safari Swanson and Seamus Jackson @ NCF
+            </div>
+        </footer>
         
         <!-- Bootstrap and popperJS to be passed through extension -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
