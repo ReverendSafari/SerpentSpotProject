@@ -52,6 +52,26 @@
             text-align: center;
         }
 
+        .gt {
+            color: green;
+        }
+
+        html, body {
+            height: 100% !important; /* Full height for the HTML and BODY to ensure the footer can stick to the bottom */
+            margin: 0 !important; /* Remove default margin */
+        }
+        body {
+            display: flex !important;
+            flex-direction: column !important; /* Stacks the children (header, main, footer) vertically */
+        }
+        main {
+            flex: 1 0 auto !important; /* The main content area will expand to fill the space */
+        }
+        footer {
+            flex-shrink: 0 !important; /* Ensures the footer does not shrink */
+        }
+
+
     </style>
 
     {% load static %}
@@ -86,9 +106,11 @@
                         <li class="nav-item mx-2">
                             <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'map_view' %}active{% endif %}" href="{% url 'map_view' %}">SnakesNearU 📍</a>
                         </li>
+                        {% if user.is_authenticated %}
                         <li class="nav-item mx-2">
                             <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'leaderboard_view' %}active{% endif %}" href="{% url 'leaderboard_view' %}">Leaderboard 🥇</a>
                         </li>
+                        {% endif %}
                         <hr>
                     </ul>
                     
@@ -118,13 +140,71 @@
             </nav>
         </header>
 
-        <main role="main" class="container"> 
+        <main role="main" class="container flex-fill"> 
             {% block content %}
             
             <!-- Actual body content  -->
             
             {% endblock content %}
         </main>
+        
+        <!-- Footer -->
+        <footer class="bg-light text-lg-start">
+            <div class="container p-4">
+                <div class="row">
+                    <!-- title -->
+                    <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                        <h5 class="text-uppercase">SerpentSpot</h5>
+                        <p>
+                            Join our community to learn more about snakes, share observations, and connect with users from all over.
+                        </p>
+                    </div>
+
+                    <!-- quick links -->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-uppercase">Links</h5>
+        
+                        <ul class="list-unstyled mb-0">
+                            <li>
+                                <a href="{% url 'home_view' %}" class="gt">Home</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'education_view' %}" class="gt">Education</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'map_view' %}" class="gt">Map</a>
+                            </li>
+                            {% if user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'leaderboard_view' %}" class="gt">Leaderboard</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <!-- contact and faq -->
+                    <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                        <h5 class="text-uppercase mb-0">Contact</h5>
+        
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="mailto:seamus.jackson24@ncf.edu" class="gt">seamus.jackson24@ncf.edu</a>
+                            </li>
+                            <li>
+                                <a href="mailto:s.swanson24@ncf.edu" class="gt">s.swanson24@ncf.edu</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'faq_home' %}" class="gt">FAQ</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+                © 2024 SerpentSpot: A project by Safari Swanson and Seamus Jackson @ NCF
+            </div>
+        </footer>
         
         <!-- Bootstrap and popperJS to be passed through extension -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>

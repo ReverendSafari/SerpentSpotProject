@@ -80,7 +80,7 @@
                         {% endif %}
                     </h2>
                     <p><strong>Email:</strong> {{ user.email }}</p>
-                    <p><strong>Bio:</strong> {{ user.userprofile.bio }}</p>
+                    <p><strong>Bio:</strong> {{ user.userprofile.bio | slice:":250" }}</p>
                 </div>
             </div>
             <!-- if its your profile then you can edit it -->

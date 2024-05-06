@@ -34,7 +34,7 @@ def select_state(request):
             'description': s.description,
             'venomous': s.venomous,
             'image_path': s.image_path,
-            'states': [state.name for state in s.states.all()]
+            'states': [state.name for state in s.states.all()],
         }
         for s in species_qs
     ]
