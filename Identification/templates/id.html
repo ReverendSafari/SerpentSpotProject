@@ -78,7 +78,7 @@
 {% block content %}
 
 <!-- this is a condition that changes between state name and snake name based on parameter conditions in the view -->
-{% if selected_state_name and species_count > 1 %}
+{% if not search_term %}
 <h1 id="page-title" class="display-1 text-center">Snakes of {{ selected_state_name }}</h1>
 {% else %}
     <!-- this loop will run exactly once because our first case says this one only happens great than 1-->
@@ -116,10 +116,15 @@
         </div>
     </div>
 
-    {% if species_count > 1 %}
+    {% if not search_term %}
     <!-- species counter -->
     <div class="text-center mt-3">
         <p id="species-count" class="h4 text-muted">Number of species found in {{ selected_state_name }}: {{ species_count }}</p>
+    </div>
+    {% elif species_count < 1 %}
+    <!-- no species found -->
+    <div class="text-center mt-3">
+        <p id="species-count" class="h4 text-muted">No species found in {{ selected_state_name }}</p>
     </div>
     {% endif %}
 
