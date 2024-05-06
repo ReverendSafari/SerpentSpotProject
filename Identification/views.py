@@ -53,6 +53,5 @@ def select_state(request):
 
     return render(request, 'id.html', context)
 
-
 def render_education(request):
     return render(request, 'education.html')

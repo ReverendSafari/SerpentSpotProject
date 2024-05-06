@@ -14,7 +14,8 @@ def home(request):
 def board_threads(request, board_id):
     board = get_object_or_404(Board, pk=board_id)
     form = NewThreadForm()  # Instantiate the form
-    return render(request, 'board_threads.html', {'board': board, 'threads': board.threads.all(), 'form': form})
+    threads = board.threads.all().order_by('-created_at')
+    return render(request, 'board_threads.html', {'board': board, 'threads': threads, 'form': form})
 
 def thread_posts(request, thread_id):
     thread = get_object_or_404(Thread, pk=thread_id)
@@ -28,7 +29,6 @@ def new_thread(request, board_id):
         form = NewThreadForm(request.POST, request.FILES, instance=Thread(starter=request.user, board=board))
         if form.is_valid():
             thread = form.save()
-            messages.success(request, 'New thread created successfully!')
             return redirect('board_threads', board_id=board.id)
         else:
             messages.error(request, 'Error creating thread. Please check the form data.')
@@ -49,7 +49,6 @@ def reply_thread(request, thread_id):
             post.save()
             form.save()  # Save the form to handle image saving as per the form's save method
 
-            messages.success(request, 'Your reply has been posted!')
             return redirect('thread_posts', thread_id=thread.id)  # Redirect to the thread view or wherever appropriate
         else:
             messages.error(request, 'There was an error with your post. Please check your input.')
@@ -94,7 +93,6 @@ def edit_post(request, post_id):
                 image.delete()  # Delete the selected images
 
             form.save()
-            messages.success(request, 'Post updated successfully!')
             return redirect('thread_posts', thread_id=post.thread.id)
         else:
             messages.error(request, 'Error updating the post.')

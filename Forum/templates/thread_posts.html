@@ -72,7 +72,7 @@
 <!-- Button to trigger editing modal -->
 <button type="button" class="btn btn-primary float-end btn-sm delbtn" style="margin-right: 10px;" data-bs-toggle="modal"
    data-bs-target="#editThreadModal">
-   Edit Post
+   Edit Thread
 </button>
 
 <!-- Modal for Editing Thread -->
@@ -204,7 +204,7 @@
             <div class="modal-dialog modal-lg">
                <div class="modal-content">
                   <div class="modal-header">
-                     <h5 class="modal-title" id="editPostModalLabel{{ post.id }}">Edit Post</h5>
+                     <h5 class="modal-title" id="editPostModalLabel{{ post.id }}">Edit Reply</h5>
                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <form method="POST" action="{% url 'edit_post' post.id %}" onsubmit="return validateEditReplyForm()">

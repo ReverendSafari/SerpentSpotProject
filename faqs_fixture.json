@@ -1,0 +1,101 @@
+[
+{
+    "model": "faq.faq",
+    "pk": 1,
+    "fields": {
+        "question": "Using SnakesNearYou",
+        "answer": "What is it?: \r\n\r\nSnakesNearYou that allows you to see what snakes other people are finding in a given area. This is meant to help you find target species you have been eying, as well as checking density and whether a spot is worth going too.\r\n\r\nHow to use:\r\n\r\nFirst we need to select coordinates, while you can input your own. The simple way to select coordinates is to simply double click anywhere on the map. You will see a red pin drop, and the coordinate fields will autofill based on where you dropped the pin \r\n\r\nSecond you need to enter a radius, this is the distance from the pin our website will search for observations in. For ease of use the distance in is miles. For speed and usability we have a max radius of twenty miles.\r\n\r\nThird select a time range for the observations, if you only want recent observations select 6 months. If you want to see options further back select a larger time range.\r\n\r\nFinally click the find observations button to finalize your search. (It may take a few seconds to load)\r\n\r\nIf the website found any observations you will see them pop up as pins on the map! To find out more information about the observation simply click it's pin and a window of details will pop up above it.",
+        "slug": "snakemaphowto"
+    }
+},
+{
+    "model": "faq.faq",
+    "pk": 2,
+    "fields": {
+        "question": "Species Pages",
+        "answer": "What is it?\r\n\r\nThe species page is a great resource for identification, and learning more about individual species as well as what can be found in your state.\r\n\r\nHow to use:\r\n\r\nThe page is very simple, when you land on the species page you will initially see all the snake species in the US (that we have documented). Feel free to scroll through and look through\r\n\r\nMost will want to sort by the state they are in or visiting. To do so simply click on the \"select a state\" dropdown and pick you state and click search. The page will tell you how many species are present in your state, and you can scroll down the page to get a detailed look at each species.\r\n\r\nTo sort by alphabetical order (descending or ascending) simply select the sorting filter in the top right above all the cards.",
+        "slug": "IDhowto"
+    }
+},
+{
+    "model": "faq.faq",
+    "pk": 3,
+    "fields": {
+        "question": "Setting up your profile",
+        "answer": "To start setting up your profile the first step is logging in.\r\n\r\nOnce you are logged in you will notice your profile on the top side of the navigation bar. Click your name and then click \"Profile\"\r\n\r\nLet's add a profile picture and fill out your bio! Click the green edit profile button right below your name.  In the top left corner of the card you will see a circle with a default profile pic in it. Click this circle to add an your picture. After adding your picture you can type in whatever information you in your bio directly below and finally click save changes.\r\n\r\n Parts of your profile page:\r\n\r\nYou will notice besides your bio, and picture on the right side of the profile you will notice a \"recent posts\" section. Any time you make a new thread or reply on the forum it will appear here. Below that you will see a section titled \"recent finds\" here you can find any recent observations a user has made. You can click on the forum posts or observations on the profile to be directed to their respective pages.",
+        "slug": "profilehowto"
+    }
+},
+{
+    "model": "faq.faq",
+    "pk": 4,
+    "fields": {
+        "question": "Learn the basics",
+        "answer": "The education page is a great place to begin your herping journey! It contains a great deal of information on snakes, and the entire hobby surrounding them. We recommend all new hobbyists read through all the different sections on this page to get acclimated and have a good foundation before you get out into the wild.",
+        "slug": "educationhowto"
+    }
+},
+{
+    "model": "faq.faq",
+    "pk": 5,
+    "fields": {
+        "question": "Leaderboard",
+        "answer": "fill in",
+        "slug": "leaderboardhowto"
+    }
+},
+{
+    "model": "faq.faq",
+    "pk": 6,
+    "fields": {
+        "question": "The Forum",
+        "answer": "What is it?\r\n\r\nThe forum is a core piece of SerpentSpot, it allows members of our community to come together to discuss almost anything! Identification, tools, favorite species etc. It is a great place to meet other people in the hobby as well as learn from more experienced herpers.\r\n\r\nHow to use it?\r\n\r\nWhen you first land on the forum you will see several boards, all broken up by subject. Pick one you like and click on it to navigate to that board. On that board you will see all the threads on that board. \r\n\r\nCreate a thread: \r\n\r\nLets create a new thread, in the top right corner above the threads click create thread, in the dropdown type in a title to describe the post, some information for the body of the post and even add some images if you like. Click submit below the form and bam your thread is created! To navigate to it simply find it on the page you are on and click on it's title.\r\n\r\nPost a reply: \r\n\r\nPosting a reply is very similar to posting a thread except you don't fill out a title, simply navigate to the thread you want to reply to, scroll all the way down and fill out the form. Click \"Post reply when your done.\r\n\r\nDelete a thread/reply:\r\n\r\nTo delete a thread you created simply navigate to the thread you created, and above the thread will be a red delete button. Click this and then click confirm and your thread will be deleted. The process is the same for any replies you make except in the delete button will in the bottom right of the thread.\r\n\r\nEdit a thread/reply:\r\n\r\nThis process is very similar to deleting, except you selecting the blue \"edit\" button next to the delete button. When you click edit a box will pop up with fields you can edit, once you are done simply click save changes.",
+        "slug": "forumhowto"
+    }
+},
+{
+    "model": "faq.faq",
+    "pk": 7,
+    "fields": {
+        "question": "Creating an account",
+        "answer": "We have tried to make account creation as easy as possible for you.\r\n\r\nOn the home page you will see a card on the left titled \"Spot Serpents Like Never Before\" on this card click  \"Get Started\"\r\n\r\nIt will prompt you for some basic information for some basic information like a username, email, and password. After submitting the form you should be logged in!",
+        "slug": "registration"
+    }
+},
+{
+    "model": "faq.faq",
+    "pk": 8,
+    "fields": {
+        "question": "I don't see my state!",
+        "answer": "If your state is missing it is most likely because there are no snakes found in your state (IE Alaska)",
+        "slug": "nostate"
+    }
+},
+{
+    "model": "faq.faq",
+    "pk": 9,
+    "fields": {
+        "question": "The snake I found isn't listed?",
+        "answer": "You may notice our catalogue of species is not complete for the US just yet. Documenting every species in the US in our system is a very large undertaking. We are working on completing this task, but while we are still working on it we appreciate your patience.",
+        "slug": "nosnake"
+    }
+},
+{
+    "model": "faq.faq",
+    "pk": 10,
+    "fields": {
+        "question": "Create an observation",
+        "answer": "What is it?\r\n\r\nThe observation journal is another great part of SerpentSpot! It allows you to keep track of all the cool species you find and view all your observations in one place. It also allows you to see others observations as well!\r\n\r\nCreate an observation:\r\nOn the navbar you will see a green button that says \"+ Observation\", click this button. Select the species you found from the dropdown. Then type in a quick description, what kind of environment you found it in, what time of day, what the weather was like. Anything you want to keep track of. If you were able to get a picture you can click \"choose file\" to upload it!\r\n\r\nLooking through observations:\r\nYou can always come back to this page to view all your past observations at any point!",
+        "slug": "observationcreation"
+    }
+},
+{
+    "model": "faq.faq",
+    "pk": 11,
+    "fields": {
+        "question": "How can I help the snakes?",
+        "answer": "There are many charities around the country that are devoted to the benefit of reptiles!\r\n\r\nOur favorite recommendation is the international reptile conservation foundation\r\n\r\nhttps://ircf.org/#:~:text=The%20International%20Reptile%20Conservation%20Foundation,of%20the%20total%20conservation%20solution.",
+        "slug": "snakehelp"
+    }
+}
+]

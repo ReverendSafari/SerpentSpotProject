@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 import environ
+from dj_database_url import parse as dburl
+
 
 env = environ.Env()
 # Reading .env file
@@ -22,6 +24,19 @@ GOOGLE_MAPS_API_KEY = env('GOOGLE_MAPS_API_KEY')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Default configuration for SQLite
+default_dburl = f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+
+# Get DATABASE_URL environment variable, or use SQLite if it's not set
+DATABASE_URL = os.getenv('DATABASE_URL', default_dburl)
+
+# Use dj_database_url to parse the DATABASE_URL into Django's required database config format
+DATABASES = {
+    'default': dburl(DATABASE_URL)
+}
 
 
 # Quick-start development settings - unsuitable for production
@@ -33,7 +48,7 @@ SECRET_KEY = 'django-insecure-d98t81%j*)_)_u65m_n07ofnkrq%e3_+4j%z!ybv$f0wvjcqnb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1","localhost", "alien-loving-deadly.ngrok-free.app", '.ngrok.io', '.elasticbeanstalk.com']
+ALLOWED_HOSTS = ["127.0.0.1","localhost", "alien-loving-deadly.ngrok-free.app", '.ngrok.io', '.elasticbeanstalk.com','serpentspot.applikuapp.com']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://alien-loving-deadly.ngrok-free.app',
@@ -67,6 +82,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -94,16 +110,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'SerpentSpotProject.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
@@ -150,12 +156,9 @@ STATICFILES_FINDERS = [
 ]
 
 
-# media root
+MEDIA_ROOT = env('MEDIA_ROOT', default=BASE_DIR / 'media')
+MEDIA_URL = env('MEDIA_PATH', default='/media/')
 
-# Base directory for media files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# URL to access media through the web
-MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
