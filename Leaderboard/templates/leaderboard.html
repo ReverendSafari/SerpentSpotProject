@@ -33,49 +33,58 @@
         transform: scale(1.02); /* Scale up on hover */
         transition: 0.3s; /* Smooth transition */
     }
+    body {
+        background: rgb(2,0,36);
+        background: -webkit-linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(25,135,84,1) 35%, rgba(86,135,25,1) 100%);
+    }
 </style>
 {% endblock extra_css %}
 
 {% load static %}
 
 {% block content %}
-    <h1 style="text-align: center;">🐍 Top Identifiers 🐍</h1>
-    <hr>
-    <!-- Text for leaderboard placement, either tells you that you're ranked or how many you need to place -->
-    {% if is_user_ranked %}
-        <p style="text-align: center;">You are currently ranked on the leaderboard!</p>
-    {% else %}
-        {% if observations_to_join > 0 %}
-            <p style="text-align: center;">You need {{ observations_to_join }} more observations to enter the leaderboard.</p>
-        {% else %}
-            <p style="text-align: center;">Start observing to appear on the leaderboard!</p>
-        {% endif %}
-    {% endif %}
 
-    <!-- loop through leaderboard positions and render cards -->
-    {% for profile in top_ten_profiles %}
-    <hr>
-    <!-- wrap card in link -->
-    <a href="{% url 'user_profile' profile.user.username %}" class="text-decoration-none">
-        <div class="d-flex align-items-center mb-3">
-            <div class="rank-number{% if forloop.counter < 4 %} font-weight-bold{% endif %}">{{ forloop.counter }}.</div>
-            <!-- Determine the card's gradient based on ranking or user -->
-            <div class="card mt-3 mb-3 shadow{% if forloop.counter == 1 %} gold-gradient{% elif forloop.counter == 2 %} silver-gradient{% elif forloop.counter == 3 %} bronze-gradient{% elif profile == request.user.userprofile %} user-gradient{% else %} green-gradient{% endif %} lbcard" style="border-radius: 20px; overflow: hidden;">
-                <div class="mx-2 mt-2 mb-2 d-flex align-items-center">
-                    <!-- Profile picture with conditional border color -->
-                    <img src="{{ profile.profile_pic.url }}" class="rounded-circle {% if forloop.counter == 1 %}border-warning{% elif forloop.counter == 2 %}border-secondary{% elif forloop.counter == 3 %}border-danger{% elif profile == request.user.userprofile %}border-primary{% else %}border-success{% endif %} shadow-sm" alt="Profile Picture" style="width: 70px; height: 70px; object-fit: cover;">
-                    <div class="card ml-2 mx-2 shadow-sm" style="border-radius: 10px; overflow: hidden; background-color: ghostwhite;">
-                        <!-- User info -->
-                        <div class="mx-2">
-                            <strong>{{ profile.user.username }}{% if profile == request.user.userprofile %} (You){% endif %}</strong>
-                            <div class="mt-1"><p>Observations this month: <strong>{{ profile.observations_count }}</strong></p></div>
+    <div class="card shadow" style="border-radius: 20px; overflow: hidden;">
+        <div class="mx-3 mt-3">
+            <h1 style="text-align: center;">🐍 Top Identifiers 🐍</h1>
+            <!-- Text for leaderboard placement, either tells you that you're ranked or how many you need to place -->
+            {% if is_user_ranked %}
+                <p style="text-align: center;">You are currently ranked on the leaderboard!</p>
+            {% else %}
+                {% if observations_to_join > 0 %}
+                    <p style="text-align: center;">You need {{ observations_to_join }} more observations to enter the leaderboard.</p>
+                {% else %}
+                    <p style="text-align: center;">Start observing to appear on the leaderboard!</p>
+                {% endif %}
+            {% endif %}
+            
+
+            <!-- loop through leaderboard positions and render cards -->
+            {% for profile in top_ten_profiles %}
+            <hr>
+            <!-- wrap card in link -->
+            <a href="{% url 'user_profile' profile.user.username %}" class="text-decoration-none">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="rank-number{% if forloop.counter < 4 %} font-weight-bold{% endif %}">{{ forloop.counter }}.</div>
+                    <!-- Determine the card's gradient based on ranking or user -->
+                    <div class="card mt-3 mb-3 shadow{% if forloop.counter == 1 %} gold-gradient{% elif forloop.counter == 2 %} silver-gradient{% elif forloop.counter == 3 %} bronze-gradient{% elif profile == request.user.userprofile %} user-gradient{% else %} green-gradient{% endif %} lbcard" style="border-radius: 20px; overflow: hidden;">
+                        <div class="mx-2 mt-2 mb-2 d-flex align-items-center">
+                            <!-- Profile picture with conditional border color -->
+                            <img src="{{ profile.profile_pic.url }}" class="rounded-circle {% if forloop.counter == 1 %}border-warning{% elif forloop.counter == 2 %}border-secondary{% elif forloop.counter == 3 %}border-danger{% elif profile == request.user.userprofile %}border-primary{% else %}border-success{% endif %} shadow-sm" alt="Profile Picture" style="width: 70px; height: 70px; object-fit: cover;">
+                            <div class="card ml-2 mx-2 shadow-sm" style="border-radius: 10px; overflow: hidden; background-color: ghostwhite;">
+                                <!-- User info -->
+                                <div class="mx-2">
+                                    <strong>{{ profile.user.username }}{% if profile == request.user.userprofile %} (You){% endif %}</strong>
+                                    <div class="mt-1"><p>Observations this month: <strong>{{ profile.observations_count }}</strong></p></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
+            {% endfor %}
+            <hr>
         </div>
-    </a>
-    {% endfor %}
-    <hr>
+    </div>
 {% endblock content %}
 

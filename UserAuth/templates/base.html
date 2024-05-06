@@ -20,9 +20,10 @@
             transform: scale(1.01);
             transition: 0.3s;
         }
-
         .nav-link:hover {
             background-color: rgb(233, 233, 233);
+            transform: scale(1.06);
+            transition: 0.3s;
         }
         .expand:hover{
             transform: scale(1.06);
@@ -43,6 +44,14 @@
             text-decoration: none; /* Keeps the link without underline on hover */
             background-color: #f8f9fa; /* Light background color on hover, adjust as needed */
         }
+
+        .nav-link.active {
+            color: #ffffff !important; /* White text */
+            background-color: rgb(23, 155, 23); /* Bootstrap primary color */
+            border-color: darkgrey; /* Matching border */
+            text-align: center;
+        }
+
     </style>
 
     {% load static %}
@@ -59,37 +68,37 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <div class="collapse navbar-collapse ml-4"  id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                        <!-- education dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle mx-3 mb-1 rounded-pill text-center border expand" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Education
-                            </a>
-                            <ul class="dropdown-menu mx-3 mb-3" aria-labelledby="navbarDropdownMenuLink" style="border-radius: 20px; overflow: hidden;">
-                                <li><a class="dropdown-item" href="{% url 'education_view' %}">Educator</a></li>
-                                <li><a class="dropdown-item" href="{% url 'id_view' %}">Species</a></li>
-                            </ul>
+                        <hr>
+                        <!-- Education items -->
+                        <li class="nav-item mx-2">
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'education_view' %}active{% endif %}" href="{% url 'education_view' %}">Educator 📚</a>
                         </li>
-                        <!-- Community dropdown -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle mx-3 mb-1 rounded-pill text-center border expand" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Community
-                            </a>
-                            <ul class="dropdown-menu mx-3 mb-3" aria-labelledby="navbarDropdownMenuLink" style="border-radius: 20px; overflow: hidden;">
-                                <li><a class="dropdown-item" href="{% url 'home' %}">Forum</a></li>
-                                <li><a class="dropdown-item" href="{% url 'leaderboard_view' %}">Leaderboard</a></li>
-                                <li><a class="dropdown-item" href="{% url 'map_view' %}">SnakesNearU</a></li>
-                            </ul>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'id_view' %}active{% endif %}" href="{% url 'id_view' %}">Species ID 🔍</a>
                         </li>
+                        <hr>
+                        <!-- Community items -->
+                        <li class="nav-item mx-2">
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Forum 💬</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'map_view' %}active{% endif %}" href="{% url 'map_view' %}">SnakesNearU 📍</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link rounded-pill {% if request.resolver_match.url_name == 'leaderboard_view' %}active{% endif %}" href="{% url 'leaderboard_view' %}">Leaderboard 🥇</a>
+                        </li>
+                        <hr>
                     </ul>
+                    
                     <!-- check for logged in user otherwise why would there be a profile -->
                     {% if user.is_authenticated %}
                     <!-- Right side of navbar -->
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item dropdown">
                             <li class="nav-item">
-                                <a href="{% url 'journal_view' %}" class="nav-link mx-2 mt-1 mb-1 rounded-pill shadow-sm text-center border expand bg-success text-white">+ Observation</a>
+                                <a href="{% url 'journal_view' %}" class="nav-link mx-2 mt-1 mb-1 rounded-pill shadow-sm text-center border expand bg-success text-white" style="background-color: green !important;">+ Observation</a>
                             </li>
                             <!-- Profile section -->
                             <a class="nav-link dropdown-toggle mx-3 mb-1 rounded-pill text-center border expand" href="{% url 'profile' %}" id="navbarProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

@@ -8,7 +8,8 @@ from django.contrib import messages
 
 def home(request):
     boards = Board.objects.all()
-    return render(request, 'home.html', {'boards': boards})
+    threads = Thread.objects.order_by('-created_at')[:5] # Fetch the latest 5 threads
+    return render(request, 'home.html', {'boards': boards, 'threads': threads})
 
 def board_threads(request, board_id):
     board = get_object_or_404(Board, pk=board_id)

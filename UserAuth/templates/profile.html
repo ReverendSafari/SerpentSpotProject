@@ -49,7 +49,7 @@
 
 {% block content %}
 
-{% load static %} <!-- Load static files -->
+{% load static %}
 
 <div class="bg-image"></div>
 
@@ -69,6 +69,9 @@
                 <div class="col">
                     <h2 class="card-title">
                         {{ user.username | slice:":15" }}
+                        {% if user.is_superuser %}
+                            <span class="badge bg-danger">SERPENT DEV</span>
+                        {% endif %}
                         <!-- If they have observations render a link to leaderboard -->
                         {% if recentobservations %}
                         <a href="{% url 'leaderboard_view' %}" class="ms-2">
@@ -77,8 +80,10 @@
                         {% endif %}
                     </h2>
                     <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Bio:</strong> {{ user.userprofile.bio }}</p>
                 </div>
             </div>
+            <!-- if its your profile then you can edit it -->
             {% if user == request.user %}
                 <div class="row mt-3 mb-3 mx-1 shadow-sm editprofile" style="border-radius: 20px; overflow: hidden;">
                     <a href="{% url 'edit_profile' %}" class="btn btn-success">Edit Profile</a>
@@ -93,9 +98,26 @@
                             <hr>
                             <div class="mx-1">
                                 <p><strong>Lifetime observations:</strong> {{ user.userprofile.observations }}</p>
-                                <p><strong>Bio:</strong> {{ user.userprofile.bio }}</p>
                             </div>
                         </div>
+                        <!-- Displaying favorite species -->
+                        {% if user.userprofile.favorite_species %}
+                        <div class="card mx-3 mb-3" style="border-radius: 20px; overflow: hidden;">
+                            <div class="mx-3 mt-3 mb-3">
+                                <p><strong>Favorite Snake:</strong> {{ userprofile.favorite_species.common_name }}</p> <!-- Display each favorite species -->
+                                <hr>
+                                <p><Strong>Scientific Name: </Strong> {{ userprofile.favorite_species.scientific_name }}</p>
+                                <p><strong>Venomous: </strong> {{ userprofile.favorite_species.venomous }}</p>
+                                <img src="{% static userprofile.favorite_species.image_path %}" class="container-fluid">
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="card mx-3 mt-3 mb-3" style="border-radius: 20px; overflow: hidden;">
+                            <div class="mx-3 mt-3 mb-3">
+                                <p><strong>Favorite Snake:</strong> No favorite species selected.</p>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <!-- Column for recent forum posts -->
@@ -141,12 +163,14 @@
             <div class="container mt-3">
                 <div class="card shadow-sm" style="border-radius: 20px; overflow: hidden;">
                     <div class="row mx-3">
+                        <!-- iterate through the recent observations that we found -->
                         {% for observation in recentobservations %}
                             <div class="col-sm-12 col-md-6">
-                                <!-- Wrap the card in an <a> tag -->
-                                <a href="{% url 'id_view' %}" class="text-decoration-none" aria-label="View details for {{ observation.species|default:"Unknown Species" }}">
+                                <!-- clickable card, takes us to the snake in the id page -->
+                                <a href="{% url 'id_view' %}?search={{ observation.species.common_name|urlencode }}" class="text-decoration-none" aria-label="View details for {{ observation.species|default:"Unknown Species" }}">
                                     <div class="card shadow-sm mt-3 mb-3 obsitem" style="background-color:whitesmoke; border-radius: 20px; overflow: hidden;">
                                         <div class="card-body">
+                                            <!-- Card details, (snake info and picture & link) -->
                                             <h5 class="card-title
                                             {% if observation.species %}
                                                 text-success
@@ -175,6 +199,7 @@
                     </div>
                 </div>
             </div>
+            <!-- nothing to show -->
             {% else %}
                 <div class="card-body">
                     <p class="card-text">No observations yet.</p>

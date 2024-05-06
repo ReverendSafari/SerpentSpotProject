@@ -45,6 +45,15 @@
          margin-bottom: 10px;
       }
 
+      .helpmodal:hover {
+         transform: scale(1.1);
+         transition: 0.3s;
+      }
+
+   body {
+      background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(25,135,84,1) 35%, rgba(86,135,25,1) 100%);
+   }
+
 
    </style>
 
@@ -57,7 +66,7 @@
          <!-- Place this inside the card where you want the help button to appear -->
          
          <!-- Help Button Trigger for Modal -->
-         <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#helpModal"
+         <button type="button" class="btn btn-info rounded-circle btn-sm shadow-sm helpmodal" data-toggle="modal" data-target="#helpModal"
             style="position: absolute; right: 1rem; top: 1rem;">
             <i class="fas fa-question-circle"></i>
          </button>

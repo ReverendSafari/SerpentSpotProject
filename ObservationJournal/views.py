@@ -8,8 +8,23 @@ from Identification.models import SnakeSpecies, State
 from .models import UserObservation
 from .forms import ObservationForm
 
-# Create your views here.
 def journal_view(request, username=None):
+    """
+    View function for the observation journal page.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        username (str, optional): The username in the URL. Defaults to None.
+
+    Returns:
+        HttpResponse: The HTTP response object.
+
+    Raises:
+        Http404: If the user object based on the username is not found.
+
+    """
+    
+    # Get the user object based on the username in the URL
     if username:
         user = get_object_or_404(User, username=username)
     else:
@@ -28,6 +43,7 @@ def journal_view(request, username=None):
             observation.user.observations += 1  # Increment observation count 
             observation.user.save()
             return redirect('journal_view')  # Redirect to avoid re-posting
+        
     else: # If the form has not been submitted
         form = ObservationForm() # Create an empty form
 
@@ -38,6 +54,17 @@ def journal_view(request, username=None):
     return render(request, 'observationjournal.html', {'form': form, 'observations': observations, 'species': species, 'user': user})
 
 def delete_observation(request, observation_id):
+    """
+    Deletes an observation from the database.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        observation_id (int): The ID of the observation to be deleted.
+
+    Returns:
+        HttpResponseRedirect: A redirect response to the journal view.
+    """
+
     if request.method == 'POST':  # If the form has been submitted
         observation = UserObservation.objects.get(pk=observation_id) # Get the observation object
         observation.delete() # Delete the observation object
