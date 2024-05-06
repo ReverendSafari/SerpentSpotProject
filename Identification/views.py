@@ -42,10 +42,25 @@ def select_state(request):
 
     # Get all states for the dropdown
     states = State.objects.all()
+    species_count = species.count()
+
+
+    species_data = []
+    for s in species:
+        species_data.append({
+            'common_name': s.common_name,
+            'scientific_name': s.scientific_name,
+            'description': s.description,
+            'venomous': s.venomous,
+            'image_path': s.image_path,
+        })
+    
+    
     context = {
         'states': states,
         'species': species_data,
         'selected_state_name': selected_state_name,
+        'species_count': species_count,
         'search_term': search_term,
     }
 
