@@ -107,11 +107,14 @@
         </div>
     </div>
 
-  <!-- species counter -->
-   <div class="text-center mt-3">
-      <p id="species-count" class="h4 text-muted">Number of species found in {{ selected_state_name }}: {{ species_count }}</p>
-   </div>
-  
+    {% if species_count > 1 %}
+    <!-- species counter -->
+    <div class="text-center mt-3">
+        <p id="species-count" class="h4 text-muted">Number of species found in {{ selected_state_name }}: {{ species_count }}</p>
+    </div>
+    {% endif %}
+
+
     <!-- render snake cards -->
     <div class="row justify-content-center" id="species-container">
         {% for species in species %}

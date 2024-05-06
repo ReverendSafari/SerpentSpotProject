@@ -96,25 +96,23 @@
                     {% if user.is_authenticated %}
                     <!-- Right side of navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item dropdown">
-                            <li class="nav-item">
-                                <a href="{% url 'journal_view' %}" class="nav-link mx-2 mt-1 mb-1 rounded-pill shadow-sm text-center border expand bg-success text-white" style="background-color: green !important;">+ Observation</a>
-                            </li>
-                            <!-- Profile section -->
-                            <a class="nav-link dropdown-toggle mx-3 mb-1 rounded-pill text-center border expand" href="{% url 'profile' %}" id="navbarProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- Observation Button -->
+                        <li class="nav-item">
+                            <a href="{% url 'journal_view' %}" class="nav-link mx-2 mt-1 mb-1 rounded-pill shadow-sm text-center border bg-success text-white" style="background-color: green !important;">+ Observation</a>
+                        </li>
+                        <!-- Profile Section -->
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 mb-1 rounded-pill text-center border expand" href="{% url 'profile' %}">
                                 {% if user.userprofile.profile_pic %}
-                                    <img src="{{MEDIA_URL}}{{ request.user.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm" alt="Profile Picture" style="width: 30px; height: 30px; object-fit: cover;">
+                                    <img src="{{ MEDIA_URL }}{{ request.user.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm" alt="Profile Picture" style="width: 30px; height: 30px; object-fit: cover;">
                                 {% endif %}
                                 {{ request.user.username }}
                             </a>
-                            <!-- Dropdown menu for profile stuff -->
-                            <ul class="dropdown-menu dropdown-menu-end mx-3 mb-3" aria-labelledby="navbarProfileDropdown" style="border-radius: 20px; overflow: hidden;">
-                                <li><a class="dropdown-item" href="{% url 'profile' %}">View profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'journal_view' %}">Observation Journal</a></li>
-                                <li><a class="dropdown-item logout" href="{% url 'logout' %}">Logout</a></li>
-                            </ul>
                         </li>
-                    </ul>
+                        <li class="nav-item">
+                            <a class="nav-link mx-2 mb-1 mt-1 text-center expand logout rounded-pill" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>                    
                     {% endif %}
                 </div>
             </nav>
