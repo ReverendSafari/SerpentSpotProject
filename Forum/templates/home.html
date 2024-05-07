@@ -63,30 +63,62 @@
       </div>
    </div>
 
-   <h3 class="card-title mt-5 mb-3 mx-5" style="text-align: left;">Recent forum posts: </h3>
-   <hr>
-   <!-- display 5 most recent threads -->
-   {% if threads %}
-      {% for thread in threads %}
-         <div class="card board shadow-sm mb-4 mx-5 mt-3" style="border-radius: 20px; overflow: hidden;">
-            <a href="{% url 'thread_posts' thread.id %}" class="link-success text-decoration-none">
-               <div class="card-body" style="background-color: whitesmoke;">
-                  <h4>{{ thread.title }}</h4>
-                  <div class="d-flex align-items-center mt-3">
-                     <!-- Display profile picture if available -->
-                     {% if thread.starter.userprofile.profile_pic %}
-                        <img src="{{ MEDIA_URL }}{{ thread.starter.userprofile.profile_pic.url }}" alt="Profile Image" style="width: 20px; height: 20px; border-radius: 15px; margin-right: 10px;">
-                     {% endif %}
-                     <p class="card-text" style="color: black;">
-                        Posted by {{ thread.starter.username }} on {{ thread.created_at|date:"N j, Y, P" }}
-                     </p>
+   <div class="container-fluid">
+      <div class="row mx-3">
+         <!-- Threads column -->
+         <div class="col-md-6">
+            <h3 class="mt-5 mb-3">Recent Threads:</h3>
+            <hr>
+            {% if threads %}
+               {% for thread in threads %}
+                  <div class="card board shadow-sm mb-4" style="border-radius: 20px; overflow: hidden;">
+                     <a href="{% url 'thread_posts' thread.id %}" class="link-success text-decoration-none">
+                        <div class="card-body" style="background-color: whitesmoke;">
+                           <h4>{{ thread.title }}</h4>
+                           <div class="d-flex align-items-center mt-3">
+                              {% if thread.starter.userprofile.profile_pic %}
+                                 <img src="{{ MEDIA_URL }}{{ thread.starter.userprofile.profile_pic.url }}" alt="Profile Image" style="width: 20px; height: 20px; border-radius: 15px; margin-right: 10px;">
+                              {% endif %}
+                              <p style="color: black;">
+                                 Posted by {{ thread.starter.username }} on {{ thread.created_at|date:"N j, Y, P" }}
+                              </p>
+                           </div>
+                        </div>
+                     </a>
                   </div>
-               </div>
-            </a>
+                  <hr>
+               {% endfor %}
+            {% endif %}
          </div>
-         <HR>
-      {% endfor %}
-   {% endif %}
+   
+         <!-- Posts column -->
+         <div class="col-md-6">
+            <h3 class="mt-5 mb-3">Latest Posts:</h3>
+            <hr>
+            {% if posts %}
+               {% for post in posts %}
+                  <div class="card board shadow-sm mb-4" style="border-radius: 20px; overflow: hidden;">
+                     <a href="{% url 'thread_posts' post.thread.id %}" class="link-success text-decoration-none">
+                     <div class="card-body" style="background-color: whitesmoke;">
+                        <h4>{{ post.thread.title }}</h4> <!-- thread title -->
+                           <p>{{ post.message }}</p> <!-- post message -->
+                           <div class="d-flex align-items-center mt-3">
+                              {% if post.created_by.userprofile.profile_pic %}
+                                 <img src="{{ MEDIA_URL }}{{ post.created_by.userprofile.profile_pic.url }}" alt="Profile Image" style="width: 20px; height: 20px; border-radius: 15px; margin-right: 10px;">
+                              {% endif %}
+                                 <p style="color: black;">
+                                    Written by {{ post.created_by.username }} on {{ post.created_at|date:"N j, Y, P" }}
+                                 </p>
+                              </div>
+                           </div>
+                        </a>
+                     </div>
+                     <hr>
+               {% endfor %}
+            {% endif %}
+         </div>
+      </div>
+   </div>
 </div>
 
 {% endblock %}
