@@ -52,40 +52,39 @@
    }
 
    @media (max-width: 768px) {
-    .title-with-button {
-        flex-direction: column;
-        align-items: flex-start; /* Aligns items to the left when stacked */
-    }
+   .title-with-button {
+      flex-direction: column;
+      align-items: flex-start; /* Aligns items to the left when stacked */
+   }
 
-    .threads {
+   .threads {
       margin-bottom: 60px;
-    }
+   }
 
    }
 
-    .collapse {
+   .collapse {
         transition: height 0.5s ease; /* Smooth transition for expanding and collapsing */
-    }
+   }
 
-    .collapse:not(.show) {
+   .collapse:not(.show) {
         display: none; /* Ensures it doesn't take up space when fully collapsed */
-    }
+   }
 
-    .collapsing {
+   .collapsing {
         position: relative; /* Ensures stability during transition */
         overflow: hidden; /* Prevents content from spilling out during transition */
         height: 0; /* Start height, adjust as necessary */
         transition: height 0.5s ease, opacity 0.5s ease; /* Smooth transitions for height and opacity */
         opacity: 0; /* Start with hidden content */
-    }
+   }
 
-    .collapse.show {
+   .collapse.show {
         opacity: 1; /* Fully visible when expanded */
         height: auto; /* Adjust height automatically to fit content */
         transition: height 0.5s ease, opacity 0.5s ease; /* Smooth transitions for height and opacity */
 
-    }
-    
+   }
 </style>
 
 <!-- Back to Home Button -->
@@ -160,18 +159,18 @@
 </div>
 {% endif %}
 
-<div class="threads mt-4">
-    {% for thread in threads %}
-    <div class="card shadow-sm mb-3"  style="border-radius: 20px; overflow: hidden;">
-        <div class="card-body">
-            <h4><a href="{% url 'thread_posts' thread.id %}" class="link-success">{{ thread.title }}</a></h4>
-            <div class="d-flex align-items-center mt-3">
-               <img src="{{ MEDIA_URL }}{{ thread.starter.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm me-2" alt="Profile Picture" style="width: 30px; height: 30px; object-fit: cover;">
-               <p class="card-text mb-0">Started by <a href="{% url 'user_profile' username=thread.starter.username %}">{{ thread.starter.username }}</a> on {{ thread.created_at|date:"M d, Y" }}</p>
-           </div>
-        </div>
-    </div>
-    {% endfor %}
+<div class="threads mt-4 mb-5">
+   {% for thread in threads %}
+   <div class="card shadow-sm mb-3"  style="border-radius: 20px; overflow: hidden;">
+      <div class="card-body">
+         <h4><a href="{% url 'thread_posts' thread.id %}" class="link-success">{{ thread.title }}</a></h4>
+         <div class="d-flex align-items-center mt-3">
+            <img src="{{ MEDIA_URL }}{{ thread.starter.userprofile.profile_pic.url }}" class="rounded-circle border border-success shadow-sm me-2" alt="Profile Picture" style="width: 30px; height: 30px; object-fit: cover;">
+            <p class="card-text mb-0">Started by <a href="{% url 'user_profile' username=thread.starter.username %}">{{ thread.starter.username }}</a> on {{ thread.created_at|date:"M d, Y" }}</p>
+         </div>
+      </div>
+   </div>
+   {% endfor %}
 </div>
 
 <div class="spacerdiv"></div>

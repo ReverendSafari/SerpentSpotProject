@@ -155,7 +155,7 @@
         </div>
     </div>
     <!-- Card for containing observations -->
-    <div class="card shadow-sm mt-3" style="border-radius: 20px; overflow: hidden;">
+    <div class="card shadow-sm mt-3 mb-5" style="border-radius: 20px; overflow: hidden;">
         <div class="card-body">
             <h5 class="card-title">Recent finds:</h5>
             <!-- check for and display 5 most recent observations -->
@@ -193,8 +193,8 @@
                             </div>
                         {% endfor %}
                         <!-- conditionally render the view more button. if theres no more why show it -->
-                        {% if user.userprofile.observations > 6 %}
-                            <a href="{% url 'user_journal_view' user.username %}" class="btn btn-success rounded-pill mt-3 mb-3">View More</a>
+                        {% if user.userprofile.observations > 0 %}
+                            <a href="{% url 'user_journal_view' user.username %}" class="btn btn-success rounded-pill mt-3 mb-3">View Journal</a>
                         {% endif %}
                     </div>
                 </div>
