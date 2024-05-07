@@ -79,7 +79,7 @@
 
 <!-- this is a condition that changes between state name and snake name based on parameter conditions in the view -->
 {% if not search_term %}
-<h1 id="page-title" class="display-1 text-center">Snakes of {{ selected_state_name }}</h1>
+<h1 id="page-title" class="display-1 text-center"><strong>Snakes of {{ selected_state_name }}</strong></h1>
 {% else %}
     <!-- this loop will run exactly once because our first case says this one only happens great than 1-->
     {% for snake in species %}
