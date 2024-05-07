@@ -7,9 +7,10 @@ from django.contrib import messages
 
 
 def home(request):
-    boards = Board.objects.all()
+    boards = Board.objects.all() # Fetch all boards
     threads = Thread.objects.order_by('-created_at')[:5] # Fetch the latest 5 threads
-    return render(request, 'home.html', {'boards': boards, 'threads': threads})
+    posts = Post.objects.order_by('-created_at')[:5]  # Fetch the latest 5 posts
+    return render(request, 'home.html', {'boards': boards, 'threads': threads, 'posts': posts}) 
 
 def board_threads(request, board_id):
     board = get_object_or_404(Board, pk=board_id)
@@ -33,7 +34,7 @@ def new_thread(request, board_id):
         else:
             messages.error(request, 'Error creating thread. Please check the form data.')
     else:
-      return HttpResponseNotAllowed(['POST'], "Invalid request method. Please use POST.")
+        return HttpResponseNotAllowed(['POST'], "Invalid request method. Please use POST.")
 
 
 
@@ -53,7 +54,7 @@ def reply_thread(request, thread_id):
         else:
             messages.error(request, 'There was an error with your post. Please check your input.')
     else:
-      return HttpResponseNotAllowed(['POST'], "Invalid request method. Please use POST.")
+        return HttpResponseNotAllowed(['POST'], "Invalid request method. Please use POST.")
 
 
 
