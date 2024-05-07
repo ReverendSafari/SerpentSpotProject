@@ -8,7 +8,7 @@ To access the shell -> python manage.py shell
 Then import whatever functions you wish to use from this file, and call the functions in shell
 '''
 #Necessary variables to get the snake data
-file_path = 'Identification\snaketext.txt'
+file_path = 'Identification/snaketext.txt'
 snakes_data = parse_snake_data(file_path)
 
 
