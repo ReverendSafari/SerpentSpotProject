@@ -1,5 +1,20 @@
 import requests
 
+# 
+# @ Safari
+# Resources used:
+# https://www.inaturalist.org/pages/api+reference 
+
+"""
+Function I used to test the iNaturalist API to extract and format observation data.
+
+Args:
+    taxon_id, latitude, longitude, radius: Parameters for the API request.
+
+Returns:
+    dict: The JSON response from the API that contains the observation data.
+
+"""
 def fetch_observations(taxon_id, latitude, longitude, radius):
     # API endpoint for observations
     url = "https://api.inaturalist.org/v1/observations"

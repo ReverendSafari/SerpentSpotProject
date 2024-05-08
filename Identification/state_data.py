@@ -1,3 +1,8 @@
+"""
+This file contains a list of tuples of our state data
+Used as a data source in our import_data functions
+"""
+
 states = [
     ("Alabama", "AL"),
     ("Alaska", "AK"),

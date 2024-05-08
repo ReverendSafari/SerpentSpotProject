@@ -8,6 +8,13 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 import os
 from django.core.files import File
 
+#
+# @ Safari
+#
+# Resources Used: 
+# https://docs.djangoproject.com/en/3.2/topics/testing/tools/
+#
+
 
 """
 UNIT TESTS

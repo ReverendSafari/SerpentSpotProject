@@ -1,3 +1,4 @@
+
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.forms import ModelChoiceField
@@ -10,6 +11,7 @@ Trying to get basic tests surrounding the models, views, and our form
 Not meant to be entirely comprehensive just a starting point to ensure basic functionality
 
 """
+# @ Safari (Whole file)
 
 #Test our models
 class ModelTests(TestCase):

@@ -2,6 +2,13 @@ from Identification.models import State, SnakeSpecies
 from Identification.state_data import states
 from Identification.snake_data import parse_snake_data
 
+#
+# @ Safari
+# 
+# Resources: 
+# https://docs.djangoproject.com/en/3.2/topics/db/queries/
+# https://docs.djangoproject.com/en/5.0/ref/django-admin/
+
 '''
 This is a file with methods to import data into our DB from the django shell
 To access the shell -> python manage.py shell

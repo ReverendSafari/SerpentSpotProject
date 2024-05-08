@@ -1,3 +1,18 @@
+"""
+This is another utility file used in import_data.py
+"""
+
+
+
+"""
+Parses a txt file (snaketext.txt) containing raw text data for snake species and cleans and stores it into dict's
+
+Args:
+    file_path: The file path to the txt file containing the snake data
+
+Returns:
+    list: A list of dictionaries containing the snake data
+"""
 def parse_snake_data(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:  # Specify UTF-8 encoding here
         lines = file.readlines()

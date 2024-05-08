@@ -2,9 +2,24 @@ from Identification.models import State, SnakeSpecies
 from django.shortcuts import render
 
 
-from django.shortcuts import render
-from .models import State, SnakeSpecies
+# Resources Used: 
+# https://getbootstrap.com/docs/5.0/
+# https://chatgpt.com/share/4dddb2d5-e990-485a-b603-198e50be961c?oai-dm=1
+# https://select2.org/
 
+
+"""
+This function selects the state and filters the species based on the search term and selected state ID.
+Defaults to displaying every snake in the DB
+
+Args:
+    request: The request object. (Typically with state and filter parameters from form)
+
+Returns:
+    render object: The render object for the id html template. (And the filtered snake/state data)
+"""
+
+# @Safari
 def select_state(request):
     selected_state_name = "the USA"
     species_qs = SnakeSpecies.objects.all()  # Start with all species
@@ -27,6 +42,7 @@ def select_state(request):
             selected_state_name = "the USA"
             selected_state_id = None
 
+    # Prepare the species data for the template
     species_data = [
         {
             'common_name': s.common_name,
@@ -43,6 +59,7 @@ def select_state(request):
     states = State.objects.all()
     species_count = species_qs.count() # Count the number of species
 
+    # Prepare the context to pass to the template
     context = {
         'states': states,
         'species': species_data,
@@ -53,5 +70,17 @@ def select_state(request):
 
     return render(request, 'id.html', context)
 
+
+"""
+Renders the education html template
+
+Args:
+    request: The request object.
+
+Returns:
+    render object: The render object for the education html template.
+"""
+
+# @Safari
 def render_education(request):
     return render(request, 'education.html')

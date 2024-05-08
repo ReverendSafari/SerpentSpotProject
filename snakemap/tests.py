@@ -4,6 +4,13 @@ from unittest.mock import patch
 import json
 from . import views
 
+#
+# @ Safari
+#
+# Resources Used: 
+# https://docs.djangoproject.com/en/3.2/topics/testing/tools/
+# https://chat.openai.com/share/04d9376e-9108-4831-b7a6-30688d1f01d2
+
 """
 UNIT TESTS 
 Not a very backend heavy app, we are mainly concerned with testing our API call and our JSON response in the map view

@@ -5,6 +5,27 @@ import requests
 from django.utils import timezone
 from datetime import timedelta
 
+# @ Safari
+# Resources used:
+# https://developers.google.com/maps/documentation/javascript/overview
+# https://www.inaturalist.org/pages/api+reference
+# (I was going to link a GPT chat that helped me with both API's but I accidentally leaked my API key in the chat)
+
+
+"""
+Pulls observations from the iNaturalist API based on a taxon ID, latitude, longitude, radius, and date range.
+
+Args:
+    taxon_id: The taxon ID of the species to search for.
+    latitude: The latitude of the location to search around.
+    longitude: The longitude of the location to search around.
+    radius: The radius around the location to search within.
+    date_range: The range of dates to search within (e.g., '6m' for 6 months).
+    page: The page of results to fetch (default is 1).
+
+Returns:
+    dict: The JSON response from the API.
+"""
 def fetch_observations(taxon_id, latitude, longitude, radius, date_range, page=1):
     url = "https://api.inaturalist.org/v1/observations"
     today = timezone.now().date()
@@ -30,20 +51,35 @@ def fetch_observations(taxon_id, latitude, longitude, radius, date_range, page=1
     response = requests.get(url, params=params)
     return response.json() if response.status_code == 200 else None
 
-def handle_pagination(taxon_id, latitude, longitude, radius, date_range):
-    page = 1
-    all_observations = []
-    while True:
-        data = fetch_observations(taxon_id, latitude, longitude, radius, date_range, page)
-        if data and data.get('results'):
-            all_observations.extend(data['results'])
-            page += 1
-            if len(data['results']) < 200:  # If fewer than 200 results, last page
-                break
-        else:
-            break
-    return all_observations
+"""
+Unused function to handle pagination of API results.
+"""
+# def handle_pagination(taxon_id, latitude, longitude, radius, date_range):
+#     page = 1
+#     all_observations = []
+#     while True:
+#         data = fetch_observations(taxon_id, latitude, longitude, radius, date_range, page)
+#         if data and data.get('results'):
+#             all_observations.extend(data['results'])
+#             page += 1
+#             if len(data['results']) < 200:  # If fewer than 200 results, last page
+#                 break
+#         else:
+#             break
+#     return all_observations
 
+
+"""
+Renders the template, and fetches observations if the request is a GET with the required parameters.
+(Also passed in our API key)
+
+Args:
+    request: The request object.
+
+Returns:
+    render object: The render object for the map html template, and a JSON response of observations if it is a get request
+    
+"""
 def map_view(request):
     
     context = {
