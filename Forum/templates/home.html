@@ -79,7 +79,7 @@
                               {% if thread.starter.userprofile.profile_pic %}
                                  <img src="{{ MEDIA_URL }}{{ thread.starter.userprofile.profile_pic.url }}" alt="Profile Image" style="width: 20px; height: 20px; border-radius: 15px; margin-right: 10px;">
                               {% endif %}
-                              <p style="color: black;">
+                              <p class="mt-3" style="color: black;">
                                  Posted by {{ thread.starter.username }} on {{ thread.created_at|date:"N j, Y, P" }}
                               </p>
                            </div>
@@ -106,7 +106,7 @@
                               {% if post.created_by.userprofile.profile_pic %}
                                  <img src="{{ MEDIA_URL }}{{ post.created_by.userprofile.profile_pic.url }}" alt="Profile Image" style="width: 20px; height: 20px; border-radius: 15px; margin-right: 10px;">
                               {% endif %}
-                                 <p style="color: black;">
+                                 <p class="mt-3" style="color: black;">
                                     Written by {{ post.created_by.username }} on {{ post.created_at|date:"N j, Y, P" }}
                                  </p>
                               </div>

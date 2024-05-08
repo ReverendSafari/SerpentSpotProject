@@ -36,6 +36,8 @@
     body {
         background: rgb(2,0,36);
         background: -webkit-linear-gradient(270deg, rgba(2,0,36,1) 0%, rgba(25,135,84,1) 35%, rgba(86,135,25,1) 100%);
+        background-size: cover;
+        background-attachment: fixed;
     }
 </style>
 {% endblock extra_css %}
@@ -48,23 +50,14 @@
         <div class="mx-3 mt-3">
             <h1 style="text-align: center;">🐍 Top Identifiers 🐍</h1>
             <!-- Text for leaderboard placement, either tells you that you're ranked or how many you need to place -->
-            {% if observations_to_join > 0 %}
-                {% if is_user_ranked %}
-                    <p style="text-align: center;">You are currently ranked on the leaderboard!</p>
-                {% else %}
-                    {% if observations_to_join > 0 %}
-                        <p style="text-align: center;">You need {{ observations_to_join }} more observations to enter the leaderboard.</p>
-                    {% else %}
-                        <p style="text-align: center;">Start observing to appear on the leaderboard!</p>
-                    {% endif %}
-                {% endif %}
+            {% if is_user_ranked %}
+                <p style="text-align: center;">You are currently ranked on the leaderboard!</p>
             {% else %}
                 {% if observations_to_join > 0 %}
                     <p style="text-align: center;">You need {{ observations_to_join }} more observations to enter the leaderboard.</p>
-                {% else %}
-                    <p style="text-align: center;">Start observing to appear on the leaderboard!</p>
                 {% endif %}
             {% endif %}
+
 
             <!-- loop through leaderboard positions and render cards -->
             {% for profile in top_ten_profiles %}
