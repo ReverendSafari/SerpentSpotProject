@@ -2,12 +2,14 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 from Identification.models import SnakeSpecies, State
 
 from .models import UserObservation
 from .forms import ObservationForm
 
+@login_required
 def journal_view(request, username=None):
     """
     View function for the observation journal page.

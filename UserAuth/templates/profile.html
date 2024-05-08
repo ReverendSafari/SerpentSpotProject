@@ -43,6 +43,18 @@
         transition: 0.3s;
     }
 
+    .hover:hover {
+        transform:scale(1.02);
+        transition: 0.3s;
+    }
+
+    @media (max-width: 768px) {
+        /* Make all corners round on mobile for consistency */
+        .card {
+            border-radius: 20px !important;
+            overflow: hidden !important;
+        }
+    }
 </style>
 
 {% endblock extra_css %}
@@ -80,7 +92,6 @@
                         {% endif %}
                     </h2>
                     <p><strong>Email:</strong> {{ user.email }}</p>
-                    <p><strong>Bio:</strong> {{ user.userprofile.bio | slice:":250" }}</p>
                 </div>
             </div>
             <!-- if its your profile then you can edit it -->
@@ -93,22 +104,44 @@
                 <!-- User details for bio and observations -->
                 <div class="col-md-8">
                     <div class="card shadow-sm mb-3" style="background-color:whitesmoke; border-top-left-radius: 20px; border-bottom-left-radius: 20px; overflow:hidden">
-                        <div class="card-body">
+                        <div class="card-body mx-3">
                             <h5 class="card-title mb-3">About me:</h5>
                             <hr>
-                            <div class="mx-1">
-                                <p><strong>Lifetime observations:</strong> {{ user.userprofile.observations }}</p>
-                            </div>
-                        </div>
+                            <div class="d-flex text-center mb-1">
+                                <!-- lifetime observations made -->
+                                {% if observations %}
+                                    <p class="flex-fill mx-3"><strong>Lifetime observations:</strong> {{ user.userprofile.observations }}</p>
+                                {% else %}
+                                    <p class="flex-fill mx-3"><strong>No observations yet!</strong></p>
+                                {% endif %}
+                                
+                                {% if totalposts %}
+                                    <!-- total number of forum posts from view -->
+                                    <p class="flex-fill mx-3"><strong>Lifetime posts:</strong> {{totalposts}}</p>
+                                {% else %}
+                                    <p class="flex-fill mx-3"><strong>No forum posts yet!</strong></p>
+                                {% endif %}
+                        </div>    
+                    </div>
+
+                    <div class="card-body mx-3">
+                        <h5 class="card-title mb-3">Bio:</h5>
+                        <hr>
+                        <p class="card-text">{{ user.userprofile.bio | slice:":300" }}</p>
+                    </div>
+
                         <!-- Displaying favorite species -->
                         {% if user.userprofile.favorite_species %}
                         <div class="card mx-3 mb-3" style="border-radius: 20px; overflow: hidden;">
                             <div class="mx-3 mt-3 mb-3">
-                                <p><strong>Favorite Snake:</strong> {{ userprofile.favorite_species.common_name }}</p> <!-- Display each favorite species -->
+                                <h4 class="text-center"><strong>Favorite Snake:</strong> {{ userprofile.favorite_species.common_name }}</h4> <!-- Display each favorite species -->
                                 <hr>
-                                <p><Strong>Scientific Name: </Strong> {{ userprofile.favorite_species.scientific_name }}</p>
-                                <p><strong>Venomous: </strong> {{ userprofile.favorite_species.venomous }}</p>
-                                <img src="{% static userprofile.favorite_species.image_path %}" class="container-fluid">
+                                <div class="d-flex mx-4">
+                                    <p class="flex-fill"><Strong>Scientific Name: </Strong> {{ userprofile.favorite_species.scientific_name }}</p>
+                                    <p class="flex-fill"><strong>Venomous: </strong> {{ userprofile.favorite_species.venomous }}</p>
+                                </div>
+
+                                <a href="{% url 'id_view' %}?search={{ userprofile.favorite_species.common_name|urlencode }}"><img src="{% static userprofile.favorite_species.image_path %}" class="container-fluid hover shadow-sm"></a>
                             </div>
                         </div>
                         {% else %}
@@ -138,7 +171,7 @@
                                             Message: {{ post.message|truncatechars:50 }}
                                             <br>
                                             <!-- date of posting -->
-                                            Posted on {{ post.created_at|date:"F d, Y H:i" }}
+                                            Posted on {{ post.created_at|date:"N j, Y, P"}}
                                         </p>
                                     </div>
                                 </div>
@@ -157,18 +190,18 @@
     <!-- Card for containing observations -->
     <div class="card shadow-sm mt-3 mb-5" style="border-radius: 20px; overflow: hidden;">
         <div class="card-body">
-            <h5 class="card-title">Recent finds:</h5>
+            <h5 class="card-title mx-3">Recent finds:</h5>
             <!-- check for and display 5 most recent observations -->
             {% if recentobservations %}
             <div class="container mt-3">
-                <div class="card shadow-sm" style="border-radius: 20px; overflow: hidden;">
+                <div class="card shadow-sm" style="border-radius: 20px; overflow: hidden; background-color: whitesmoke;">
                     <div class="row mx-3">
                         <!-- iterate through the recent observations that we found -->
                         {% for observation in recentobservations %}
                             <div class="col-sm-12 col-md-6">
                                 <!-- clickable card, takes us to the snake in the id page -->
                                 <a href="{% url 'id_view' %}?search={{ observation.species.common_name|urlencode }}" class="text-decoration-none" aria-label="View details for {{ observation.species|default:"Unknown Species" }}">
-                                    <div class="card shadow-sm mt-3 mb-3 obsitem" style="background-color:whitesmoke; border-radius: 20px; overflow: hidden;">
+                                    <div class="card shadow-sm mt-3 mb-3 obsitem" style="background-color:white; border-radius: 20px; overflow: hidden;">
                                         <div class="card-body">
                                             <!-- Card details, (snake info and picture & link) -->
                                             <h5 class="card-title
@@ -179,7 +212,7 @@
                                             {% endif %}">
                                                 {{ observation.species|default:"Unknown Species" }}
                                             </h5>
-                                            <h6 class="card-subtitle mb-3 text-muted">{{ observation.date|date:"F d, Y H:i" }}</h6>
+                                            <h6 class="card-subtitle mb-3 text-muted">{{ observation.date|date:"N j, Y, P"}}</h6>
                                             <p class="card-text">{{ observation.observation }}</p>
                                             <hr>
                                             {% if observation.observation_pic %}
@@ -192,12 +225,12 @@
                                 </a>
                             </div>
                         {% endfor %}
-                        <!-- conditionally render the view more button. if theres no more why show it -->
-                        {% if user.userprofile.observations > 0 %}
-                            <a href="{% url 'user_journal_view' user.username %}" class="btn btn-success rounded-pill mt-3 mb-3">View Journal</a>
-                        {% endif %}
                     </div>
                 </div>
+                <!-- conditionally render the view more button. if theres no more why show it -->
+                {% if user.userprofile.observations > 0 %}
+                    <a href="{% url 'user_journal_view' user.username %}" class="btn btn-success rounded-pill mt-3 mb-3 hover" style="width: 100%;">View Journal</a>
+                {% endif %}
             </div>
             <!-- nothing to show -->
             {% else %}

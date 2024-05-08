@@ -45,10 +45,6 @@ def leaderboard_view(request):
     # Check if the current user is in the top 10
     is_user_ranked = current_user_profile in top_ten_profiles
 
-    # If there are fewer than 10 users, everyone is ranked
-    if len(month_observations) < 10:
-        is_user_ranked = True
-
     # Find the number of observations needed to reach the 10th place
     observations_to_join = 0
     if not is_user_ranked and month_observations: # If the user is not ranked and there are observations

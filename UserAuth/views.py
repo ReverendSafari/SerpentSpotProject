@@ -106,13 +106,15 @@ def profile_view(request, username=None):
     observations = UserObservation.objects.filter(user=user.userprofile)
     recentPosts = Post.objects.filter(created_by=user).order_by('-created_at')[:5] # Get the 5 most recent posts by the user
     recentobservations = observations.order_by('-date')[:6] # Get the 6 most recent observations by the user
+    totalposts = Post.objects.filter(created_by=user).count() # Get the total number of posts by the user
 
     context = {
         'user': user,
         'userprofile': userprofile,
         'observations': observations,
         'recentPosts': recentPosts,
-        'recentobservations': recentobservations
+        'recentobservations': recentobservations,
+        'totalposts': totalposts,
     }
     return render(request, 'profile.html', context)
 

@@ -141,7 +141,7 @@
                         <div class="card-body">
                             <!-- title information -->
                             <p class="card-title h4 mx-3"><a href="{% url 'id_view' %}?search={{ observation.species.common_name|urlencode }}">{{ observation.species.common_name }}</a></p>
-                            <h6 class="card-subtitle mb-2 text-muted mx-3">{{ observation.date|date:"F d, Y H:i" }}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted mx-3">{{ observation.date|date:"N j, Y, P"}}</h6>
                             <div class="card" style="border-radius: 20px; overflow: hidden;">
                                 <div class="mx-3 mt-3 mb-3">
                                     <!-- if theres a picture display it -->
