@@ -63,7 +63,7 @@ def thread_posts(request, thread_id):
     form = PostForm()  # Instantiate the form
     return render(request, 'thread_posts.html', {'thread': thread, 'posts': thread.posts.all(), 'form': form})
 
-""""
+"""
 Creates a new thread in the given board
 
 Args:
@@ -72,7 +72,7 @@ Args:
 
 Returns:
     redirect object: Redirects to the board threads page after creating the thread.
-""""
+"""
 @login_required
 def new_thread(request, board_id):
     board = get_object_or_404(Board, pk=board_id)
