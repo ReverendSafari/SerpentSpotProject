@@ -1,5 +1,6 @@
 from django.db import models
 
+# Seamus 
 class UserObservation(models.Model):
     """
     Represents a user observation.

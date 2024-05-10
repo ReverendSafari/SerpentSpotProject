@@ -4,6 +4,7 @@ from django.contrib.auth.models import User # Import the User model from Django
 
 from .models import UserProfile # Import the UserProfile model from the current app
 
+# Seamus 
 class UserRegisterForm(UserCreationForm):
     """
     A form used for user registration.
@@ -24,6 +25,7 @@ class UserRegisterForm(UserCreationForm):
         model = User # The User model that the form is associated with
         fields = ['username', 'email', 'password1', 'password2'] # The fields that will be displayed in the form
 
+# Seamus 
 class UserProfileForm(forms.ModelForm):
     """
     A form for updating user profile information.

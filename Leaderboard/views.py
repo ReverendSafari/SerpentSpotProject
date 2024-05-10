@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from UserAuth.models import UserProfile
 from ObservationJournal.models import UserObservation
 
+# Seamus 
 @login_required
 def leaderboard_view(request):
     """

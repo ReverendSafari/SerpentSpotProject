@@ -4,6 +4,7 @@ from Leaderboard.views import leaderboard_view
 from UserAuth.models import UserProfile
 from django.contrib.auth.decorators import login_required
 
+# Seamus 
 class LeaderboardViewTests(TestCase):
     def setUp(self):
         """

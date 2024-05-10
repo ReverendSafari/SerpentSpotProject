@@ -9,6 +9,7 @@ from Identification.models import SnakeSpecies, State
 from .models import UserObservation
 from .forms import ObservationForm
 
+# Seamus 
 @login_required
 def journal_view(request, username=None):
     """
@@ -55,6 +56,7 @@ def journal_view(request, username=None):
     
     return render(request, 'observationjournal.html', {'form': form, 'observations': observations, 'species': species, 'user': user})
 
+# Seamus 
 def delete_observation(request, observation_id):
     """
     Deletes an observation from the database.

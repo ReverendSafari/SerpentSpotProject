@@ -17,6 +17,7 @@ from Identification.models import SnakeSpecies # Import the SnakeSpecies model
 
 from Forum.models import Post;
 
+# Seamus 
 def login_view(request):
     """
     This view handles the login functionality.
@@ -50,6 +51,7 @@ def login_view(request):
         form = AuthenticationForm() # Create an empty form
     return render(request, 'login.html', {'form': form}) # Render the login page with the form
 
+# Seamus 
 def register_view(request):
     """
     This view handles the registration process for new users.
@@ -84,6 +86,7 @@ def register_view(request):
         profile_form = UserProfileForm() # Create an empty profile form
     return render(request, 'register.html', {'user_form': user_form, 'profile_form': profile_form}) # Render the registration page with the forms
 
+# Seamus 
 @login_required
 def profile_view(request, username=None):
     """
@@ -118,6 +121,7 @@ def profile_view(request, username=None):
     }
     return render(request, 'profile.html', context)
 
+# Seamus 
 @login_required
 def edit_profile_view(request):
     """
@@ -143,7 +147,7 @@ def edit_profile_view(request):
     }
     return render(request, 'editprofile.html', context)
 
-
+# Seamus 
 def logout_view(request):
     """
     Logs out the current user and redirects to the login page.

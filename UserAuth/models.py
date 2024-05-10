@@ -6,6 +6,7 @@ from django.dispatch import receiver # Import the receiver decorator
 
 from Identification.models import SnakeSpecies # Import the SnakeSpecies model
 
+# Seamus 
 class UserProfile(models.Model):
     """
     Represents a user profile in the system.
@@ -22,7 +23,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
     
-
+# Seamus 
 @receiver(post_save, sender=User)
 def LinkUserProfile(sender, instance, created, **kwargs):
     """
