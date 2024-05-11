@@ -28,13 +28,15 @@
         margin-right: 10px; /* Space between the rank number and the card */
     }
     .card { /* Card styling */
-        width: 100%; /* Full width */
+        width: 100%; /* Full width to span  */
     }
 
     .lbcard:hover { /* Hover effect for user leaderboard cards */
         transform: scale(1.02); /* Scale up on hover */
         transition: 0.3s; /* Smooth transition */
     }
+
+    /* Background styling */
     body {
         background: rgb(2,0,36);
         background: -webkit-linear-gradient(270deg, rgba(2,0,36,1) 0%, rgba(25,135,84,1) 35%, rgba(86,135,25,1) 100%);
@@ -42,12 +44,12 @@
         background-attachment: fixed;
     }
 </style>
+
 {% endblock extra_css %}
 
 {% load static %}
 
 {% block content %}
-
     <div class="card shadow mb-5" style="border-radius: 20px; overflow: hidden;">
         <div class="mx-3 mt-3">
             <h1 style="text-align: center;">🐍 Top Identifiers 🐍</h1>

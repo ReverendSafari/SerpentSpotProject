@@ -20,7 +20,7 @@
 
    a.text-decoration-none:hover {
       text-decoration: none; /* Keeps underline off on hover */
-      opacity: 0.9; /* Optional: Adds a slight interaction effect on hover */
+      opacity: 0.9; /* slight fade */
    }
    .board:hover{
       transform: scale(1.02); /* Scale up on hover */
@@ -39,6 +39,7 @@
    <div class="card-body shadow-sm" style="background-color: whitesmoke;">
       <h2 class="card-title" style="text-align: center;">Forum Boards</h2>
       <hr>
+      <!-- welcome message -->
       {% if request.user.is_authenticated %}
          <p class="card-text" style="text-align: center;">Below are the boards available on the forum. Click on a board to view its threads.</p>
       {% else %}
@@ -47,12 +48,14 @@
    </div>
    <div class="boards mt-5 mb-3">
       <div class="row mx-3">
+         <!-- Board cards -->
          {% for board in boards %}
             <div class="col-md-4">
                <!-- Make the whole card a link -->
                <a href="{% url 'board_threads' board.id %}" class="text-decoration-none">
                   <div class="card mb-3 shadow-sm board" style="border-radius: 20px; overflow: hidden;">
                      <div class="card-body" style="background-color: whitesmoke;">
+                        <!-- render board information -->
                         <h3 class="card-title" style="text-align: center; color: black;">{{ board.name }}</h3>
                         <hr>
                         <p class="card-text" style="text-align: center; color: black;">{{ board.description }}</p>
@@ -70,11 +73,13 @@
          <div class="col-md-6">
             <h3 class="mt-5 mb-3">Recent Threads:</h3>
             <hr>
+            <!-- render threads -->
             {% if threads %}
                {% for thread in threads %}
                   <div class="card board shadow-sm mb-4" style="border-radius: 20px; overflow: hidden;">
                      <a href="{% url 'thread_posts' thread.id %}" class="link-success text-decoration-none">
                         <div class="card-body" style="background-color: whitesmoke;">
+                           <!-- thread info -->
                            <h4>{{ thread.title }}</h4>
                            <div class="d-flex align-items-center mt-3">
                               {% if thread.starter.userprofile.profile_pic %}
@@ -96,11 +101,13 @@
          <div class="col-md-6">
             <h3 class="mt-5 mb-3">Latest Posts:</h3>
             <hr>
+            <!-- render posts -->
             {% if posts %}
                {% for post in posts %}
                   <div class="card board shadow-sm mb-4" style="border-radius: 20px; overflow: hidden;">
                      <a href="{% url 'thread_posts' post.thread.id %}" class="link-success text-decoration-none">
                      <div class="card-body" style="background-color: whitesmoke;">
+                        <!-- post info -->
                         <h4>{{ post.thread.title }}</h4> <!-- thread title -->
                            <p>{{ post.message }}</p> <!-- post message -->
                            <div class="d-flex align-items-center mt-3">
