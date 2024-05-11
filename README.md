@@ -124,3 +124,6 @@ This is another simple and static component of the web app, it is simply an html
 # System Architecture 
 ![image](https://github.com/ReverendSafari/SerpentSpotProject/assets/63567335/89293082-6b6e-438d-a4d0-a1fe7336e115)
 
+# Resources 
+https://docs.google.com/document/d/1Kc7SIUizXu0q5t-4hT891A-Xu8t-wZ4boMhwcCVsdco/edit
+
