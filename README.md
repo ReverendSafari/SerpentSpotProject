@@ -120,3 +120,7 @@ This is another simple and static component of the web app, it is simply an html
 - Individual species view and searchbar on ID page
 - Footer (NOT on features list but its not a feature it just looks nice)
 - Profile flair (this became the profile overhaul adding activity trackers and links to other page)
+
+# System Architecture 
+![image](https://github.com/ReverendSafari/SerpentSpotProject/assets/63567335/89293082-6b6e-438d-a4d0-a1fe7336e115)
+
