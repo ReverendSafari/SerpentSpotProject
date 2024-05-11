@@ -2,7 +2,7 @@
  Capstone Software Engineering Project, Creating a django based platform to foster community, education, and indentification in the world of reptiles
 
 [View Short Feature Demo](https://drive.google.com/file/d/16kMKgPNooKIwMAhn8q88xQmRpGQVoeZM/view)
-
+[View Long Feature Demo](https://drive.google.com/file/d/1iqmV28OCwB7DuRjuBARmliGVZ3Wx7f49/view?usp=sharing)
  
 # Features List - Safari:
 ## SnakeMap
