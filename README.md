@@ -127,3 +127,19 @@ This is another simple and static component of the web app, it is simply an html
 # Resources 
 https://docs.google.com/document/d/1Kc7SIUizXu0q5t-4hT891A-Xu8t-wZ4boMhwcCVsdco/edit
 
+# Technologies used
+Front End:
+  Bootstrap 5 (For easy styling)
+  Canvas confetti (For snake confetti effect)
+  Google Maps JS library (For the snakemap feature)
+  Select2 (For ID page searching)
+
+Back End:
+  Django (We also used the built in django models/forms for authentication)
+
+DB:
+  Sqlite when developing locally
+  Postgre when in production
+
+Other:
+  WSGI for production web server
